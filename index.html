@@ -11,7 +11,7 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css" />
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Prompt:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Prompt:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
 
@@ -78,7 +78,12 @@
     .app-shell button,
     .app-shell nav,
     .app-shell span,
-    .app-shell footer {
+    .app-shell footer,
+    .app-navbar,
+    .app-navbar button,
+    .lang-switcher,
+    .lang-switcher button,
+    #theme-toggle {
       font-family: var(--font-ui);
     }
 
@@ -206,67 +211,6 @@
       max-width: 420px;
     }
     .app-shell > * { position: relative; z-index: 1; }
-
-    /* ── Segmented language control ── */
-    .lang-tabs {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2px;
-      padding: 1px 2px 2px;
-      border-radius: 11px;
-      background: var(--glass-inset);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      box-shadow: 0 1px 0 var(--glass-highlight) inset;
-      flex-shrink: 0;
-      width: 168px;
-      height: 44px;
-      line-height: 1;
-      margin: -2px 0 0;
-      align-self: flex-start;
-    }
-    .lang-tab {
-      font-size: 9px;
-      font-weight: 500;
-      height: 20px;
-      padding: 0 2px;
-      border-radius: 9px;
-      border: none;
-      background: transparent;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: background 0.22s cubic-bezier(0.25, 0.1, 0.25, 1), color 0.22s ease, box-shadow 0.22s ease;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-    }
-    .lang-tab:hover:not(.active) {
-      color: var(--neon-purple-deep);
-      background: rgba(191, 0, 255, 0.08);
-    }
-    .dark .lang-tab:hover:not(.active) {
-      color: var(--neon-orange-light);
-      background: rgba(255, 107, 0, 0.1);
-    }
-    .lang-tab.active {
-      background: var(--gradient-neon);
-      color: #ffffff;
-      box-shadow:
-        0 2px 12px rgba(255, 107, 0, 0.35),
-        0 0 20px rgba(191, 0, 255, 0.25),
-        0 1px 0 rgba(255, 255, 255, 0.3) inset;
-    }
-    .dark .lang-tab.active {
-      box-shadow:
-        0 2px 16px rgba(255, 107, 0, 0.4),
-        0 0 24px rgba(191, 0, 255, 0.35),
-        0 1px 0 rgba(255, 255, 255, 0.2) inset;
-    }
 
     /* ── Preview ── */
     .preview-text {
@@ -435,6 +379,135 @@
     .avatar-glass svg { color: var(--neon-purple-deep); }
     .dark .avatar-glass svg { color: var(--neon-orange-light); }
 
+    .preview-toolbar {
+      flex-wrap: wrap;
+      row-gap: 10px;
+    }
+    .preview-section {
+      z-index: 2;
+    }
+    .event-picker {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+    .event-select {
+      position: relative;
+      min-width: 118px;
+    }
+    @media (max-width: 380px) {
+      .event-picker {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+    .event-picker-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+    .event-trigger {
+      height: 32px;
+      width: 100%;
+      min-width: 118px;
+      padding: 0 10px 0 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      line-height: 1;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .event-trigger > * { position: relative; z-index: 1; }
+    .event-trigger svg {
+      width: 11px;
+      height: 11px;
+      opacity: 0.7;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+    .event-trigger[aria-expanded="true"] svg {
+      transform: rotate(180deg);
+    }
+    .event-trigger:focus {
+      border-color: rgba(255, 149, 0, 0.5);
+      box-shadow:
+        0 1px 0 var(--glass-highlight) inset,
+        0 0 0 3px rgba(191, 0, 255, 0.12);
+    }
+    .event-menu {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 6px);
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      max-height: min(280px, 50vh);
+      overflow-y: auto;
+      padding: 5px;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      z-index: 40;
+    }
+    .event-menu[hidden] { display: none; }
+    .event-option {
+      min-height: 34px;
+      padding: 6px 8px;
+      width: 100%;
+      box-sizing: border-box;
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 1px;
+      text-align: left;
+      line-height: 1.2;
+      transition: background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+    }
+    .event-option small {
+      font-size: 10px;
+      font-weight: 400;
+      opacity: 0.75;
+      white-space: normal;
+      word-break: break-word;
+    }
+    .event-option:hover:not(.active) {
+      color: var(--neon-purple-deep);
+      background: rgba(191, 0, 255, 0.08);
+    }
+    .dark .event-option:hover:not(.active) {
+      color: var(--neon-orange-light);
+      background: rgba(255, 107, 0, 0.1);
+    }
+    .event-option.active {
+      background: var(--gradient-neon);
+      color: #ffffff;
+      box-shadow:
+        0 2px 12px rgba(255, 107, 0, 0.35),
+        0 0 20px rgba(191, 0, 255, 0.25),
+        0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    }
+
     .divider {
       height: 1px;
       background: linear-gradient(90deg, transparent, rgba(255, 107, 0, 0.4), rgba(191, 0, 255, 0.4), transparent);
@@ -457,22 +530,26 @@
       letter-spacing: -0.02em;
     }
 
-    .header-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
+    /* 品牌名：琥珀霓虹黄，辉光带站点橙 / 紫 */
+    .brand-neon-yellow {
+      color: #ffc44d;
+      text-shadow:
+        0 0 5px rgba(255, 196, 77, 0.95),
+        0 0 12px rgba(255, 149, 0, 0.75),
+        0 0 24px rgba(255, 107, 0, 0.4),
+        0 0 36px rgba(191, 0, 255, 0.22);
     }
-
-    .header-row .lang-tabs {
-      line-height: 1;
+    .dark .brand-neon-yellow {
+      color: #ffd166;
+      text-shadow:
+        0 0 6px rgba(255, 209, 102, 1),
+        0 0 14px rgba(255, 149, 0, 0.85),
+        0 0 28px rgba(255, 107, 0, 0.5),
+        0 0 42px rgba(191, 0, 255, 0.3);
     }
 
     #theme-toggle:hover {
-      background: var(--gradient-neon);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      transform: scale(1.04);
     }
 
     .creator-credit {
@@ -519,6 +596,179 @@
       padding-bottom: max(24px, env(safe-area-inset-bottom, 0px));
     }
 
+    /* ── 站点级导航：吸顶，右侧为语言胶囊 ── */
+    .top-chrome {
+      position: sticky;
+      top: max(8px, env(safe-area-inset-top, 0px));
+      z-index: 50;
+      width: min(100%, 420px);
+      margin: 0 0 12px;
+      display: flex;
+      align-items: stretch;
+      flex-wrap: nowrap;
+      gap: 8px;
+    }
+    .top-chrome-actions {
+      display: flex;
+      align-items: stretch;
+      flex-shrink: 0;
+      gap: 8px;
+    }
+    .app-navbar {
+      flex: 1;
+      min-width: 0;
+      margin: 0;
+      border-radius: 16px;
+      padding: 5px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+    .app-navbar > * { position: relative; z-index: 1; }
+    .app-navbar .menu-item {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+    }
+
+    .lang-switcher {
+      position: relative;
+      flex-shrink: 0;
+      display: flex;
+      align-items: stretch;
+    }
+    .lang-trigger {
+      height: 100%;
+      min-width: 78px;
+      padding: 0 12px;
+      border: none;
+      border-radius: 16px;
+      color: var(--text-primary);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      line-height: 1;
+      white-space: nowrap;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+    .lang-trigger:hover {
+      transform: scale(1.015);
+    }
+    .lang-trigger > *,
+    .lang-menu > * { position: relative; z-index: 1; }
+    .lang-trigger svg {
+      width: 10px;
+      height: 10px;
+      opacity: 0.7;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+    .lang-trigger .lang-globe {
+      width: 13px;
+      height: 13px;
+      opacity: 0.85;
+    }
+    .lang-trigger[aria-expanded="true"] svg:last-of-type {
+      transform: rotate(180deg);
+    }
+    .lang-trigger[aria-expanded="false"] svg:last-of-type {
+      transform: none;
+    }
+    .lang-menu {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 6px);
+      min-width: 108px;
+      padding: 5px;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      z-index: 60;
+    }
+    .lang-menu[hidden] { display: none; }
+    .lang-option {
+      height: 34px;
+      padding: 0 10px;
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+    }
+    .lang-option:hover:not(.active) {
+      color: var(--neon-purple-deep);
+      background: rgba(191, 0, 255, 0.08);
+    }
+    .dark .lang-option:hover:not(.active) {
+      color: var(--neon-orange-light);
+      background: rgba(255, 107, 0, 0.1);
+    }
+    .lang-option.active {
+      background: var(--gradient-neon);
+      color: #ffffff;
+      box-shadow:
+        0 2px 12px rgba(255, 107, 0, 0.35),
+        0 0 20px rgba(191, 0, 255, 0.25),
+        0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    }
+
+    /* 站点 Tab：用 display 切换，DOM 不销毁，TREND 内部状态得以保留 */
+    .app-module {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+    .app-module.is-active {
+      display: flex;
+      animation: module-in 0.28s ease;
+    }
+    @keyframes module-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .placeholder-shell {
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 42px 28px 36px;
+    }
+    .placeholder-kicker {
+      margin: 0 0 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: var(--text-secondary);
+    }
+    .placeholder-title {
+      margin: 0 0 10px;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+    .placeholder-hint {
+      margin: 0;
+      max-width: 280px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
     .top-banner {
       width: min(100%, 420px);
       margin: 0 0 6px;
@@ -544,6 +794,88 @@
         0 10px 28px rgba(255, 107, 0, 0.12),
         0 1px 0 rgba(255, 255, 255, 0.08) inset;
     }
+
+    .menu-item {
+      height: 38px;
+      padding: 0 6px;
+      border: none;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      line-height: 1;
+      white-space: nowrap;
+      transition: background 0.22s cubic-bezier(0.25, 0.1, 0.25, 1), color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+    }
+    .menu-item svg {
+      width: 13px;
+      height: 13px;
+      opacity: 0.85;
+      flex-shrink: 0;
+    }
+    .menu-item:hover:not(.active) {
+      color: var(--neon-purple-deep);
+      background: rgba(191, 0, 255, 0.08);
+    }
+    .dark .menu-item:hover:not(.active) {
+      color: var(--neon-orange-light);
+      background: rgba(255, 107, 0, 0.1);
+    }
+    .menu-item.active {
+      background: var(--gradient-neon);
+      color: #ffffff;
+      box-shadow:
+        0 2px 12px rgba(255, 107, 0, 0.35),
+        0 0 20px rgba(191, 0, 255, 0.25),
+        0 1px 0 rgba(255, 255, 255, 0.3) inset;
+    }
+    .menu-item.active svg { opacity: 1; }
+    .dark .menu-item.active {
+      box-shadow:
+        0 2px 16px rgba(255, 107, 0, 0.4),
+        0 0 24px rgba(191, 0, 255, 0.35),
+        0 1px 0 rgba(255, 255, 255, 0.2) inset;
+    }
+
+    body[data-ui-lang="th"] .placeholder-shell,
+    body[data-ui-lang="th"] .app-shell,
+    body[data-ui-lang="th"] .creator-credit,
+    body[data-ui-lang="th"] .event-picker-label {
+      font-family: var(--font-th);
+    }
+    body[data-ui-lang="zh-TW"] {
+      font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', var(--font-ui);
+    }
+    .lang-option[data-lang="th"],
+    #lang-trigger-label[data-script="th"] {
+      font-family: var(--font-th);
+    }
+
+    /* 主题按钮：与语言胶囊同高的方形玻璃钮 */
+    .theme-toggle-chip {
+      flex-shrink: 0;
+      width: 44px;
+      min-width: 44px;
+      height: 100%;
+      padding: 0;
+      border: none;
+      border-radius: 16px;
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+    .theme-toggle-chip > * { position: relative; z-index: 1; }
   </style>
 </head>
 <body class="min-h-screen font-sans transition-colors duration-300">
@@ -556,6 +888,61 @@
 
   <div class="page-stack relative z-10 min-h-screen flex flex-col items-center px-5">
 
+    <!-- 吸顶导航：模块 Tab + 语言胶囊 + 主题切换 -->
+    <div class="top-chrome">
+      <nav class="app-navbar liquid-glass" id="app-navbar" role="tablist" aria-label="站点模块" data-i18n-aria="navAria">
+        <button type="button" class="menu-item active" role="tab" data-app-tab="trend" aria-controls="module-trend" aria-selected="true" aria-current="page" data-i18n="navTrend">
+          TREND
+        </button>
+        <button type="button" class="menu-item" role="tab" data-app-tab="emv" aria-controls="module-emv" aria-selected="false" data-i18n="navEmv">
+          EMV
+        </button>
+        <button type="button" class="menu-item" role="tab" data-app-tab="defense" aria-controls="module-defense" aria-selected="false" data-i18n="navDefense">
+          DEFENSE
+        </button>
+      </nav>
+
+      <div class="top-chrome-actions">
+        <div class="lang-switcher" id="lang-switcher">
+          <button
+            type="button"
+            id="lang-trigger"
+            class="lang-trigger liquid-glass"
+            aria-expanded="false"
+            aria-haspopup="listbox"
+            aria-controls="lang-menu"
+            data-i18n-aria="langSwitcherAria"
+          >
+            <svg class="lang-globe" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"/>
+              <path stroke-linecap="round" d="M3 12h18M12 3c2.5 3 3.8 6 3.8 9s-1.3 6-3.8 9c-2.5-3-3.8-6-3.8-9S9.5 6 12 3z"/>
+            </svg>
+            <span id="lang-trigger-label">简中</span>
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div id="lang-menu" class="lang-menu liquid-glass" role="listbox" hidden>
+            <button type="button" class="lang-option active" role="option" data-lang="zh-CN" aria-selected="true">简中</button>
+            <button type="button" class="lang-option" role="option" data-lang="zh-TW" aria-selected="false">繁中</button>
+            <button type="button" class="lang-option" role="option" data-lang="en" aria-selected="false">EN</button>
+            <button type="button" class="lang-option" role="option" data-lang="th" aria-selected="false">ไทย</button>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          id="theme-toggle"
+          class="theme-toggle-chip liquid-glass"
+          aria-label="切换主题"
+          data-i18n-aria="themeToggle"
+        >◐</button>
+      </div>
+    </div>
+
+    <!-- TREND：Banner + 文案预览 / 复制 / 发推 -->
+    <section id="module-trend" class="app-module is-active" data-app-tab="trend" role="tabpanel">
+
     <figure class="top-banner">
         <img
           src="/public/images/banner.jpg"
@@ -566,35 +953,48 @@
       />
     </figure>
 
-    <!-- Main glass shell -->
     <div class="app-shell liquid-glass">
 
       <!-- Header -->
       <header class="mb-1">
-        <div class="header-row mb-1">
-          <h1 class="brand-mark text-[22px] font-semibold tracking-tight brand-gradient shrink-0">TrendX4<br />EMIBONNIE</h1>
-          <nav class="lang-tabs" id="lang-tabs" role="tablist">
-            <button role="tab" data-lang="zh-CN" class="lang-tab active">简体中文</button>
-            <button role="tab" data-lang="zh-TW" class="lang-tab">繁體中文</button>
-            <button role="tab" data-lang="en" class="lang-tab">English</button>
-            <button role="tab" data-lang="th" class="lang-tab">ภาษาไทย</button>
-          </nav>
-        </div>
+        <h1 class="brand-mark text-[22px] font-semibold tracking-tight brand-neon-yellow">TrendX4<br />EMIBONNIEANY</h1>
       </header>
 
       <div class="divider"></div>
 
       <!-- Preview section -->
-      <section>
-        <div class="flex items-center gap-3 mb-3">
-          <div class="avatar-glass">
-            <svg class="w-[15px] h-[15px]" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
+      <section class="preview-section">
+        <div class="preview-toolbar flex items-center justify-between gap-3 mb-3">
+          <div class="preview-toolbar-lead flex items-center gap-3 min-w-0">
+            <div class="avatar-glass">
+              <svg class="w-[15px] h-[15px]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-[13px] font-medium" id="preview-label" data-i18n="previewLabel">文案预览</p>
+              <p class="text-[11px] text-secondary" id="char-count">0 字符</p>
+            </div>
           </div>
-          <div>
-            <p class="text-[13px] font-medium" id="preview-label">文案编辑</p>
-            <p class="text-[11px] text-secondary" id="char-count">0 字符</p>
+          <div class="event-picker" id="event-picker">
+            <span class="event-picker-label" data-i18n="boosting">Boosting</span>
+            <div class="event-select">
+              <button
+                type="button"
+                id="event-trigger"
+                class="event-trigger glass-inset"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                aria-controls="event-menu"
+                data-i18n-aria="eventSelectAria"
+              >
+                <span id="event-trigger-label">EmiBonnie</span>
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/>
+                </svg>
+              </button>
+              <div id="event-menu" class="event-menu liquid-glass" role="listbox" hidden></div>
+            </div>
           </div>
         </div>
 
@@ -605,9 +1005,11 @@
             rows="6"
             spellcheck="false"
             aria-label="Tweet editor"
+            data-i18n-placeholder="placeholder"
+            data-i18n-aria="previewAria"
             placeholder="点击「随机文案」生成内容"
           ></textarea>
-          <button id="btn-copy" class="copy-btn" type="button" aria-label="复制全部文案">
+          <button id="btn-copy" class="copy-btn" type="button" aria-label="复制" data-i18n-aria="copyAria">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="16" height="16">
               <rect x="9" y="9" width="11" height="11" rx="2" ry="2"></rect>
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -625,7 +1027,7 @@
           <svg id="icon-refresh" class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
           </svg>
-          <span id="btn-random-label">随机文案</span>
+          <span id="btn-random-label" data-i18n="randomBtn">随机文案</span>
         </button>
 
         <button
@@ -636,28 +1038,39 @@
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
           </svg>
-          <span id="btn-tweet-label">一键发推</span>
+          <span id="btn-tweet-label" data-i18n="tweetBtn">一键发推</span>
         </button>
       </div>
 
-      <!-- Footer -->
-      <footer class="app-footer text-center">
-        <button
-          id="theme-toggle"
-          class="text-[11px] text-secondary hover:opacity-80 transition-opacity"
-          aria-label="Toggle theme"
-        >◐ 切换主题</button>
-      </footer>
-
     </div>
 
+    </section>
+
+    <!-- EmvPlaceholder：后续功能预留，切换时不刷新整页 -->
+    <section id="module-emv" class="app-module" data-app-tab="emv" role="tabpanel" hidden>
+      <div class="app-shell liquid-glass placeholder-shell">
+        <p class="placeholder-kicker">EMV</p>
+        <h2 class="placeholder-title brand-gradient" data-i18n="comingSoon">Coming Soon / 正在开发中</h2>
+        <p class="placeholder-hint text-secondary" data-i18n="comingSoonHint">该模块正在搭建，请先使用 TREND。</p>
+      </div>
+    </section>
+
+    <!-- DEFENSE 占位：后续功能预留，切换时不刷新整页 -->
+    <section id="module-defense" class="app-module" data-app-tab="defense" role="tabpanel" hidden>
+      <div class="app-shell liquid-glass placeholder-shell">
+        <p class="placeholder-kicker">DEFENSE</p>
+        <h2 class="placeholder-title brand-gradient" data-i18n="comingSoon">Coming Soon / 正在开发中</h2>
+        <p class="placeholder-hint text-secondary" data-i18n="comingSoonHint">该模块正在搭建，请先使用 TREND。</p>
+      </div>
+    </section>
+
     <p id="creator-credit" class="creator-credit mt-auto">
-      <span id="created-by-before">Created by </span><a
+      <span id="created-by-before" data-i18n="contactBefore">Have questions or feedback? Contact via X </span><a
         href="https://x.com/cunicornw_td"
         target="_blank"
         rel="noopener noreferrer"
         class="creator-link"
-      >cunicornw_td</a><span id="created-by-after"></span>
+      >@cunicornw_td</a>
     </p>
   </div>
 
