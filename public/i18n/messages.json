@@ -43,6 +43,38 @@
         "progress": "{done} / {total}",
         "progressHint": "待办 {pending} · 跳过 {skipped}"
       }
+    },
+    "emv": {
+      "guideline": {
+        "title": "Quick Tips",
+        "collapseBtn": "收起",
+        "expandBtn": "展开",
+        "rules": [
+          {
+            "tag": "有效评论标准",
+            "noLabel": "避免",
+            "noText": "仅发送单个单词、简单夸奖或堆砌表情符号，此类内容会被平台算法自动判定为无意义灌水。",
+            "yesLabel": "建议",
+            "yesText": "撰写包含至少 4 至 5 个实词的完整语句，使用母语阐述具体细节，帮助系统算法建立正向语义标签。"
+          },
+          {
+            "tag": "楼中楼讨论延伸",
+            "content": "发表主评论后，在现有高赞评论下点击回复建立连续对话。单条评论形成 3 条以上追加互动可显著增加页面停留时间，提升内容推荐权重。"
+          },
+          {
+            "tag": "多图轮播完整翻阅",
+            "content": "针对多图轮播内容，请务必横划浏览至最后一页，并适度放大画面查看细节。完整的翻阅率和交互时长均属于高价值参与指标。"
+          },
+          {
+            "tag": "短视频多次完播",
+            "content": "浏览短视频（Reels）时请完整播放至少 3 遍，确保播放完成率突破 100%，以触发平台的跨圈层推流机制。"
+          },
+          {
+            "tag": "收藏与私信转推",
+            "content": "优先点击书签图标完成收藏，并使用分享功能将链接通过私信发送。在当前媒介评估体系中，收藏与私信分享的权重远高于常规点赞。"
+          }
+        ]
+      }
     }
   },
   "zh-TW": {
@@ -88,6 +120,38 @@
         "loadError": "載入失敗，請稍後再試",
         "progress": "{done} / {total}",
         "progressHint": "待辦 {pending} · 略過 {skipped}"
+      }
+    },
+    "emv": {
+      "guideline": {
+        "title": "Quick Tips",
+        "collapseBtn": "收起",
+        "expandBtn": "展開",
+        "rules": [
+          {
+            "tag": "有效留言標準",
+            "noLabel": "避免",
+            "noText": "僅傳送單一字詞、簡短讚美或連續表情圖案，此類互動容易被系統判定為無效留言。",
+            "yesLabel": "建議",
+            "yesText": "撰寫包含至少 4 至 5 個詞彙的完整語句，以常用語言描述具體細節，協助演算法建立關聯權重。"
+          },
+          {
+            "tag": "巢狀留言延伸",
+            "content": "發布主要留言後，請善用回覆功能展開連續討論。串聯達 3 則以上的互動對話能有效提高停留秒數，推動內容觸及更多用戶。"
+          },
+          {
+            "tag": "多圖貼文完整翻閱",
+            "content": "針對多圖貼文，請務必滑動至最後一頁，並透過雙指放大檢視畫面細節。完整的完讀率與操作秒數皆計入實質互動評分。"
+          },
+          {
+            "tag": "短影音重複播放",
+            "content": "觀看短影音（Reels）時請完整播放至少 3 次，確保完播率維持在 100% 以上，藉此啟動跨受眾推薦演算法。"
+          },
+          {
+            "tag": "收藏與轉發分享",
+            "content": "請優先點選書籤圖示加入收藏，並透過私訊功能分享給他人。在目前的評估體系中，收藏與私訊轉發具備最高的權重評分。"
+          }
+        ]
       }
     }
   },
@@ -135,6 +199,38 @@
         "progress": "{done} / {total}",
         "progressHint": "{pending} pending · {skipped} skipped"
       }
+    },
+    "emv": {
+      "guideline": {
+        "title": "Quick Tips",
+        "collapseBtn": "Collapse",
+        "expandBtn": "Expand",
+        "rules": [
+          {
+            "tag": "Comment Standards",
+            "noLabel": "Avoid",
+            "noText": "Single-word praises or emoji-only comments, as automated systems filter these out as low-value noise.",
+            "yesLabel": "Recommended",
+            "yesText": "Write complete sentences of 4+ substantive words detailing what caught your eye; natural phrasing aids algorithmic indexing."
+          },
+          {
+            "tag": "Threaded Discussions",
+            "content": "Engage beyond a top-level comment by replying directly to others; chains of 3+ interactions generate measurable dwell time, signaling value to discovery feeds."
+          },
+          {
+            "tag": "Carousel Completion",
+            "content": "Swipe carousels completely to the final slide and zoom in on details; end-to-end completion directly influences positive engagement scores."
+          },
+          {
+            "tag": "Reels Loop Completion",
+            "content": "Allow short-form video to loop at least 3 full cycles. Driving watch-through rate above 100% remains the primary catalyst for organic reach."
+          },
+          {
+            "tag": "Saves & Direct Shares",
+            "content": "Prioritize saving posts via the bookmark icon and distributing via Direct Message; these explicit actions hold far greater weight in media valuation than passive likes."
+          }
+        ]
+      }
     }
   },
   "th": {
@@ -180,6 +276,38 @@
         "loadError": "โหลดไม่สำเร็จ กรุณาลองอีกครั้ง",
         "progress": "{done} / {total}",
         "progressHint": "รอดำเนินการ {pending} · ข้าม {skipped}"
+      }
+    },
+    "emv": {
+      "guideline": {
+        "title": "Quick Tips",
+        "collapseBtn": "ย่อ",
+        "expandBtn": "ขยาย",
+        "rules": [
+          {
+            "tag": "มาตรฐานการคอมเมนต์",
+            "noLabel": "หลีกเลี่ยง",
+            "noText": "การพิมพ์คำสั้นๆ เพียงคำเดียวหรือส่งแค่อิโมจิ เพราะระบบจะคัดกรองออกว่าเป็นข้อความสแปม",
+            "yesLabel": "แนะนำ",
+            "yesText": "พิมพ์ประโยคสมบูรณ์ความยาว 4 คำขึ้นไปเพื่อระบุสิ่งที่ประทับใจ การใช้ภาษาที่สื่อสารจริงจะช่วยเพิ่มคะแนนในระบบ"
+          },
+          {
+            "tag": "การสนทนาต่อยอด",
+            "content": "อย่าพิมพ์เพียงคอมเมนต์เดียว ให้ช่วยตอบกลับข้อความอื่นๆ เพื่อให้เกิดการสนทนาต่อเนื่องตั้งแต่ 3 ข้อความขึ้นไป ซึ่งจะช่วยเพิ่มเวลาการอ่านหน้าจอ"
+          },
+          {
+            "tag": "การดูรูปภาพสไลด์",
+            "content": "สำหรับโพสต์รูปหลายภาพ ให้เลื่อนดูจนครบทุกภาพ และขยายดูรายละเอียดบนภาพ เพื่อสะท้อนถึงการมีส่วนร่วมที่แท้จริงในระบบ"
+          },
+          {
+            "tag": "การรับชม Reels",
+            "content": "ปล่อยให้วิดีโอ Reels เล่นวนจนจบอย่างน้อย 3 รอบ การเพิ่มอัตราการชมเกิน 100% จะช่วยกระตุ้นให้อัลกอริทึมกระจายโพสต์ไปสู่กลุ่มเป้าหมายใหม่"
+          },
+          {
+            "tag": "การบันทึกและการแชร์ข้อความ",
+            "content": "กดบันทึกโพสต์ไว้ในบุ๊กมาร์กและกดแชร์ลิงก์ทางข้อความส่วนตัว (DM) ซึ่งทั้งสองส่วนนี้ถือเป็นเกณฑ์ที่มีคะแนนสำคัญสูงสุดในระบบประเมินผล"
+          }
+        ]
       }
     }
   }
