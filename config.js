@@ -1,6 +1,10 @@
 // 每日活动配置：改 keywords / hashtags 即可，页面约 2 秒内自动热更新。
 const DEFAULT_EVENT = "EmiBonnie";
 
+// DEFENSE 线索数据源：接入 Notion 前先读本地空列表。
+const DEFENSE_DATA_URL = "/public/defense/clues.json";
+const DEFENSE_FALLBACK_URL = "/public/defense/clues.json";
+
 const EVENT_CONFIGS = {
   EmiBonnie: {
     name: "EmiBonnie",

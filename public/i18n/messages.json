@@ -2,8 +2,8 @@
   "zh-CN": {
     "navAria": "站点模块",
     "navTrend": "TREND",
-    "navEmv": "EMV",
-    "navDefense": "DEFENSE",
+    "navEmv": "EMV(Beta)",
+    "navDefense": "DEFENSE(Beta)",
     "langSwitcherAria": "切换语言",
     "previewLabel": "文案预览",
     "previewAria": "文案编辑",
@@ -19,13 +19,38 @@
     "comingSoon": "Coming Soon / 正在开发中",
     "comingSoonHint": "该模块正在搭建，请先使用 TREND。",
     "boosting": "打榜目标",
-    "eventSelectAria": "选择活动"
+    "eventSelectAria": "选择活动",
+    "defense": {
+      "tabs": {
+        "uncompleted": "未完成",
+        "completed": "已完成",
+        "skipped": "跳过",
+        "all": "全部"
+      },
+      "actions": {
+        "openPost": "打开原帖",
+        "markDone": "标记完成",
+        "skip": "跳过",
+        "undo": "撤销"
+      },
+      "labels": {
+        "author": "作者",
+        "guide": "建议指引",
+        "emptyPending": "🎉 太棒了！当前待办已全部清扫完毕",
+        "emptyList": "暂无记录",
+        "refresh": "刷新",
+        "loading": "正在加载线索…",
+        "loadError": "加载失败，请稍后重试",
+        "progress": "{done} / {total}",
+        "progressHint": "待办 {pending} · 跳过 {skipped}"
+      }
+    }
   },
   "zh-TW": {
     "navAria": "站點模組",
     "navTrend": "TREND",
-    "navEmv": "EMV",
-    "navDefense": "DEFENSE",
+    "navEmv": "EMV(Beta)",
+    "navDefense": "DEFENSE(Beta)",
     "langSwitcherAria": "切換語言",
     "previewLabel": "文案預覽",
     "previewAria": "文案編輯",
@@ -41,13 +66,38 @@
     "comingSoon": "Coming Soon / 開發中",
     "comingSoonHint": "此模組正在建置，請先使用 TREND。",
     "boosting": "打榜目標",
-    "eventSelectAria": "選擇活動"
+    "eventSelectAria": "選擇活動",
+    "defense": {
+      "tabs": {
+        "uncompleted": "未完成",
+        "completed": "已完成",
+        "skipped": "略過",
+        "all": "全部"
+      },
+      "actions": {
+        "openPost": "開啟原文",
+        "markDone": "標記完成",
+        "skip": "略過",
+        "undo": "復原"
+      },
+      "labels": {
+        "author": "作者",
+        "guide": "檢舉指引",
+        "emptyPending": "🎉 太棒了！目前的任務已全數清理完畢",
+        "emptyList": "尚無資料",
+        "refresh": "重新整理",
+        "loading": "正在載入線索…",
+        "loadError": "載入失敗，請稍後再試",
+        "progress": "{done} / {total}",
+        "progressHint": "待辦 {pending} · 略過 {skipped}"
+      }
+    }
   },
   "en": {
     "navAria": "Site modules",
     "navTrend": "TREND",
-    "navEmv": "EMV",
-    "navDefense": "DEFENSE",
+    "navEmv": "EMV(Beta)",
+    "navDefense": "DEFENSE(Beta)",
     "langSwitcherAria": "Change language",
     "previewLabel": "Edit Preview",
     "previewAria": "Copy editor",
@@ -63,13 +113,38 @@
     "comingSoon": "Coming Soon",
     "comingSoonHint": "This module is under construction. Use TREND for now.",
     "boosting": "Boosting",
-    "eventSelectAria": "Select event"
+    "eventSelectAria": "Select event",
+    "defense": {
+      "tabs": {
+        "uncompleted": "Pending",
+        "completed": "Completed",
+        "skipped": "Skipped",
+        "all": "All"
+      },
+      "actions": {
+        "openPost": "Open Post",
+        "markDone": "Mark Done",
+        "skip": "Skip",
+        "undo": "Undo"
+      },
+      "labels": {
+        "author": "Author",
+        "guide": "Guide",
+        "emptyPending": "🎉 Awesome! All tasks are cleared for now.",
+        "emptyList": "No items found",
+        "refresh": "Refresh",
+        "loading": "Loading clues…",
+        "loadError": "Failed to load. Please try again.",
+        "progress": "{done} / {total}",
+        "progressHint": "{pending} pending · {skipped} skipped"
+      }
+    }
   },
   "th": {
     "navAria": "โมดูลเว็บไซต์",
     "navTrend": "TREND",
-    "navEmv": "EMV",
-    "navDefense": "DEFENSE",
+    "navEmv": "EMV(Beta)",
+    "navDefense": "DEFENSE(Beta)",
     "langSwitcherAria": "เปลี่ยนภาษา",
     "previewLabel": "แก้ไขข้อความ",
     "previewAria": "แก้ไขข้อความ",
@@ -85,6 +160,31 @@
     "comingSoon": "Coming Soon / กำลังพัฒนา",
     "comingSoonHint": "โมดูลนี้กำลังจัดทำ ใช้ TREND ไปก่อนได้เลย",
     "boosting": "บูสต์ให้",
-    "eventSelectAria": "เลือกอีเวนต์"
+    "eventSelectAria": "เลือกอีเวนต์",
+    "defense": {
+      "tabs": {
+        "uncompleted": "รอดำเนินการ",
+        "completed": "เสร็จสิ้น",
+        "skipped": "ข้าม",
+        "all": "ทั้งหมด"
+      },
+      "actions": {
+        "openPost": "เปิดโพสต์",
+        "markDone": "ทำเครื่องหมายว่าเสร็จแล้ว",
+        "skip": "ข้าม",
+        "undo": "เลิกทำ"
+      },
+      "labels": {
+        "author": "ผู้เขียน",
+        "guide": "คำแนะนำ",
+        "emptyPending": "🎉 ยอดเยี่ยม! เคลียร์ภารกิจทั้งหมดเรียบร้อยแล้ว",
+        "emptyList": "ไม่มีรายการ",
+        "refresh": "รีเฟรช",
+        "loading": "กำลังโหลด…",
+        "loadError": "โหลดไม่สำเร็จ กรุณาลองอีกครั้ง",
+        "progress": "{done} / {total}",
+        "progressHint": "รอดำเนินการ {pending} · ข้าม {skipped}"
+      }
+    }
   }
 }
