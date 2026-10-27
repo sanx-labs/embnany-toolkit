@@ -33,7 +33,6 @@
       randomBtn: "随机文案",
       tweetBtn: "一键发推",
       reportBtn: "举报",
-      themeToggle: "切换主题",
       contactBefore: "有问题或反馈？通过 X 联系 ",
       copyAria: "复制",
       copiedAria: "已复制",
@@ -1037,18 +1036,6 @@
     }
   }
 
-  function initTheme() {
-    const saved = localStorage.getItem("trendx-theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const isDark = saved ? saved === "dark" : prefersDark;
-    document.documentElement.classList.toggle("dark", isDark);
-  }
-
-  function toggleTheme() {
-    const isDark = document.documentElement.classList.toggle("dark");
-    localStorage.setItem("trendx-theme", isDark ? "dark" : "light");
-  }
-
   btnRandom.addEventListener("click", generateRandomTweet);
   btnTweet.addEventListener("click", postTweet);
   if (btnCopy) {
@@ -1074,9 +1061,6 @@
       if (option) applyEvent(option.dataset.eventId, { closeMenu: true });
     });
   }
-  document.querySelectorAll("#theme-toggle, .theme-toggle-btn").forEach((el) => {
-    el.addEventListener("click", toggleTheme);
-  });
 
   if (langTrigger) {
     langTrigger.addEventListener("click", (e) => {
@@ -1123,7 +1107,6 @@
   });
 
   async function init() {
-    initTheme();
     try {
       await loadMessages();
     } catch (err) {
