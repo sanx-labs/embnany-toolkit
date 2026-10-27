@@ -530,15 +530,24 @@
       letter-spacing: -0.02em;
     }
 
-    /* 日间用深琥珀橙保证对比；夜间用浅霓虹黄，辉光带站点橙 / 紫 */
+    /* 日间：深橙到深紫渐变，保证浅色玻璃上可读；夜间霓虹黄保持不变 */
     .brand-neon-yellow {
-      color: #d65a00;
-      text-shadow:
-        0 0 8px rgba(255, 149, 0, 0.35),
-        0 0 16px rgba(255, 107, 0, 0.18);
+      background: linear-gradient(135deg, #c44a00 0%, #9a2f00 40%, #6b22c9 75%, #7a00c4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter:
+        drop-shadow(0 0 3px rgba(255, 149, 0, 0.55))
+        drop-shadow(0 0 8px rgba(255, 107, 0, 0.35))
+        drop-shadow(0 0 14px rgba(191, 0, 255, 0.22));
     }
     .dark .brand-neon-yellow {
+      background: none;
+      -webkit-background-clip: initial;
+      background-clip: initial;
+      -webkit-text-fill-color: #ffd166;
       color: #ffd166;
+      filter: none;
       text-shadow:
         0 0 6px rgba(255, 209, 102, 1),
         0 0 14px rgba(255, 149, 0, 0.85),
