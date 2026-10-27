@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
   <title>EmBnANY Toolkit</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,7 +19,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
@@ -41,16 +41,7 @@
       --neon-purple: #bf00ff;
       --neon-purple-deep: #7b2fff;
       --gradient-neon: linear-gradient(135deg, var(--neon-orange-light) 0%, var(--neon-orange) 40%, var(--neon-purple-deep) 70%, var(--neon-purple) 100%);
-      --glass-bg: rgba(255, 245, 240, 0.55);
-      --glass-border: rgba(255, 107, 0, 0.22);
-      --glass-highlight: rgba(255, 255, 255, 0.85);
-      --glass-shadow: rgba(191, 0, 255, 0.12);
-      --glass-inset: rgba(255, 255, 255, 0.35);
-      --text-primary: #1a0a2e;
-      --text-secondary: rgba(90, 40, 120, 0.65);
-      --blur: 60px;
-    }
-    .dark {
+      /* 永久深色主题变量 */
       --glass-bg: rgba(20, 8, 40, 0.62);
       --glass-border: rgba(191, 0, 255, 0.28);
       --glass-highlight: rgba(255, 149, 0, 0.15);
@@ -58,18 +49,22 @@
       --glass-inset: rgba(255, 255, 255, 0.06);
       --text-primary: #faf5ff;
       --text-secondary: rgba(220, 180, 255, 0.6);
+      --blur: 60px;
+      color-scheme: dark;
     }
 
     html {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
+      background: #0a0612;
     }
 
     body {
       font-family: var(--font-ui);
       line-height: 1.6;
       color: var(--text-primary);
+      background: #0a0612;
     }
 
     .app-shell,
@@ -82,8 +77,7 @@
     .app-navbar,
     .app-navbar button,
     .lang-switcher,
-    .lang-switcher button,
-    #theme-toggle {
+    .lang-switcher button {
       font-family: var(--font-ui);
     }
 
@@ -105,17 +99,14 @@
       position: fixed;
       inset: 0;
       z-index: 0;
-      background: linear-gradient(160deg, #fff0f5 0%, #f5e6ff 40%, #ffe8d6 100%);
-      overflow: hidden;
-    }
-    .dark .ambient {
       background: linear-gradient(160deg, #0a0612 0%, #120820 40%, #1a0a00 100%);
+      overflow: hidden;
     }
 
     .ambient-blob {
       position: absolute;
       border-radius: 50%;
-      filter: blur(90px);
+      filter: blur(100px);
       animation: drift 18s ease-in-out infinite;
       pointer-events: none;
     }
@@ -123,14 +114,14 @@
       top: -12%; left: -8%;
       width: 55vw; height: 55vw;
       max-width: 520px; max-height: 520px;
-      background: rgba(255, 107, 0, 0.55);
+      background: rgba(255, 107, 0, 0.45);
       animation-delay: 0s;
     }
     .ambient-blob-2 {
       bottom: -15%; right: -10%;
       width: 52vw; height: 52vw;
       max-width: 500px; max-height: 500px;
-      background: rgba(191, 0, 255, 0.5);
+      background: rgba(191, 0, 255, 0.4);
       animation-delay: -6s;
       animation-duration: 22s;
     }
@@ -138,13 +129,10 @@
       top: 35%; left: 40%;
       width: 38vw; height: 38vw;
       max-width: 360px; max-height: 360px;
-      background: rgba(255, 149, 0, 0.35);
+      background: rgba(123, 47, 255, 0.3);
       animation-delay: -12s;
       animation-duration: 20s;
     }
-    .dark .ambient-blob-1 { background: rgba(255, 107, 0, 0.45); filter: blur(100px); }
-    .dark .ambient-blob-2 { background: rgba(191, 0, 255, 0.4); filter: blur(100px); }
-    .dark .ambient-blob-3 { background: rgba(123, 47, 255, 0.3); filter: blur(100px); }
 
     /* ── Liquid glass material ── */
     .liquid-glass {
@@ -156,8 +144,8 @@
       box-shadow:
         0 0 0 0.5px var(--glass-highlight) inset,
         0 1.5px 0 var(--glass-highlight) inset,
-        0 0 40px rgba(191, 0, 255, 0.08),
-        0 0 60px rgba(255, 107, 0, 0.06),
+        0 0 50px rgba(191, 0, 255, 0.15),
+        0 0 80px rgba(255, 107, 0, 0.1),
         0 24px 48px -12px var(--glass-shadow);
     }
     .liquid-glass::before {
@@ -167,28 +155,11 @@
       border-radius: inherit;
       background: linear-gradient(
         145deg,
-        rgba(255, 149, 0, 0.18) 0%,
-        rgba(255, 107, 0, 0.06) 25%,
-        rgba(191, 0, 255, 0.08) 60%,
-        transparent 80%
-      );
-      pointer-events: none;
-    }
-    .dark .liquid-glass {
-      box-shadow:
-        0 0 0 0.5px var(--glass-highlight) inset,
-        0 1.5px 0 var(--glass-highlight) inset,
-        0 0 50px rgba(191, 0, 255, 0.15),
-        0 0 80px rgba(255, 107, 0, 0.1),
-        0 24px 48px -12px var(--glass-shadow);
-    }
-    .dark .liquid-glass::before {
-      background: linear-gradient(
-        145deg,
         rgba(255, 149, 0, 0.12) 0%,
         rgba(123, 47, 255, 0.1) 40%,
         transparent 70%
       );
+      pointer-events: none;
     }
 
     .glass-inset {
@@ -197,9 +168,6 @@
       backdrop-filter: blur(24px) saturate(160%);
       -webkit-backdrop-filter: blur(24px) saturate(160%);
       border: 1px solid var(--glass-border);
-      box-shadow: 0 1px 0 var(--glass-highlight) inset;
-    }
-    .dark .glass-inset {
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
     }
 
@@ -260,19 +228,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.06); /* lighter, more transparent */
+      background: rgba(20, 8, 40, 0.22);
       backdrop-filter: blur(6px) saturate(140%);
       -webkit-backdrop-filter: blur(6px) saturate(140%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 6px 18px rgba(10, 6, 12, 0.06), 0 1px 0 var(--glass-highlight) inset;
+      border: 1px solid rgba(191, 0, 255, 0.08);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.32);
       cursor: pointer;
       transition: transform 0.12s ease, opacity 0.12s ease, background 0.12s ease;
       z-index: 2;
       opacity: 0.88;
     }
-    .copy-btn svg { width: 14px; height: 14px; color: rgba(26,10,46,0.75); opacity: 0.95; }
-    .dark .copy-btn { background: rgba(20,8,40,0.22); border: 1px solid rgba(191,0,255,0.08); box-shadow: 0 6px 18px rgba(0,0,0,0.32); }
-    .dark .copy-btn svg { color: rgba(255,255,255,0.92); opacity: 0.95; }
+    .copy-btn svg { width: 14px; height: 14px; color: rgba(255, 255, 255, 0.92); opacity: 0.95; }
     .copy-btn:active { transform: scale(0.98); }
     .copy-btn:disabled { opacity: 0.48; cursor: not-allowed; }
 
@@ -296,17 +262,9 @@
       transition: background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
     }
     .glass-btn:hover {
-      background: rgba(255, 107, 0, 0.1);
-      border-color: rgba(255, 149, 0, 0.35);
-      transform: scale(1.015);
-      box-shadow:
-        0 1px 0 var(--glass-highlight) inset,
-        0 0 20px rgba(255, 107, 0, 0.15),
-        0 4px 16px var(--glass-shadow);
-    }
-    .dark .glass-btn:hover {
       background: rgba(191, 0, 255, 0.12);
       border-color: rgba(191, 0, 255, 0.35);
+      transform: scale(1.015);
       box-shadow:
         0 1px 0 rgba(255, 149, 0, 0.1) inset,
         0 0 24px rgba(191, 0, 255, 0.2);
@@ -327,35 +285,23 @@
       padding: 0 12px;
       line-height: 1.2;
       box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.25) inset,
-        0 4px 20px rgba(255, 107, 0, 0.4),
-        0 0 30px rgba(191, 0, 255, 0.3);
+        0 1px 0 rgba(255, 255, 255, 0.2) inset,
+        0 4px 24px rgba(255, 107, 0, 0.45),
+        0 0 40px rgba(191, 0, 255, 0.35);
       transition: box-shadow 0.22s ease, transform 0.22s ease, filter 0.22s ease;
     }
     .btn-primary:hover:not(:disabled) {
       transform: scale(1.015);
       box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.3) inset,
-        0 6px 28px rgba(255, 107, 0, 0.5),
-        0 0 40px rgba(191, 0, 255, 0.45);
+        0 1px 0 rgba(255, 255, 255, 0.25) inset,
+        0 6px 32px rgba(255, 107, 0, 0.55),
+        0 0 50px rgba(191, 0, 255, 0.5);
       filter: brightness(1.08);
     }
     .btn-primary:active:not(:disabled) { transform: scale(0.98); }
     .btn-primary:disabled {
       opacity: 0.35;
       cursor: not-allowed;
-    }
-    .dark .btn-primary {
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.2) inset,
-        0 4px 24px rgba(255, 107, 0, 0.45),
-        0 0 40px rgba(191, 0, 255, 0.35);
-    }
-    .dark .btn-primary:hover:not(:disabled) {
-      box-shadow:
-        0 1px 0 rgba(255, 255, 255, 0.25) inset,
-        0 6px 32px rgba(255, 107, 0, 0.55),
-        0 0 50px rgba(191, 0, 255, 0.5);
     }
 
     .spin-once { animation: spin-once 0.5s ease; }
@@ -376,8 +322,7 @@
         0 0 14px rgba(191, 0, 255, 0.2),
         0 1px 0 var(--glass-highlight) inset;
     }
-    .avatar-glass svg { color: var(--neon-purple-deep); }
-    .dark .avatar-glass svg { color: var(--neon-orange-light); }
+    .avatar-glass svg { color: var(--neon-orange-light); }
 
     .preview-toolbar {
       flex-wrap: wrap;
@@ -492,10 +437,6 @@
       word-break: break-word;
     }
     .event-option:hover:not(.active) {
-      color: var(--neon-purple-deep);
-      background: rgba(191, 0, 255, 0.08);
-    }
-    .dark .event-option:hover:not(.active) {
       color: var(--neon-orange-light);
       background: rgba(255, 107, 0, 0.1);
     }
@@ -530,18 +471,8 @@
       letter-spacing: -0.02em;
     }
 
-    /* 日间：深橙到深紫渐变，保证浅色玻璃上可读；夜间霓虹黄保持不变 */
+    /* 品牌标题：霓虹黄发光字 */
     .brand-neon-yellow {
-      background: linear-gradient(135deg, #c44a00 0%, #9a2f00 40%, #6b22c9 75%, #7a00c4 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter:
-        drop-shadow(0 0 3px rgba(255, 149, 0, 0.55))
-        drop-shadow(0 0 8px rgba(255, 107, 0, 0.35))
-        drop-shadow(0 0 14px rgba(191, 0, 255, 0.22));
-    }
-    .dark .brand-neon-yellow {
       background: none;
       -webkit-background-clip: initial;
       background-clip: initial;
@@ -553,10 +484,6 @@
         0 0 14px rgba(255, 149, 0, 0.85),
         0 0 28px rgba(255, 107, 0, 0.5),
         0 0 42px rgba(191, 0, 255, 0.3);
-    }
-
-    #theme-toggle:hover {
-      transform: scale(1.04);
     }
 
     .creator-credit {
@@ -613,23 +540,17 @@
       display: flex;
       align-items: stretch;
       flex-wrap: nowrap;
-      gap: 8px;
-    }
-    .top-chrome-actions {
-      display: flex;
-      align-items: stretch;
-      flex-shrink: 0;
-      gap: 8px;
+      gap: 10px;
     }
     .app-navbar {
       flex: 1;
       min-width: 0;
       margin: 0;
       border-radius: 16px;
-      padding: 5px;
+      padding: 5px 6px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
+      gap: 5px;
     }
     .app-navbar > * { position: relative; z-index: 1; }
     .app-navbar .menu-item {
@@ -646,8 +567,9 @@
     }
     .lang-trigger {
       height: 100%;
-      min-width: 78px;
-      padding: 0 12px;
+      min-height: 48px;
+      min-width: 88px;
+      padding: 0 14px;
       border: none;
       border-radius: 16px;
       color: var(--text-primary);
@@ -658,7 +580,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 6px;
       line-height: 1;
       white-space: nowrap;
       transition: transform 0.22s ease, box-shadow 0.22s ease;
@@ -715,10 +637,6 @@
       transition: background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
     }
     .lang-option:hover:not(.active) {
-      color: var(--neon-purple-deep);
-      background: rgba(191, 0, 255, 0.08);
-    }
-    .dark .lang-option:hover:not(.active) {
       color: var(--neon-orange-light);
       background: rgba(255, 107, 0, 0.1);
     }
@@ -789,14 +707,7 @@
       object-fit: cover;
       object-position: center;
       border-radius: 18px;
-      border: 1px solid rgba(255, 107, 0, 0.14);
-      box-shadow:
-        0 10px 28px rgba(191, 0, 255, 0.1),
-        0 1px 0 rgba(255, 255, 255, 0.65) inset;
-    }
-
-    .dark .top-banner img {
-      border-color: rgba(191, 0, 255, 0.22);
+      border: 1px solid rgba(191, 0, 255, 0.22);
       box-shadow:
         0 10px 28px rgba(255, 107, 0, 0.12),
         0 1px 0 rgba(255, 255, 255, 0.08) inset;
@@ -827,10 +738,6 @@
       flex-shrink: 0;
     }
     .menu-item:hover:not(.active) {
-      color: var(--neon-purple-deep);
-      background: rgba(191, 0, 255, 0.08);
-    }
-    .dark .menu-item:hover:not(.active) {
       color: var(--neon-orange-light);
       background: rgba(255, 107, 0, 0.1);
     }
@@ -838,17 +745,11 @@
       background: var(--gradient-neon);
       color: #ffffff;
       box-shadow:
-        0 2px 12px rgba(255, 107, 0, 0.35),
-        0 0 20px rgba(191, 0, 255, 0.25),
-        0 1px 0 rgba(255, 255, 255, 0.3) inset;
-    }
-    .menu-item.active svg { opacity: 1; }
-    .dark .menu-item.active {
-      box-shadow:
         0 2px 16px rgba(255, 107, 0, 0.4),
         0 0 24px rgba(191, 0, 255, 0.35),
         0 1px 0 rgba(255, 255, 255, 0.2) inset;
     }
+    .menu-item.active svg { opacity: 1; }
 
     /* ── DEFENSE：待办清单 ── */
     .defense-shell {
@@ -913,10 +814,6 @@
       transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
     .defense-tab:hover:not(.active) {
-      color: var(--neon-purple-deep);
-      background: rgba(191, 0, 255, 0.08);
-    }
-    .dark .defense-tab:hover:not(.active) {
       color: var(--neon-orange-light);
       background: rgba(255, 107, 0, 0.1);
     }
@@ -942,14 +839,11 @@
       border-radius: 18px;
       padding: 14px;
       border: 1px solid var(--glass-border);
-      background: rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.04);
       backdrop-filter: blur(18px) saturate(160%);
       -webkit-backdrop-filter: blur(18px) saturate(160%);
       box-shadow: 0 1px 0 var(--glass-highlight) inset;
       transition: opacity 0.2s ease;
-    }
-    .dark .defense-card {
-      background: rgba(255, 255, 255, 0.04);
     }
     .defense-card.is-done,
     .defense-card.is-skipped {
@@ -1024,31 +918,16 @@
       font-size: 11px;
       font-weight: 550;
       line-height: 1.2;
-      color: var(--neon-purple-deep);
-      background: rgba(191, 0, 255, 0.1);
-      border: 1px solid rgba(191, 0, 255, 0.18);
-    }
-    .dark .defense-badge {
       color: #ffd6a8;
       background: rgba(255, 149, 0, 0.12);
-      border-color: rgba(255, 149, 0, 0.22);
+      border: 1px solid rgba(255, 149, 0, 0.22);
     }
     .defense-badge.is-score-hi {
-      color: #b91c1c;
-      background: rgba(185, 28, 28, 0.1);
-      border-color: rgba(185, 28, 28, 0.2);
-    }
-    .dark .defense-badge.is-score-hi {
       color: #fecaca;
       background: rgba(248, 113, 113, 0.16);
       border-color: rgba(248, 113, 113, 0.28);
     }
     .defense-badge.is-score-mid {
-      color: #b45309;
-      background: rgba(180, 83, 9, 0.1);
-      border-color: rgba(180, 83, 9, 0.2);
-    }
-    .dark .defense-badge.is-score-mid {
       color: #fde68a;
       background: rgba(245, 158, 11, 0.16);
       border-color: rgba(245, 158, 11, 0.26);
@@ -1059,11 +938,6 @@
       border-color: var(--glass-border);
     }
     .defense-badge.is-status-done {
-      color: #15803d;
-      background: rgba(21, 128, 61, 0.1);
-      border-color: rgba(21, 128, 61, 0.2);
-    }
-    .dark .defense-badge.is-status-done {
       color: #86efac;
       background: rgba(34, 197, 94, 0.14);
       border-color: rgba(34, 197, 94, 0.26);
@@ -1124,10 +998,7 @@
     .defense-guide {
       margin-top: 12px;
       padding-top: 12px;
-      border-top: 1px solid rgba(191, 0, 255, 0.12);
-    }
-    .dark .defense-guide {
-      border-top-color: rgba(255, 149, 0, 0.14);
+      border-top: 1px solid rgba(255, 149, 0, 0.14);
     }
     .defense-guide[hidden] { display: none; }
     .defense-guide-title {
@@ -1160,11 +1031,7 @@
       text-align: center;
       padding: 28px 12px;
       border-radius: 18px;
-      border: 1px dashed rgba(191, 0, 255, 0.22);
-      background: rgba(255, 255, 255, 0.18);
-    }
-    .dark .defense-empty {
-      border-color: rgba(255, 149, 0, 0.22);
+      border: 1px dashed rgba(255, 149, 0, 0.22);
       background: rgba(255, 255, 255, 0.03);
     }
     .defense-empty[hidden] { display: none; }
@@ -1196,29 +1063,9 @@
     #lang-trigger-label[data-script="th"] {
       font-family: var(--font-th);
     }
-
-    /* 主题按钮：与语言胶囊同高的方形玻璃钮 */
-    .theme-toggle-chip {
-      flex-shrink: 0;
-      width: 44px;
-      min-width: 44px;
-      height: 100%;
-      padding: 0;
-      border: none;
-      border-radius: 16px;
-      color: var(--text-primary);
-      font-size: 16px;
-      line-height: 1;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.22s ease, box-shadow 0.22s ease;
-    }
-    .theme-toggle-chip > * { position: relative; z-index: 1; }
   </style>
 </head>
-<body class="min-h-screen font-sans transition-colors duration-300">
+<body class="min-h-screen font-sans">
 
   <div class="ambient" aria-hidden="true">
     <div class="ambient-blob ambient-blob-1"></div>
@@ -1228,7 +1075,7 @@
 
   <div class="page-stack relative z-10 min-h-screen flex flex-col items-center px-5">
 
-    <!-- 吸顶导航：模块 Tab + 语言胶囊 + 主题切换 -->
+    <!-- 吸顶导航：模块 Tab + 语言切换 -->
     <div class="top-chrome">
       <nav class="app-navbar liquid-glass" id="app-navbar" role="tablist" aria-label="站点模块" data-i18n-aria="navAria">
         <button type="button" class="menu-item active" role="tab" data-app-tab="trend" aria-controls="module-trend" aria-selected="true" aria-current="page" data-i18n="navTrend">
@@ -1242,41 +1089,31 @@
         </button>
       </nav>
 
-      <div class="top-chrome-actions">
-        <div class="lang-switcher" id="lang-switcher">
-          <button
-            type="button"
-            id="lang-trigger"
-            class="lang-trigger liquid-glass"
-            aria-expanded="false"
-            aria-haspopup="listbox"
-            aria-controls="lang-menu"
-            data-i18n-aria="langSwitcherAria"
-          >
-            <svg class="lang-globe" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="9"/>
-              <path stroke-linecap="round" d="M3 12h18M12 3c2.5 3 3.8 6 3.8 9s-1.3 6-3.8 9c-2.5-3-3.8-6-3.8-9S9.5 6 12 3z"/>
-            </svg>
-            <span id="lang-trigger-label">简中</span>
-            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/>
-            </svg>
-          </button>
-          <div id="lang-menu" class="lang-menu liquid-glass" role="listbox" hidden>
-            <button type="button" class="lang-option active" role="option" data-lang="zh-CN" aria-selected="true">简中</button>
-            <button type="button" class="lang-option" role="option" data-lang="zh-TW" aria-selected="false">繁中</button>
-            <button type="button" class="lang-option" role="option" data-lang="en" aria-selected="false">EN</button>
-            <button type="button" class="lang-option" role="option" data-lang="th" aria-selected="false">ไทย</button>
-          </div>
-        </div>
-
+      <div class="lang-switcher" id="lang-switcher">
         <button
           type="button"
-          id="theme-toggle"
-          class="theme-toggle-chip liquid-glass"
-          aria-label="切换主题"
-          data-i18n-aria="themeToggle"
-        >◐</button>
+          id="lang-trigger"
+          class="lang-trigger liquid-glass"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          aria-controls="lang-menu"
+          data-i18n-aria="langSwitcherAria"
+        >
+          <svg class="lang-globe" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/>
+            <path stroke-linecap="round" d="M3 12h18M12 3c2.5 3 3.8 6 3.8 9s-1.3 6-3.8 9c-2.5-3-3.8-6-3.8-9S9.5 6 12 3z"/>
+          </svg>
+          <span id="lang-trigger-label">简中</span>
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+        <div id="lang-menu" class="lang-menu liquid-glass" role="listbox" hidden>
+          <button type="button" class="lang-option active" role="option" data-lang="zh-CN" aria-selected="true">简中</button>
+          <button type="button" class="lang-option" role="option" data-lang="zh-TW" aria-selected="false">繁中</button>
+          <button type="button" class="lang-option" role="option" data-lang="en" aria-selected="false">EN</button>
+          <button type="button" class="lang-option" role="option" data-lang="th" aria-selected="false">ไทย</button>
+        </div>
       </div>
     </div>
 
@@ -1297,7 +1134,7 @@
 
       <!-- Header -->
       <header class="mb-1">
-        <h1 class="brand-mark text-[22px] font-semibold tracking-tight brand-neon-yellow">TrendX4<br />EMIBONNIEANY</h1>
+        <h1 class="brand-mark text-[22px] font-semibold tracking-tight brand-neon-yellow">EBA FOREVER</h1>
       </header>
 
       <div class="divider"></div>
@@ -1399,7 +1236,7 @@
     <section id="module-defense" class="app-module" data-app-tab="defense" role="tabpanel" hidden>
       <div class="app-shell liquid-glass defense-shell">
         <header class="defense-header mb-1">
-          <h1 class="brand-mark text-[22px] font-semibold tracking-tight brand-neon-yellow">DEFENSE</h1>
+          <h1 class="brand-mark text-[22px] font-semibold tracking-tight brand-neon-yellow">PROTECT EBA</h1>
         </header>
 
         <div class="divider"></div>
