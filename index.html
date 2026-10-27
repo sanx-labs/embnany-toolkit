@@ -665,33 +665,192 @@
       to { opacity: 1; transform: none; }
     }
 
-    .placeholder-shell {
-      min-height: 320px;
+    /* ── EMV：第一阶段框架 + Guideline 公告栏 ── */
+    .emv-shell {
+      padding-top: 22px;
+    }
+    .emv-header {
+      margin-bottom: 14px;
+    }
+    .emv-guideline {
+      margin: 0;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      box-shadow:
+        0 1px 0 rgba(255, 149, 0, 0.08) inset,
+        0 12px 28px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+    .emv-guideline-toggle {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: none;
+      background: transparent;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+      touch-action: manipulation;
+    }
+    .emv-guideline-toggle:hover {
+      background: rgba(255, 149, 0, 0.05);
+    }
+    .emv-guideline-heading {
+      flex: 1;
+      min-width: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .emv-guideline-icon {
+      flex-shrink: 0;
+      width: 1.15em;
+      font-size: 14px;
+      line-height: 1;
+      text-align: center;
+    }
+    .emv-guideline-title {
+      min-width: 0;
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      word-break: break-word;
+    }
+    .emv-guideline-action {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 550;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .emv-guideline-chevron {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.2s ease;
+      transform: rotate(-90deg);
+    }
+    .emv-guideline.is-open .emv-guideline-chevron {
+      transform: rotate(0deg);
+    }
+    .emv-guideline-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition:
+        grid-template-rows 0.28s ease,
+        opacity 0.2s ease;
+    }
+    .emv-guideline.is-open .emv-guideline-panel {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+    .emv-guideline-panel-inner {
+      overflow: hidden;
+      min-height: 0;
+    }
+    .emv-guideline-rules {
+      list-style: none;
+      margin: 0;
+      padding: 0 14px 16px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 42px 28px 36px;
+      gap: 10px;
     }
-    .placeholder-kicker {
-      margin: 0 0 12px;
+    .emv-rule {
+      margin: 0;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .emv-rule-tag {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      min-height: 22px;
+      padding: 2px 8px;
+      border-radius: 6px;
       font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.22em;
-      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+      color: rgba(255, 230, 200, 0.92);
+      background: rgba(255, 149, 0, 0.1);
+      border: 1px solid rgba(255, 149, 0, 0.2);
+      word-break: break-word;
     }
-    .placeholder-title {
-      margin: 0 0 10px;
-      font-size: 20px;
-      font-weight: 600;
-      line-height: 1.35;
-    }
-    .placeholder-hint {
+    .emv-rule-content {
       margin: 0;
-      max-width: 280px;
-      font-size: 13px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 450;
       line-height: 1.7;
+      word-break: break-word;
+    }
+    .emv-rule-pair {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(20, 8, 40, 0.28);
+    }
+    .emv-rule-pair.is-avoid {
+      border-color: rgba(248, 113, 113, 0.18);
+      background: rgba(248, 113, 113, 0.06);
+    }
+    .emv-rule-pair.is-yes {
+      border-color: rgba(52, 211, 153, 0.18);
+      background: rgba(52, 211, 153, 0.06);
+    }
+    .emv-rule-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.72);
+    }
+    .emv-rule-pair.is-avoid .emv-rule-label { color: #fecaca; }
+    .emv-rule-pair.is-yes .emv-rule-label { color: #a7f3d0; }
+    .emv-rule-pair p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 450;
+      line-height: 1.65;
+      word-break: break-word;
+    }
+    .emv-body {
+      min-height: 120px;
+      border-radius: 16px;
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    body[data-ui-lang="th"] .emv-guideline-title,
+    body[data-ui-lang="th"] .emv-guideline-action,
+    body[data-ui-lang="th"] .emv-rule-tag,
+    body[data-ui-lang="th"] .emv-rule-content,
+    body[data-ui-lang="th"] .emv-rule-pair p {
+      font-family: var(--font-th);
+      letter-spacing: 0;
     }
 
     .top-banner {
@@ -1044,11 +1203,11 @@
       max-width: 280px;
     }
 
-    body[data-ui-lang="th"] .placeholder-shell,
     body[data-ui-lang="th"] .app-shell,
     body[data-ui-lang="th"] .creator-credit,
     body[data-ui-lang="th"] .event-picker-label,
-    body[data-ui-lang="th"] .defense-shell {
+    body[data-ui-lang="th"] .defense-shell,
+    body[data-ui-lang="th"] .emv-shell {
       font-family: var(--font-th);
     }
     body[data-ui-lang="th"] .defense-tab,
@@ -1223,12 +1382,39 @@
 
     </section>
 
-    <!-- EmvPlaceholder：后续功能预留，切换时不刷新整页 -->
+    <!-- EMV：第一阶段框架（Guideline + 后续任务区） -->
     <section id="module-emv" class="app-module" data-app-tab="emv" role="tabpanel" hidden>
-      <div class="app-shell liquid-glass placeholder-shell">
-        <p class="placeholder-kicker">EMV</p>
-        <h2 class="placeholder-title brand-gradient" data-i18n="comingSoon">Coming Soon / 正在开发中</h2>
-        <p class="placeholder-hint text-secondary" data-i18n="comingSoonHint">该模块正在搭建，请先使用 TREND。</p>
+      <div class="app-shell liquid-glass emv-shell">
+        <header class="emv-header">
+          <section class="emv-guideline is-open" id="emv-guideline" aria-labelledby="emv-guideline-title">
+            <button
+              type="button"
+              id="emv-guideline-toggle"
+              class="emv-guideline-toggle"
+              aria-expanded="true"
+              aria-controls="emv-guideline-panel"
+            >
+              <span class="emv-guideline-heading">
+                <span class="emv-guideline-icon" aria-hidden="true">💡</span>
+                <span id="emv-guideline-title" class="emv-guideline-title" data-i18n="emv.guideline.title">Quick Tips</span>
+              </span>
+              <span class="emv-guideline-action">
+                <span id="emv-guideline-action-text" data-i18n="emv.guideline.collapseBtn">收起</span>
+                <svg class="emv-guideline-chevron" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/>
+                </svg>
+              </span>
+            </button>
+            <div class="emv-guideline-panel" id="emv-guideline-panel">
+              <div class="emv-guideline-panel-inner">
+                <ul class="emv-guideline-rules" id="emv-guideline-rules"></ul>
+              </div>
+            </div>
+          </section>
+        </header>
+
+        <!-- 后续待办 / 帖子聚合插槽 -->
+        <div class="emv-body" id="emv-body" aria-hidden="true"></div>
       </div>
     </section>
 
