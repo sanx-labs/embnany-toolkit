@@ -23,8 +23,8 @@
     "zh-CN": {
       navAria: "站点模块",
       navTrend: "TREND",
-      navEmv: "EMV",
-      navDefense: "DEFENSE",
+      navEmv: "EMV(Beta)",
+      navDefense: "DEFENSE(Beta)",
       langSwitcherAria: "切换语言",
       previewLabel: "文案预览",
       previewAria: "文案编辑",
@@ -41,8 +41,42 @@
       comingSoonHint: "该模块正在搭建，请先使用 TREND。",
       boosting: "打榜目标",
       eventSelectAria: "选择活动",
+      defense: {
+        tabs: {
+          uncompleted: "未完成",
+          completed: "已完成",
+          skipped: "跳过",
+          all: "全部",
+        },
+        actions: {
+          openPost: "打开原帖",
+          markDone: "标记完成",
+          skip: "跳过",
+          undo: "撤销",
+        },
+        labels: {
+          author: "作者",
+          guide: "建议指引",
+          emptyPending: "🎉 太棒了！当前待办已全部清扫完毕",
+          emptyList: "暂无记录",
+          refresh: "刷新",
+          loading: "正在加载线索…",
+          loadError: "加载失败，请稍后重试",
+          progress: "{done} / {total}",
+          progressHint: "待办 {pending} · 跳过 {skipped}",
+        },
+      },
     },
   };
+
+  // DEFENSE 线索源：由 config.js 覆盖；接入 Notion 前先读本地空列表
+  const DEFENSE_DEFAULT_DATA_URL = "/public/defense/clues.json";
+  const DEFENSE_DEFAULT_FALLBACK_URL = "/public/defense/clues.json";
+  const DEFENSE_DONE_KEY = "defense-done-v1";
+  const DEFENSE_SKIP_KEY = "defense-skip-v1";
+  const DEFENSE_OPEN_KEY = "defense-open-v1";
+  const DEFENSE_TAB_KEY = "defense-tab-v1";
+  const DEFENSE_TABS = ["uncompleted", "completed", "skipped", "all"];
 
   const EVENT_IDS = ["EmiBonnie", "Emi", "Bonnie", "Any", "EmiBonnieAny", "EmiAny", "BonnieAny"];
   // 旧下拉 id 映射到 config.js 里的正式键名
@@ -107,6 +141,17 @@
   let messages = {};
   let currentLang = "zh-CN";
   let currentAppTab = "trend";
+
+  let defenseDataUrl = DEFENSE_DEFAULT_DATA_URL;
+  let defenseFallbackUrl = DEFENSE_DEFAULT_FALLBACK_URL;
+  let defenseClues = [];
+  let defenseLoaded = false;
+  let defenseLoading = false;
+  let defenseLoadError = false;
+  let defenseView = "uncompleted";
+  let defenseDone = {};
+  let defenseSkip = {};
+  let defenseOpen = {};
 
   const $ = (id) => document.getElementById(id);
 
@@ -179,16 +224,61 @@
     updateCharCount();
   }
 
+  /** 支持扁平 key，也支持点路径读取嵌套字典（如 defense.tabs.uncompleted）。 */
+  function lookupMessage(dict, key) {
+    if (!dict || key == null) return undefined;
+    if (Object.prototype.hasOwnProperty.call(dict, key)) {
+      const direct = dict[key];
+      if (typeof direct === "string") return direct;
+    }
+    const parts = String(key).split(".");
+    let cur = dict;
+    for (const part of parts) {
+      if (cur == null || typeof cur !== "object") return undefined;
+      cur = cur[part];
+    }
+    return typeof cur === "string" ? cur : undefined;
+  }
+
   function t(key, params) {
     const dict = messages[currentLang] || messages["zh-CN"] || {};
     const fallback = messages["zh-CN"] || {};
-    let value = dict[key] ?? fallback[key] ?? key;
+    let value =
+      lookupMessage(dict, key) ??
+      lookupMessage(fallback, key) ??
+      key;
     if (params && typeof params === "object") {
       value = String(value).replace(/\{(\w+)\}/g, (_, name) =>
         params[name] == null ? "" : String(params[name])
       );
     }
     return value;
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function readJsonMap(storageKey) {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      const parsed = raw ? JSON.parse(raw) : {};
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (err) {
+      return {};
+    }
+  }
+
+  function writeJsonMap(storageKey, value) {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(value));
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   /** 浏览器语言降级：zh-TW / zh-Hant → 繁中，其余 zh → 简中，th / en 精确前缀匹配。 */
@@ -266,6 +356,8 @@
 
     syncLangSwitcher();
     syncPreviewState();
+    // 列表文案由 JS 渲染，语言切换后需要重绘
+    if ($("defense-list")) renderDefenseList();
   }
 
   function switchLang(lang) {
@@ -348,9 +440,18 @@
     });
     const defaultMatch = text.match(/DEFAULT_EVENT\s*=\s*"(\w+)"/);
     const parsedDefault = defaultMatch ? normalizeEventId(defaultMatch[1]) : "EmiBonnie";
+    // DEFENSE 数据源也从 config.js 热更新，改 URL 无需重新部署前端逻辑
+    const defenseDataMatch = text.match(/DEFENSE_DATA_URL\s*=\s*"((?:\\.|[^"\\])*)"/);
+    const defenseFallbackMatch = text.match(/DEFENSE_FALLBACK_URL\s*=\s*"((?:\\.|[^"\\])*)"/);
     return {
       events,
       defaultEvent: parsedDefault,
+      defenseDataUrl: defenseDataMatch
+        ? unescapeConfigValue(defenseDataMatch[1])
+        : DEFENSE_DEFAULT_DATA_URL,
+      defenseFallbackUrl: defenseFallbackMatch
+        ? unescapeConfigValue(defenseFallbackMatch[1])
+        : DEFENSE_DEFAULT_FALLBACK_URL,
     };
   }
 
@@ -439,10 +540,18 @@
       const next = await loadConfig();
       const changed = eventSignature(next.events) !== eventSignature(EVENT_CONFIGS)
         || next.defaultEvent !== defaultEventId;
+      const defenseUrlChanged =
+        next.defenseDataUrl !== defenseDataUrl
+        || next.defenseFallbackUrl !== defenseFallbackUrl;
       EVENT_CONFIGS = next.events;
       defaultEventId = next.defaultEvent;
+      defenseDataUrl = next.defenseDataUrl || DEFENSE_DEFAULT_DATA_URL;
+      defenseFallbackUrl = next.defenseFallbackUrl || DEFENSE_DEFAULT_FALLBACK_URL;
       applyEvent(currentEventId, { rebuild: changed, closeMenu: false });
-      return changed;
+      if (defenseUrlChanged && (defenseLoaded || currentAppTab === "defense")) {
+        await loadDefenseClues({ force: true });
+      }
+      return changed || defenseUrlChanged;
     } catch (err) {
       console.error(err);
       return false;
@@ -551,23 +660,14 @@
     }, 1400);
   }
 
-  /**
-   * 解析地址栏 hash。旧地址 #antis / #trendx / #tags / #drafts 会分别落到新模块。
-   */
+  /** 解析地址栏 hash，合法值为 trend / emv / defense。 */
   function resolveRoute() {
     const hash = location.hash.replace("#", "");
     const savedApp = localStorage.getItem(APP_TAB_KEY);
-    const normalized =
-      hash === "antis" ? "defense"
-        : hash === "trendx" || hash === "tags" || hash === "drafts" ? "trend"
-        : hash;
-    const saved =
-      savedApp === "antis" ? "defense"
-        : APP_TABS.includes(savedApp) ? savedApp
-        : "trend";
+    const saved = APP_TABS.includes(savedApp) ? savedApp : "trend";
 
-    if (APP_TABS.includes(normalized)) {
-      return { appTab: normalized, writeHash: normalized !== hash };
+    if (APP_TABS.includes(hash)) {
+      return { appTab: hash, writeHash: false };
     }
 
     return { appTab: saved, writeHash: true };
@@ -599,6 +699,342 @@
 
     localStorage.setItem(APP_TAB_KEY, tab);
     if (writeHash) syncHash();
+
+    // 进入 DEFENSE 时再懒加载线索，避免拖慢 TREND 首屏
+    if (tab === "defense") {
+      ensureDefenseReady();
+    }
+  }
+
+  /* ================= DEFENSE：待办清单 ================= */
+
+  function defenseStateOf(clue) {
+    const id = clue && clue.id;
+    if (!id) return "uncompleted";
+    if (defenseDone[id]) return "completed";
+    if (defenseSkip[id]) return "skipped";
+    return "uncompleted";
+  }
+
+  function loadDefenseLocalState() {
+    defenseDone = readJsonMap(DEFENSE_DONE_KEY);
+    defenseSkip = readJsonMap(DEFENSE_SKIP_KEY);
+    defenseOpen = readJsonMap(DEFENSE_OPEN_KEY);
+    const savedTab = localStorage.getItem(DEFENSE_TAB_KEY);
+    defenseView = DEFENSE_TABS.includes(savedTab) ? savedTab : "uncompleted";
+  }
+
+  function syncDefenseTabs() {
+    document.querySelectorAll("#defense-tabs [data-defense-tab]").forEach((btn) => {
+      const active = btn.dataset.defenseTab === defenseView;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+    });
+  }
+
+  function setDefenseView(view) {
+    if (!DEFENSE_TABS.includes(view)) view = "uncompleted";
+    defenseView = view;
+    localStorage.setItem(DEFENSE_TAB_KEY, view);
+    syncDefenseTabs();
+    renderDefenseList();
+  }
+
+  function getFilteredDefenseClues() {
+    // 新抓到的排在上面：按 fetch_date 倒序，同日再按编号倒序
+    const sorted = defenseClues.slice().sort((a, b) => {
+      const byFetch = String(b.fetch_date || "").localeCompare(String(a.fetch_date || ""));
+      if (byFetch) return byFetch;
+      return String(b.no || "").localeCompare(String(a.no || ""));
+    });
+
+    if (defenseView === "all") return sorted;
+    return sorted.filter((clue) => defenseStateOf(clue) === defenseView);
+  }
+
+  function scoreBadgeClass(score) {
+    const n = Number(score);
+    if (!Number.isFinite(n)) return "";
+    if (n >= 80) return " is-score-hi";
+    if (n >= 50) return " is-score-mid";
+    return "";
+  }
+
+  function renderDefenseEmpty(visibleCount) {
+    const emptyEl = $("defense-empty");
+    const emptyText = $("defense-empty-text");
+    if (!emptyEl || !emptyText) return;
+
+    // 首次加载未完成时显示 loading；已加载过的空列表要显示空态，不能一直转圈
+    if (!defenseLoaded) {
+      emptyEl.hidden = false;
+      emptyText.textContent = defenseLoadError
+        ? t("defense.labels.loadError")
+        : t("defense.labels.loading");
+      return;
+    }
+
+    if (visibleCount > 0) {
+      emptyEl.hidden = true;
+      emptyText.textContent = "";
+      return;
+    }
+
+    emptyEl.hidden = false;
+    emptyText.textContent =
+      defenseView === "uncompleted"
+        ? t("defense.labels.emptyPending")
+        : t("defense.labels.emptyList");
+  }
+
+  function renderDefenseCard(clue) {
+    const state = defenseStateOf(clue);
+    const opened = Boolean(defenseOpen[clue.id]);
+    const timeText = String(clue.post_time || clue.fetch_date || "").slice(0, 16);
+    const authorLabel = t("defense.labels.author");
+    const reasons = Array.isArray(clue.reasons) ? clue.reasons : [];
+    const keywords = Array.isArray(clue.kws) ? clue.kws.filter(Boolean).slice(0, 4) : [];
+    const title = clue.title || clue.no || clue.id || "";
+
+    const card = document.createElement("article");
+    card.className =
+      "defense-card" +
+      (state === "completed" ? " is-done" : "") +
+      (state === "skipped" ? " is-skipped" : "");
+    card.dataset.clueId = clue.id;
+
+    const badges = [];
+    if (state === "completed") {
+      badges.push(
+        `<span class="defense-badge is-status is-status-done">${escapeHtml(t("defense.tabs.completed"))}</span>`
+      );
+    } else if (state === "skipped") {
+      badges.push(
+        `<span class="defense-badge is-status">${escapeHtml(t("defense.tabs.skipped"))}</span>`
+      );
+    }
+    if (clue.hit_zone) {
+      badges.push(`<span class="defense-badge">${escapeHtml(clue.hit_zone)}</span>`);
+    }
+    if (clue.score != null && clue.score !== "") {
+      badges.push(
+        `<span class="defense-badge${scoreBadgeClass(clue.score)}">${escapeHtml(String(clue.score))}</span>`
+      );
+    }
+    keywords.forEach((kw) => {
+      badges.push(`<span class="defense-badge">${escapeHtml(kw)}</span>`);
+    });
+
+    const actionButtons =
+      state === "uncompleted"
+        ? `
+          <button type="button" class="defense-action is-primary" data-defense-action="open">${escapeHtml(t("defense.actions.openPost"))}</button>
+          <div class="defense-actions-row">
+            <button type="button" class="defense-action" data-defense-action="done">${escapeHtml(t("defense.actions.markDone"))}</button>
+            <button type="button" class="defense-action" data-defense-action="skip">${escapeHtml(t("defense.actions.skip"))}</button>
+          </div>
+          <button type="button" class="defense-action" data-defense-action="guide">${escapeHtml(t("defense.labels.guide"))}</button>
+        `
+        : `
+          <button type="button" class="defense-action is-primary" data-defense-action="open">${escapeHtml(t("defense.actions.openPost"))}</button>
+          <div class="defense-actions-row">
+            <button type="button" class="defense-action" data-defense-action="undo">${escapeHtml(t("defense.actions.undo"))}</button>
+            <button type="button" class="defense-action" data-defense-action="guide">${escapeHtml(t("defense.labels.guide"))}</button>
+          </div>
+        `;
+
+    const tickAction = state === "uncompleted" ? "done" : "undo";
+    const tickLabel =
+      state === "completed" || state === "skipped"
+        ? t("defense.actions.undo")
+        : t("defense.actions.markDone");
+
+    card.innerHTML = `
+      <div class="defense-card-top">
+        <button type="button" class="defense-tick${state === "completed" ? " is-checked" : ""}" data-defense-action="${tickAction}" aria-pressed="${state === "completed" ? "true" : "false"}" aria-label="${escapeHtml(tickLabel)}">✓</button>
+        <div class="defense-card-body">
+          ${clue.no ? `<p class="defense-card-no">${escapeHtml(clue.no)}</p>` : ""}
+          <h3 class="defense-card-title">${escapeHtml(title)}</h3>
+          ${badges.length ? `<div class="defense-badges">${badges.join("")}</div>` : ""}
+          <p class="defense-meta">${escapeHtml(timeText)}${timeText ? " · " : ""}${escapeHtml(authorLabel)} ${escapeHtml(clue.author || "-")}</p>
+          <div class="defense-actions">${actionButtons}</div>
+          <div class="defense-guide" ${opened ? "" : "hidden"}>
+            <p class="defense-guide-title">${escapeHtml(t("defense.labels.guide"))}</p>
+            ${clue.snippet ? `<p class="defense-guide-snip">${escapeHtml(clue.snippet)}</p>` : ""}
+            ${
+              reasons.length
+                ? `<ul class="defense-guide-reasons">${reasons
+                    .map((reason) => `<li>${escapeHtml(reason)}</li>`)
+                    .join("")}</ul>`
+                : ""
+            }
+          </div>
+        </div>
+      </div>
+    `;
+
+    return card;
+  }
+
+  function renderDefenseList() {
+    const listEl = $("defense-list");
+    if (!listEl) return;
+
+    syncDefenseTabs();
+    const items = getFilteredDefenseClues();
+    listEl.innerHTML = "";
+    items.forEach((clue) => {
+      listEl.appendChild(renderDefenseCard(clue));
+    });
+    renderDefenseEmpty(items.length);
+  }
+
+  function markDefenseDone(clueId) {
+    if (!clueId) return;
+    defenseDone[clueId] = {
+      at: new Date().toISOString().slice(0, 16).replace("T", " "),
+    };
+    delete defenseSkip[clueId];
+    writeJsonMap(DEFENSE_DONE_KEY, defenseDone);
+    writeJsonMap(DEFENSE_SKIP_KEY, defenseSkip);
+    renderDefenseList();
+  }
+
+  function markDefenseSkip(clueId) {
+    if (!clueId) return;
+    defenseSkip[clueId] = 1;
+    delete defenseDone[clueId];
+    writeJsonMap(DEFENSE_DONE_KEY, defenseDone);
+    writeJsonMap(DEFENSE_SKIP_KEY, defenseSkip);
+    renderDefenseList();
+  }
+
+  function undoDefenseStatus(clueId) {
+    if (!clueId) return;
+    delete defenseDone[clueId];
+    delete defenseSkip[clueId];
+    writeJsonMap(DEFENSE_DONE_KEY, defenseDone);
+    writeJsonMap(DEFENSE_SKIP_KEY, defenseSkip);
+    renderDefenseList();
+  }
+
+  function toggleDefenseGuide(clueId) {
+    if (!clueId) return;
+    if (defenseOpen[clueId]) delete defenseOpen[clueId];
+    else defenseOpen[clueId] = 1;
+    writeJsonMap(DEFENSE_OPEN_KEY, defenseOpen);
+    renderDefenseList();
+  }
+
+  function openDefensePost(clue) {
+    if (!clue || !clue.url) return;
+    window.open(clue.url, "_blank", "noopener,noreferrer");
+  }
+
+  function findDefenseClue(clueId) {
+    return defenseClues.find((item) => item.id === clueId) || null;
+  }
+
+  async function fetchDefenseJson(url) {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`Failed to load defense data: ${url}`);
+    return res.json();
+  }
+
+  async function loadDefenseClues(options) {
+    const force = Boolean(options && options.force);
+    if (defenseLoading) return;
+    if (defenseLoaded && !force) {
+      renderDefenseList();
+      return;
+    }
+
+    defenseLoading = true;
+    defenseLoadError = false;
+    const refreshBtn = $("defense-refresh");
+    if (refreshBtn) refreshBtn.classList.add("is-spinning");
+    if (!defenseClues.length) renderDefenseList();
+
+    try {
+      let payload = null;
+      try {
+        payload = await fetchDefenseJson(defenseDataUrl);
+      } catch (primaryErr) {
+        console.warn(primaryErr);
+        if (defenseFallbackUrl && defenseFallbackUrl !== defenseDataUrl) {
+          payload = await fetchDefenseJson(defenseFallbackUrl);
+        } else {
+          throw primaryErr;
+        }
+      }
+
+      const clues = Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload && payload.clues)
+          ? payload.clues
+          : [];
+      defenseClues = clues.filter((item) => item && item.id);
+      defenseLoaded = true;
+      defenseLoadError = false;
+      renderDefenseList();
+    } catch (err) {
+      console.error(err);
+      defenseClues = [];
+      defenseLoaded = true;
+      defenseLoadError = true;
+      renderDefenseList();
+    } finally {
+      defenseLoading = false;
+      if (refreshBtn) {
+        // 等动画结束再移除 class，避免瞬间被清掉看不到旋转
+        setTimeout(() => refreshBtn.classList.remove("is-spinning"), 560);
+      }
+    }
+  }
+
+  function ensureDefenseReady() {
+    loadDefenseLocalState();
+    syncDefenseTabs();
+    loadDefenseClues();
+  }
+
+  function bindDefenseEvents() {
+    const tabs = $("defense-tabs");
+    if (tabs) {
+      tabs.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-defense-tab]");
+        if (btn) setDefenseView(btn.dataset.defenseTab);
+      });
+    }
+
+    const refreshBtn = $("defense-refresh");
+    if (refreshBtn) {
+      refreshBtn.addEventListener("click", () => {
+        loadDefenseClues({ force: true });
+      });
+    }
+
+    const listEl = $("defense-list");
+    if (listEl) {
+      listEl.addEventListener("click", (e) => {
+        const actionBtn = e.target.closest("[data-defense-action]");
+        const card = e.target.closest("[data-clue-id]");
+        if (!actionBtn || !card) return;
+
+        const clueId = card.dataset.clueId;
+        const clue = findDefenseClue(clueId);
+        const action = actionBtn.dataset.defenseAction;
+
+        if (action === "open") openDefensePost(clue);
+        else if (action === "done") {
+          // 勾选框在已完成状态再点一次 = 撤销
+          if (defenseStateOf(clue) === "completed") undoDefenseStatus(clueId);
+          else markDefenseDone(clueId);
+        } else if (action === "skip") markDefenseSkip(clueId);
+        else if (action === "undo") undoDefenseStatus(clueId);
+        else if (action === "guide") toggleDefenseGuide(clueId);
+      });
+    }
   }
 
   function initTheme() {
@@ -695,6 +1131,8 @@
       messages = FALLBACK_MESSAGES;
     }
     currentLang = detectSiteLang();
+    loadDefenseLocalState();
+    bindDefenseEvents();
     applyI18n();
 
     const savedEvent = localStorage.getItem(EVENT_KEY);
