@@ -8,8 +8,8 @@ const DEFENSE_FALLBACK_URL = "/public/defense/clues.json";
 const EVENT_CONFIGS = {
   EmiBonnie: {
     name: "EmiBonnie",
-    keywords: "NA",
-    hashtags: "#NA",
+    keywords: "EMIBONNIE LOVE FIT AUTO",
+    hashtags: "#FITAutoxEmiBonnie",
   },
   Emi: {
     name: "Emi",
