@@ -13,8 +13,8 @@ const EVENT_CONFIGS = {
   },
   Emi: {
     name: "Emi",
-    keywords: "NA",
-    hashtags: "#NA",
+    keywords: "LAVOJOY TONE UP X EMI",
+    hashtags: "#lavojoyWitchGlowxEMI",
   },
   Bonnie: {
     name: "Bonnie",
