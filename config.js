@@ -9,7 +9,7 @@ const EVENT_CONFIGS = {
   EmiBonnie: {
     name: "EmiBonnie",
     keywords: "EMIBONNIE NEW ERA BEGINS",
-    hashtags: "#GMMTVNEXT\nEmiBonnie",
+    hashtags: "#GMMTVNEXT\n#EmiBonnie",
   },
   Emi: {
     name: "Emi",
