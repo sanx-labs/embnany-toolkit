@@ -8,13 +8,13 @@ const DEFENSE_FALLBACK_URL = "/public/defense/clues.json";
 const EVENT_CONFIGS = {
   EmiBonnie: {
     name: "EmiBonnie",
-    keywords: "EMIBONNIE LOVE FIT AUTO",
-    hashtags: "#FITAutoxEmiBonnie",
+    keywords: "EMIBONNIE NEW ERA BEGINS",
+    hashtags: "#GMMTVNEXT",
   },
   Emi: {
     name: "Emi",
-    keywords: "LAVOJOY TONE UP X EMI",
-    hashtags: "#lavojoyWitchGlowxEMI",
+    keywords: "NA",
+    hashtags: "#NA",
   },
   Bonnie: {
     name: "Bonnie",
@@ -23,8 +23,8 @@ const EVENT_CONFIGS = {
   },
   Any: {
     name: "Any",
-    keywords: "ANY X SUPALAI BUFFET PARADE",
-    hashtags: "#SUPALAIxLunarAnyNeona\n#SUPALAIxBuffetParade\n#ANY",
+    keywords: "NA",
+    hashtags: "#NA",
   },
   EmiBonnieAny: {
     name: "EmiBonnieAny",
