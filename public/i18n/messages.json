@@ -2,8 +2,8 @@
   "zh-CN": {
     "navAria": "站点模块",
     "navTrend": "TREND",
-    "navEmv": "EMV(Beta)",
-    "navDefense": "DEFENSE(Beta)",
+    "navEmv": "EMV(WIP)",
+    "navDefense": "DEFENSE(WIP)",
     "langSwitcherAria": "切换语言",
     "previewLabel": "文案预览",
     "previewAria": "文案编辑",
@@ -46,7 +46,7 @@
     },
     "emv": {
       "guideline": {
-        "title": "Quick Tips",
+        "title": "重要提示",
         "collapseBtn": "收起",
         "expandBtn": "展开",
         "rules": [
@@ -80,8 +80,8 @@
   "zh-TW": {
     "navAria": "站點模組",
     "navTrend": "TREND",
-    "navEmv": "EMV(Beta)",
-    "navDefense": "DEFENSE(Beta)",
+    "navEmv": "EMV(WIP)",
+    "navDefense": "DEFENSE(WIP)",
     "langSwitcherAria": "切換語言",
     "previewLabel": "文案預覽",
     "previewAria": "文案編輯",
@@ -124,7 +124,7 @@
     },
     "emv": {
       "guideline": {
-        "title": "Quick Tips",
+        "title": "重要提醒",
         "collapseBtn": "收起",
         "expandBtn": "展開",
         "rules": [
@@ -158,8 +158,8 @@
   "en": {
     "navAria": "Site modules",
     "navTrend": "TREND",
-    "navEmv": "EMV(Beta)",
-    "navDefense": "DEFENSE(Beta)",
+    "navEmv": "EMV(WIP)",
+    "navDefense": "DEFENSE(WIP)",
     "langSwitcherAria": "Change language",
     "previewLabel": "Edit Preview",
     "previewAria": "Copy editor",
@@ -202,7 +202,7 @@
     },
     "emv": {
       "guideline": {
-        "title": "Quick Tips",
+        "title": "Important Tips",
         "collapseBtn": "Collapse",
         "expandBtn": "Expand",
         "rules": [
@@ -236,8 +236,8 @@
   "th": {
     "navAria": "โมดูลเว็บไซต์",
     "navTrend": "TREND",
-    "navEmv": "EMV(Beta)",
-    "navDefense": "DEFENSE(Beta)",
+    "navEmv": "EMV(WIP)",
+    "navDefense": "DEFENSE(WIP)",
     "langSwitcherAria": "เปลี่ยนภาษา",
     "previewLabel": "แก้ไขข้อความ",
     "previewAria": "แก้ไขข้อความ",
@@ -280,7 +280,7 @@
     },
     "emv": {
       "guideline": {
-        "title": "Quick Tips",
+        "title": "เคล็ดลับสำคัญ",
         "collapseBtn": "ย่อ",
         "expandBtn": "ขยาย",
         "rules": [

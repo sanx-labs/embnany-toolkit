@@ -23,8 +23,8 @@
     "zh-CN": {
       navAria: "站点模块",
       navTrend: "TREND",
-      navEmv: "EMV(Beta)",
-      navDefense: "DEFENSE(Beta)",
+      navEmv: "EMV(WIP)",
+      navDefense: "DEFENSE(WIP)",
       langSwitcherAria: "切换语言",
       previewLabel: "文案预览",
       previewAria: "文案编辑",
@@ -67,7 +67,7 @@
       },
       emv: {
         guideline: {
-          title: "Quick Tips",
+          title: "重要提示",
           collapseBtn: "收起",
           expandBtn: "展开",
           rules: [

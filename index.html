@@ -672,6 +672,35 @@
     .emv-header {
       margin-bottom: 14px;
     }
+    .emv-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .emv-guideline-wrapper {
+      flex: 1 1 360px;
+      min-width: 0;
+    }
+    .emv-section-title {
+      order: -1;
+      flex-shrink: 0;
+      font-size: 22px !important;
+      font-weight: 600 !important;
+      line-height: 1.08 !important;
+      letter-spacing: -0.03em !important;
+      text-transform: uppercase !important;
+      font-family: var(--font-ui) !important;
+      color: #ffd166 !important;
+      -webkit-text-fill-color: #ffd166 !important;
+      text-shadow:
+        0 0 6px rgba(255, 209, 102, 1),
+        0 0 14px rgba(255, 149, 0, 0.85),
+        0 0 28px rgba(255, 107, 0, 0.5),
+        0 0 42px rgba(191, 0, 255, 0.3) !important;
+    }
     .emv-guideline {
       margin: 0;
       border-radius: 16px;
@@ -1386,31 +1415,36 @@
     <section id="module-emv" class="app-module" data-app-tab="emv" role="tabpanel" hidden>
       <div class="app-shell liquid-glass emv-shell">
         <header class="emv-header">
-          <section class="emv-guideline is-open" id="emv-guideline" aria-labelledby="emv-guideline-title">
-            <button
-              type="button"
-              id="emv-guideline-toggle"
-              class="emv-guideline-toggle"
-              aria-expanded="true"
-              aria-controls="emv-guideline-panel"
-            >
-              <span class="emv-guideline-heading">
-                <span class="emv-guideline-icon" aria-hidden="true">💡</span>
-                <span id="emv-guideline-title" class="emv-guideline-title" data-i18n="emv.guideline.title">Quick Tips</span>
-              </span>
-              <span class="emv-guideline-action">
-                <span id="emv-guideline-action-text" data-i18n="emv.guideline.collapseBtn">收起</span>
-                <svg class="emv-guideline-chevron" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/>
-                </svg>
-              </span>
-            </button>
-            <div class="emv-guideline-panel" id="emv-guideline-panel">
-              <div class="emv-guideline-panel-inner">
-                <ul class="emv-guideline-rules" id="emv-guideline-rules"></ul>
-              </div>
+          <div class="emv-header-row">
+            <h2 class="brand-mark emv-section-title brand-neon-yellow text-[22px] font-semibold tracking-tight">ENGAGEMENT</h2>
+            <div class="emv-guideline-wrapper">
+              <section class="emv-guideline is-open" id="emv-guideline" aria-labelledby="emv-guideline-title">
+                <button
+                  type="button"
+                  id="emv-guideline-toggle"
+                  class="emv-guideline-toggle"
+                  aria-expanded="true"
+                  aria-controls="emv-guideline-panel"
+                >
+                  <span class="emv-guideline-heading">
+                    <span class="emv-guideline-icon" aria-hidden="true">⚠️</span>
+                    <span id="emv-guideline-title" class="emv-guideline-title" data-i18n="emv.guideline.title">重要提示</span>
+                  </span>
+                  <span class="emv-guideline-action">
+                    <span id="emv-guideline-action-text" data-i18n="emv.guideline.collapseBtn">收起</span>
+                    <svg class="emv-guideline-chevron" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div class="emv-guideline-panel" id="emv-guideline-panel">
+                  <div class="emv-guideline-panel-inner">
+                    <ul class="emv-guideline-rules" id="emv-guideline-rules"></ul>
+                  </div>
+                </div>
+              </section>
             </div>
-          </section>
+          </div>
         </header>
 
         <!-- 后续待办 / 帖子聚合插槽 -->
