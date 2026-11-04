@@ -2,29 +2,21 @@
   "use strict";
 
   const LANG_FILES = {
-    "zh-CN": "/public/prompts/zh-CN.txt",
-    "zh-TW": "/public/prompts/zh-TW.txt",
     en: "/public/prompts/en.txt",
     th: "/public/prompts/th.txt",
   };
 
-  const UI_LANGS = ["zh-CN", "zh-TW", "en", "th"];
+  const UI_LANGS = ["en", "th"];
   const SITE_LANG_KEY = "site_lang";
   const MESSAGES_URL = "/public/i18n/messages.json";
-  const LANG_SHORT = {
-    "zh-CN": "简中",
-    "zh-TW": "繁中",
-    en: "EN",
-    th: "ไทย",
-  };
 
   // 字典拉取失败时的兜底，保证 t() 不会把 key 直接显示到界面
   const FALLBACK_MESSAGES = {
-    "zh-CN": {
+    en: {
       navAria: "站点模块",
       navTrend: "TREND",
-      navEmv: "EMV(WIP)",
-      navDefense: "DEFENSE(WIP)",
+      navEmv: "EMV 🔒",
+      navDefense: "VOTE 🔒",
       langSwitcherAria: "切换语言",
       previewLabel: "文案预览",
       previewAria: "文案编辑",
@@ -173,7 +165,7 @@
   let lastRandomLine = null;
   let previewIsGenerated = false;
   let messages = {};
-  let currentLang = "zh-CN";
+  let currentLang = "en";
   let currentAppTab = "trend";
 
   let defenseDataUrl = DEFENSE_DEFAULT_DATA_URL;
@@ -196,10 +188,6 @@
   const iconRefresh = $("icon-refresh");
   const btnCopy = $("btn-copy");
   const appNavbar = $("app-navbar");
-  const langSwitcher = $("lang-switcher");
-  const langTrigger = $("lang-trigger");
-  const langMenu = $("lang-menu");
-  const langTriggerLabel = $("lang-trigger-label");
   const eventPicker = $("event-picker");
   const eventTrigger = $("event-trigger");
   const eventMenu = $("event-menu");
@@ -275,8 +263,8 @@
   }
 
   function t(key, params) {
-    const dict = messages[currentLang] || messages["zh-CN"] || {};
-    const fallback = messages["zh-CN"] || {};
+    const dict = messages[currentLang] || messages.en || {};
+    const fallback = messages.en || {};
     let value =
       lookupMessage(dict, key) ??
       lookupMessage(fallback, key) ??
@@ -315,7 +303,7 @@
     }
   }
 
-  /** 浏览器语言降级：zh-TW / zh-Hant → 繁中，其余 zh → 简中，th / en 精确前缀匹配。 */
+  /** 浏览器语言降级：优先使用 EN / TH，并默认回落到英文。 */
   function matchNavigatorLang() {
     const codes = (navigator.languages && navigator.languages.length
       ? navigator.languages
@@ -323,19 +311,10 @@
     ).map((code) => String(code || "").toLowerCase());
 
     for (const code of codes) {
-      if (
-        code.startsWith("zh-tw") ||
-        code.startsWith("zh-hant") ||
-        code === "zh-hk" ||
-        code === "zh-mo"
-      ) {
-        return "zh-TW";
-      }
-      if (code.startsWith("zh")) return "zh-CN";
       if (code.startsWith("th")) return "th";
       if (code.startsWith("en")) return "en";
     }
-    return "zh-CN";
+    return "en";
   }
 
   function detectSiteLang() {
@@ -350,24 +329,14 @@
     const res = await fetch(MESSAGES_URL, { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to load i18n dictionary");
     messages = await res.json();
-    if (!messages["zh-CN"]) messages = FALLBACK_MESSAGES;
-  }
-
-  function setLangMenuOpen(open) {
-    if (!langTrigger || !langMenu) return;
-    langTrigger.setAttribute("aria-expanded", open ? "true" : "false");
-    langMenu.toggleAttribute("hidden", !open);
+    if (!messages.en) messages = FALLBACK_MESSAGES;
   }
 
   function syncLangSwitcher() {
-    if (langTriggerLabel) {
-      langTriggerLabel.textContent = LANG_SHORT[currentLang] || currentLang;
-      if (currentLang === "th") langTriggerLabel.setAttribute("data-script", "th");
-      else langTriggerLabel.removeAttribute("data-script");
-    }
-    document.querySelectorAll("#lang-menu [data-lang]").forEach((btn) => {
+    document.querySelectorAll("#lang-switcher [data-lang]").forEach((btn) => {
       const active = btn.dataset.lang === currentLang;
       btn.classList.toggle("active", active);
+      btn.setAttribute("aria-checked", active ? "true" : "false");
       btn.setAttribute("aria-selected", active ? "true" : "false");
     });
   }
@@ -396,12 +365,11 @@
   }
 
   function switchLang(lang) {
-    if (!UI_LANGS.includes(lang)) lang = "zh-CN";
+    if (!UI_LANGS.includes(lang)) lang = "en";
     const changed = lang !== currentLang;
     currentLang = lang;
     localStorage.setItem(SITE_LANG_KEY, lang);
     applyI18n();
-    setLangMenuOpen(false);
 
     if (changed) {
       lastRandomLine = null;
@@ -764,10 +732,10 @@
     return null;
   }
 
-  /** 从当前语言字典取出 rules；失败时回退到简中。 */
+  /** 从当前语言字典取出 rules；失败时回退到英文。 */
   function getEmvGuidelineRules() {
     const dict = messages[currentLang] || {};
-    const fallback = messages["zh-CN"] || FALLBACK_MESSAGES["zh-CN"] || {};
+    const fallback = messages.en || FALLBACK_MESSAGES.en || {};
     const rules =
       (dict.emv && dict.emv.guideline && dict.emv.guideline.rules) ||
       (fallback.emv && fallback.emv.guideline && fallback.emv.guideline.rules) ||
@@ -1184,7 +1152,6 @@
     eventTrigger.addEventListener("click", (e) => {
       e.stopPropagation();
       const open = eventTrigger.getAttribute("aria-expanded") !== "true";
-      setLangMenuOpen(false);
       setEventMenuOpen(open);
     });
   }
@@ -1197,26 +1164,13 @@
     });
   }
 
-  if (langTrigger) {
-    langTrigger.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const open = langTrigger.getAttribute("aria-expanded") !== "true";
-      setEventMenuOpen(false);
-      setLangMenuOpen(open);
+  document.querySelectorAll("#lang-switcher [data-lang]").forEach((button) => {
+    button.addEventListener("click", () => {
+      switchLang(button.dataset.lang);
     });
-  }
-
-  if (langMenu) {
-    langMenu.addEventListener("click", (e) => {
-      const option = e.target.closest("[data-lang]");
-      if (option) switchLang(option.dataset.lang);
-    });
-  }
+  });
 
   document.addEventListener("click", (e) => {
-    if (langSwitcher && !langSwitcher.contains(e.target)) {
-      setLangMenuOpen(false);
-    }
     if (eventPicker && !eventPicker.contains(e.target)) {
       setEventMenuOpen(false);
     }
@@ -1224,7 +1178,6 @@
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
-      setLangMenuOpen(false);
       setEventMenuOpen(false);
     }
   });
