@@ -8,8 +8,8 @@ const DEFENSE_FALLBACK_URL = "/public/defense/clues.json";
 const EVENT_CONFIGS = {
   EmiBonnie: {
     name: "EmiBonnie",
-    keywords: "EMIBONNIE NEW ERA BEGINS",
-    hashtags: "#GMMTVNEXT\n#EmiBonnie\n#BeMineSeries",
+    keywords: "EMIBONNIE LIGHT UP KAOHSIUNG",
+    hashtags: "#BBFanFest2026inKaohsiung",
   },
   Emi: {
     name: "Emi",
