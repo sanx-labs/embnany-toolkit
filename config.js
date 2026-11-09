@@ -23,8 +23,8 @@ const EVENT_CONFIGS = {
   },
   Any: {
     name: "Any",
-    keywords: "NA",
-    hashtags: "#NA",
+    keywords: "ANY ANIMONIUM PARAGON",
+    hashtags: "#ANIMONIUM2027\n#ANY",
   },
   EmiBonnieAny: {
     name: "EmiBonnieAny",
