@@ -325,8 +325,13 @@
     return detected;
   }
 
+  function bustCache(url) {
+    const separator = url.includes("?") ? "&" : "?";
+    return `${url}${separator}_=${Date.now()}`;
+  }
+
   async function loadMessages() {
-    const res = await fetch(MESSAGES_URL, { cache: "no-store" });
+    const res = await fetch(bustCache(MESSAGES_URL), { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to load i18n dictionary");
     messages = await res.json();
     if (!messages.en) messages = FALLBACK_MESSAGES;
@@ -393,7 +398,8 @@
     }
 
     const url = LANG_FILES[lang];
-    const res = await fetch(url);
+    // 这类文案会在生产站点被浏览器/CDN 缓存，必须加时间戳和 no-store，避免“改了内容但页面还拿旧稿”。
+    const res = await fetch(bustCache(url), { cache: "no-store" });
     if (!res.ok) {
       throw new Error(`Failed to load prompts: ${url}`);
     }
@@ -531,7 +537,8 @@
   }
 
   async function loadConfig() {
-    const res = await fetch(`/config.js?_=${Date.now()}`, { cache: "no-store" });
+    const url = bustCache("/config.js");
+    const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) {
       throw new Error("Failed to load config.js");
     }
