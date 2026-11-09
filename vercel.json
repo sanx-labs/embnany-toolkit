@@ -12,7 +12,7 @@
       ]
     },
     {
-      "source": "/public/**",
+      "source": "/public/:path*",
       "headers": [
         {
           "key": "Cache-Control",
