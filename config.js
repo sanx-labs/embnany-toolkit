@@ -18,8 +18,8 @@ const EVENT_CONFIGS = {
   },
   Bonnie: {
     name: "Bonnie",
-    keywords: "NA",
-    hashtags: "#NA",
+    keywords: "RIKA LIVE X BONNIE",
+    hashtags: "#RIKAxBONNIE",
   },
   Any: {
     name: "Any",
