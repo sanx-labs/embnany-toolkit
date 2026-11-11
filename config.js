@@ -18,13 +18,13 @@ const EVENT_CONFIGS = {
   },
   Bonnie: {
     name: "Bonnie",
-    keywords: "RIKA LIVE X BONNIE",
-    hashtags: "#RIKAxBONNIE",
+    keywords: "BONNIE FIVE ME MORE",
+    hashtags: "#FIVEMExBonnie",
   },
   Any: {
     name: "Any",
-    keywords: "ANY ANIMONIUM PARAGON",
-    hashtags: "#ANIMONIUM2027\n#ANY",
+    keywords: "ANY MAYBELLINE LIP",
+    hashtags: "#MaybellinexAny",
   },
   EmiBonnieAny: {
     name: "EmiBonnieAny",
