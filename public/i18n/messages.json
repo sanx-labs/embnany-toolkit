@@ -2,8 +2,7 @@
   "en": {
     "navAria": "Site modules",
     "navTrend": "TREND",
-    "navEmv": "EMV 🔒",
-    "navDefense": "VOTE 🔒",
+    "navEmv": "EMV",
     "langSwitcherAria": "Change language",
     "previewLabel": "Edit Preview",
     "previewAria": "Copy editor",
@@ -44,44 +43,14 @@
         "progressHint": "{pending} pending · {skipped} skipped"
       }
     },
-    "emv": {
-      "guideline": {
-        "title": "Important Tips",
-        "collapseBtn": "Collapse",
-        "expandBtn": "Expand",
-        "rules": [
-          {
-            "tag": "Comment Standards",
-            "noLabel": "Avoid",
-            "noText": "Single-word praises or emoji-only comments, as automated systems filter these out as low-value noise.",
-            "yesLabel": "Recommended",
-            "yesText": "Write complete sentences of 4+ substantive words detailing what caught your eye; natural phrasing aids algorithmic indexing."
-          },
-          {
-            "tag": "Threaded Discussions",
-            "content": "Engage beyond a top-level comment by replying directly to others; chains of 3+ interactions generate measurable dwell time, signaling value to discovery feeds."
-          },
-          {
-            "tag": "Carousel Completion",
-            "content": "Swipe carousels completely to the final slide and zoom in on details; end-to-end completion directly influences positive engagement scores."
-          },
-          {
-            "tag": "Reels Loop Completion",
-            "content": "Allow short-form video to loop at least 3 full cycles. Driving watch-through rate above 100% remains the primary catalyst for organic reach."
-          },
-          {
-            "tag": "Saves & Direct Shares",
-            "content": "Prioritize saving posts via the bookmark icon and distributing via Direct Message; these explicit actions hold far greater weight in media valuation than passive likes."
-          }
-        ]
-      }
-    }
+    "navStreaming": "STREAMING",
+    "navVoting": "VOTING",
+    "navSchedule": "SCHEDULE"
   },
   "th": {
     "navAria": "โมดูลเว็บไซต์",
     "navTrend": "TREND",
-    "navEmv": "EMV 🔒",
-    "navDefense": "VOTE 🔒",
+    "navEmv": "EMV",
     "langSwitcherAria": "เปลี่ยนภาษา",
     "previewLabel": "แก้ไขข้อความ",
     "previewAria": "แก้ไขข้อความ",
@@ -122,37 +91,8 @@
         "progressHint": "รอดำเนินการ {pending} · ข้าม {skipped}"
       }
     },
-    "emv": {
-      "guideline": {
-        "title": "เคล็ดลับสำคัญ",
-        "collapseBtn": "ย่อ",
-        "expandBtn": "ขยาย",
-        "rules": [
-          {
-            "tag": "มาตรฐานการคอมเมนต์",
-            "noLabel": "หลีกเลี่ยง",
-            "noText": "การพิมพ์คำสั้นๆ เพียงคำเดียวหรือส่งแค่อิโมจิ เพราะระบบจะคัดกรองออกว่าเป็นข้อความสแปม",
-            "yesLabel": "แนะนำ",
-            "yesText": "พิมพ์ประโยคสมบูรณ์ความยาว 4 คำขึ้นไปเพื่อระบุสิ่งที่ประทับใจ การใช้ภาษาที่สื่อสารจริงจะช่วยเพิ่มคะแนนในระบบ"
-          },
-          {
-            "tag": "การสนทนาต่อยอด",
-            "content": "อย่าพิมพ์เพียงคอมเมนต์เดียว ให้ช่วยตอบกลับข้อความอื่นๆ เพื่อให้เกิดการสนทนาต่อเนื่องตั้งแต่ 3 ข้อความขึ้นไป ซึ่งจะช่วยเพิ่มเวลาการอ่านหน้าจอ"
-          },
-          {
-            "tag": "การดูรูปภาพสไลด์",
-            "content": "สำหรับโพสต์รูปหลายภาพ ให้เลื่อนดูจนครบทุกภาพ และขยายดูรายละเอียดบนภาพ เพื่อสะท้อนถึงการมีส่วนร่วมที่แท้จริงในระบบ"
-          },
-          {
-            "tag": "การรับชม Reels",
-            "content": "ปล่อยให้วิดีโอ Reels เล่นวนจนจบอย่างน้อย 3 รอบ การเพิ่มอัตราการชมเกิน 100% จะช่วยกระตุ้นให้อัลกอริทึมกระจายโพสต์ไปสู่กลุ่มเป้าหมายใหม่"
-          },
-          {
-            "tag": "การบันทึกและการแชร์ข้อความ",
-            "content": "กดบันทึกโพสต์ไว้ในบุ๊กมาร์กและกดแชร์ลิงก์ทางข้อความส่วนตัว (DM) ซึ่งทั้งสองส่วนนี้ถือเป็นเกณฑ์ที่มีคะแนนสำคัญสูงสุดในระบบประเมินผล"
-          }
-        ]
-      }
-    }
+    "navStreaming": "STREAMING",
+    "navVoting": "VOTING",
+    "navSchedule": "SCHEDULE"
   }
 }

@@ -15,8 +15,10 @@
     en: {
       navAria: "站点模块",
       navTrend: "TREND",
-      navEmv: "EMV 🔒",
-      navDefense: "VOTE 🔒",
+      navEmv: "EMV",
+      navStreaming: "STREAMING",
+      navVoting: "VOTING",
+      navSchedule: "SCHEDULE",
       langSwitcherAria: "切换语言",
       previewLabel: "文案预览",
       previewAria: "文案编辑",
@@ -57,43 +59,8 @@
           progressHint: "待办 {pending} · 跳过 {skipped}",
         },
       },
-      emv: {
-        guideline: {
-          title: "重要提示",
-          collapseBtn: "收起",
-          expandBtn: "展开",
-          rules: [
-            {
-              tag: "有效评论标准",
-              noLabel: "避免",
-              noText: "仅发送单个单词、简单夸奖或堆砌表情符号，此类内容会被平台算法自动判定为无意义灌水。",
-              yesLabel: "建议",
-              yesText: "撰写包含至少 4 至 5 个实词的完整语句，使用母语阐述具体细节，帮助系统算法建立正向语义标签。",
-            },
-            {
-              tag: "楼中楼讨论延伸",
-              content: "发表主评论后，在现有高赞评论下点击回复建立连续对话。单条评论形成 3 条以上追加互动可显著增加页面停留时间，提升内容推荐权重。",
-            },
-            {
-              tag: "多图轮播完整翻阅",
-              content: "针对多图轮播内容，请务必横划浏览至最后一页，并适度放大画面查看细节。完整的翻阅率和交互时长均属于高价值参与指标。",
-            },
-            {
-              tag: "短视频多次完播",
-              content: "浏览短视频（Reels）时请完整播放至少 3 遍，确保播放完成率突破 100%，以触发平台的跨圈层推流机制。",
-            },
-            {
-              tag: "收藏与私信转推",
-              content: "优先点击书签图标完成收藏，并使用分享功能将链接通过私信发送。在当前媒介评估体系中，收藏与私信分享的权重远高于常规点赞。",
-            },
-          ],
-        },
-      },
     },
   };
-
-  // EMV Guideline：记住用户是否收起，避免每次刷新都强制展开
-  const EMV_GUIDELINE_COLLAPSED_KEY = "emv-guideline-collapsed-v1";
 
   // DEFENSE 线索源：由 config.js 覆盖；接入 Notion 前先读本地空列表
   const DEFENSE_DEFAULT_DATA_URL = "/public/defense/clues.json";
@@ -154,7 +121,9 @@
   const promptCache = new Map();
   const CONFIG_POLL_MS = 2000;
   const APP_TAB_KEY = "embnany-app-tab";
-  const APP_TABS = ["trend", "emv", "defense"];
+  const APP_TABS = ["trend", "emv", "streaming", "voting", "schedule"];
+  // 旧地址 #defense / #vote 落到 VOTING
+  const APP_TAB_ALIASES = { defense: "voting", vote: "voting" };
   const CHECK_ICON_SVG =
     '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" width="16" height="16"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 0 0-1.414 0L8 12.586 4.707 9.293a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.414 0l8-8a1 1 0 0 0 0-1.414z" clip-rule="evenodd"/></svg>';
 
@@ -366,7 +335,6 @@
     syncPreviewState();
     // 列表文案由 JS 渲染，语言切换后需要重绘
     if ($("defense-list")) renderDefenseList();
-    renderEmvGuideline();
   }
 
   function switchLang(lang) {
@@ -670,14 +638,20 @@
     }, 1400);
   }
 
-  /** 解析地址栏 hash，合法值为 trend / emv / defense。 */
+  function normalizeAppTab(tab) {
+    const mapped = APP_TAB_ALIASES[tab] || tab;
+    return APP_TABS.includes(mapped) ? mapped : "";
+  }
+
+  /** 解析地址栏 hash，合法值为 trend / emv / streaming / voting / schedule。 */
   function resolveRoute() {
     const hash = location.hash.replace("#", "");
     const savedApp = localStorage.getItem(APP_TAB_KEY);
-    const saved = APP_TABS.includes(savedApp) ? savedApp : "trend";
+    const fromHash = normalizeAppTab(hash);
+    const saved = normalizeAppTab(savedApp) || "trend";
 
-    if (APP_TABS.includes(hash)) {
-      return { appTab: hash, writeHash: false };
+    if (fromHash) {
+      return { appTab: fromHash, writeHash: fromHash !== hash };
     }
 
     return { appTab: saved, writeHash: true };
@@ -691,7 +665,7 @@
 
   function switchAppTab(tab, options) {
     const writeHash = !options || options.writeHash !== false;
-    if (!APP_TABS.includes(tab)) tab = "trend";
+    tab = normalizeAppTab(tab) || "trend";
     currentAppTab = tab;
 
     document.querySelectorAll(".app-module").forEach((panel) => {
@@ -710,109 +684,10 @@
     localStorage.setItem(APP_TAB_KEY, tab);
     if (writeHash) syncHash();
 
-    // 进入 DEFENSE 时再懒加载线索，避免拖慢 TREND 首屏
-    if (tab === "defense") {
+    // 进入 VOTING（原 DEFENSE）时再懒加载线索，避免拖慢 TREND 首屏
+    if (tab === "voting") {
       ensureDefenseReady();
     }
-  }
-
-  /* ================= EMV：Guideline 公告栏 ================= */
-
-  function strField(value) {
-    return typeof value === "string" ? value.trim() : "";
-  }
-
-  /** 规范化规则条目：支持对比型（避免/建议）与说明型（content）。 */
-  function normalizeEmvGuidelineRule(rule) {
-    if (!rule || typeof rule !== "object") return null;
-    const tag = strField(rule.tag);
-    const content = strField(rule.content);
-    const noLabel = strField(rule.noLabel);
-    const noText = strField(rule.noText);
-    const yesLabel = strField(rule.yesLabel);
-    const yesText = strField(rule.yesText);
-    if (!tag) return null;
-    if (content) return { tag, content };
-    if (noText || yesText) {
-      return { tag, noLabel, noText, yesLabel, yesText };
-    }
-    return null;
-  }
-
-  /** 从当前语言字典取出 rules；失败时回退到英文。 */
-  function getEmvGuidelineRules() {
-    const dict = messages[currentLang] || {};
-    const fallback = messages.en || FALLBACK_MESSAGES.en || {};
-    const rules =
-      (dict.emv && dict.emv.guideline && dict.emv.guideline.rules) ||
-      (fallback.emv && fallback.emv.guideline && fallback.emv.guideline.rules) ||
-      [];
-    if (!Array.isArray(rules)) return [];
-    return rules.map(normalizeEmvGuidelineRule).filter(Boolean);
-  }
-
-  function isEmvGuidelineCollapsed() {
-    return localStorage.getItem(EMV_GUIDELINE_COLLAPSED_KEY) === "1";
-  }
-
-  function syncEmvGuidelineOpen(open) {
-    const root = $("emv-guideline");
-    const toggle = $("emv-guideline-toggle");
-    const actionText = $("emv-guideline-action-text");
-    if (!root || !toggle) return;
-
-    const actionKey = open ? "emv.guideline.collapseBtn" : "emv.guideline.expandBtn";
-    const actionLabel = t(actionKey);
-    root.classList.toggle("is-open", open);
-    toggle.setAttribute("aria-expanded", open ? "true" : "false");
-    toggle.setAttribute("aria-label", actionLabel);
-    if (actionText) {
-      actionText.dataset.i18n = actionKey;
-      actionText.textContent = actionLabel;
-    }
-  }
-
-  function setEmvGuidelineOpen(open) {
-    localStorage.setItem(EMV_GUIDELINE_COLLAPSED_KEY, open ? "0" : "1");
-    syncEmvGuidelineOpen(open);
-  }
-
-  function renderEmvGuidelineRules() {
-    const list = $("emv-guideline-rules");
-    if (!list) return;
-    const rules = getEmvGuidelineRules();
-    list.innerHTML = rules
-      .map((rule) => {
-        const tagHtml = `<span class="emv-rule-tag">${escapeHtml(rule.tag)}</span>`;
-        if (rule.content) {
-          return `<li class="emv-rule">${tagHtml}<p class="emv-rule-content">${escapeHtml(rule.content)}</p></li>`;
-        }
-        const avoidHtml = rule.noText
-          ? `<div class="emv-rule-pair is-avoid"><span class="emv-rule-label">${escapeHtml(rule.noLabel || "")}</span><p>${escapeHtml(rule.noText)}</p></div>`
-          : "";
-        const yesHtml = rule.yesText
-          ? `<div class="emv-rule-pair is-yes"><span class="emv-rule-label">${escapeHtml(rule.yesLabel || "")}</span><p>${escapeHtml(rule.yesText)}</p></div>`
-          : "";
-        return `<li class="emv-rule">${tagHtml}${avoidHtml}${yesHtml}</li>`;
-      })
-      .join("");
-  }
-
-  function renderEmvGuideline() {
-    renderEmvGuidelineRules();
-    // 默认展开；若用户曾收起则保持收起
-    syncEmvGuidelineOpen(!isEmvGuidelineCollapsed());
-  }
-
-  function bindEmvEvents() {
-    const toggle = $("emv-guideline-toggle");
-    if (!toggle || toggle.dataset.bound === "1") return;
-    toggle.dataset.bound = "1";
-    toggle.addEventListener("click", () => {
-      const root = $("emv-guideline");
-      const nextOpen = !(root && root.classList.contains("is-open"));
-      setEmvGuidelineOpen(nextOpen);
-    });
   }
 
   /* ================= DEFENSE：待办清单 ================= */
@@ -1211,7 +1086,6 @@
     currentLang = detectSiteLang();
     loadDefenseLocalState();
     bindDefenseEvents();
-    bindEmvEvents();
     applyI18n();
 
     const savedEvent = localStorage.getItem(EVENT_KEY);
