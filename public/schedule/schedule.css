@@ -1,7 +1,8 @@
 /* SCHEDULE 模块专用样式，全部挂在 #module-schedule 下，避免影响 TREND / EMV */
+/* 宽度与 .app-shell / .app-navbar（420px）对齐，做成 dashboard 比例 */
 
 #module-schedule {
-  width: min(100%, 630px);
+  width: min(100%, 420px);
   align-items: stretch;
   font-family: "New York", "New York Small", "Iowan Old Style", "Apple Garamond",
     "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
@@ -13,7 +14,7 @@
 
 #module-schedule .sched-root {
   width: 100%;
-  padding: 8px 0 24px;
+  padding: 4px 0 16px;
 }
 
 #module-schedule .sched-header {
@@ -25,12 +26,12 @@
 
 #module-schedule .sched-avatar-wrap {
   position: relative;
-  width: 7rem;
-  height: 7rem;
+  width: 4.5rem;
+  height: 4.5rem;
   overflow: hidden;
   border-radius: 999px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
-  outline: 4px solid #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.26);
+  outline: 3px solid #fff;
 }
 
 #module-schedule .sched-avatar {
@@ -42,40 +43,41 @@
 }
 
 #module-schedule .sched-title {
-  margin: 1.25rem 0 0;
-  font-size: 1.875rem;
+  margin: 0.75rem 0 0;
+  font-size: 1.35rem;
   font-weight: 700;
   letter-spacing: -0.03em;
-  line-height: 1.15;
+  line-height: 1.2;
   color: #fff;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
 }
 
 #module-schedule .sched-subtitle {
-  margin: 0.5rem 0 0;
-  max-width: 28rem;
-  font-size: 0.95rem;
+  margin: 0.3rem 0 0;
+  max-width: 22rem;
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
   font-weight: 400;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 #module-schedule .sched-body {
-  margin-top: 1.75rem;
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 0.85rem;
 }
 
 #module-schedule .sched-month-sticky {
   position: sticky;
-  top: calc(max(8px, env(safe-area-inset-top, 0px)) + 56px);
+  top: calc(max(8px, env(safe-area-inset-top, 0px)) + 52px);
   z-index: 40;
   width: 100%;
   display: flex;
   justify-content: center;
-  padding: 8px 0;
+  padding: 4px 0;
 }
 
 #module-schedule .sched-month-nav {
@@ -83,7 +85,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.55rem;
 }
 
 #module-schedule .sched-btn {
@@ -93,7 +95,7 @@
   border: 1px solid rgba(255, 255, 255, 0.38);
   color: #fff;
   box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.14),
+    0 4px 16px rgba(0, 0, 0, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.55),
     inset 0 -1px 0 rgba(255, 255, 255, 0.06);
   cursor: pointer;
@@ -102,6 +104,9 @@
     border-color 0.2s ease,
     box-shadow 0.2s ease,
     transform 0.15s ease;
+  /* 触控更舒适，避免误触旁边按钮 */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 #module-schedule .sched-btn:hover {
@@ -115,8 +120,9 @@
 }
 
 #module-schedule .sched-btn-round {
-  width: 2.75rem;
-  height: 2.75rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  min-width: 2.4rem;
   border-radius: 999px;
   display: flex;
   align-items: center;
@@ -125,19 +131,19 @@
 }
 
 #module-schedule .sched-btn-round svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.05rem;
+  height: 1.05rem;
 }
 
 #module-schedule .sched-month-trigger {
-  min-width: 9.5rem;
-  border-radius: 0.75rem;
-  padding: 0.75rem 1.5rem;
+  min-width: 7.5rem;
+  border-radius: 0.7rem;
+  padding: 0.55rem 1rem;
   text-align: center;
 }
 
 #module-schedule .sched-month-trigger span {
-  font-size: 1.125rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #fff;
   line-height: 1.2;
@@ -160,18 +166,18 @@
   top: 100%;
   left: 50%;
   z-index: 50;
-  margin-top: 0.75rem;
-  width: min(calc(100vw - 2rem), 20rem);
+  margin-top: 0.55rem;
+  width: min(calc(100vw - 2rem), 17.5rem);
   transform: translateX(-50%);
-  border-radius: 1rem;
-  padding: 1rem;
+  border-radius: 0.9rem;
+  padding: 0.75rem;
   background: rgba(255, 255, 255, 0.16);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   backdrop-filter: blur(40px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.32);
   color: #fff;
   box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.22),
+    0 12px 36px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
@@ -181,14 +187,14 @@
 }
 
 #module-schedule .sched-picker-year {
-  margin-bottom: 1rem;
+  margin-bottom: 0.7rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 #module-schedule .sched-picker-year span {
-  font-size: 1.125rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: #fff;
 }
@@ -196,32 +202,36 @@
 #module-schedule .sched-picker-year .sched-btn-round {
   width: 2rem;
   height: 2rem;
+  min-width: 2rem;
 }
 
 #module-schedule .sched-picker-year .sched-btn-round svg {
-  width: 1rem;
-  height: 1rem;
+  width: 0.9rem;
+  height: 0.9rem;
 }
 
 #module-schedule .sched-picker-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 #module-schedule .sched-picker-month {
   position: relative;
-  border-radius: 0.75rem;
-  padding: 0.5rem 0.375rem;
-  font-size: 0.8rem;
+  border-radius: 0.65rem;
+  min-height: 2.35rem;
+  padding: 0.45rem 0.25rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.2;
   background: rgba(255, 255, 255, 0.1);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
   backdrop-filter: blur(20px) saturate(160%);
   border: 1px solid rgba(255, 255, 255, 0.24);
   color: rgba(255, 255, 255, 0.92);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 #module-schedule .sched-picker-month:hover {
@@ -237,10 +247,10 @@
 
 #module-schedule .sched-picker-dot {
   position: absolute;
-  bottom: 0.25rem;
+  bottom: 0.2rem;
   left: 50%;
-  width: 0.25rem;
-  height: 0.25rem;
+  width: 0.22rem;
+  height: 0.22rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.75);
   transform: translateX(-50%);
@@ -250,33 +260,34 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.55rem;
 }
 
 #module-schedule .sched-empty {
   margin: 0;
-  border-radius: 1.5rem;
-  padding: 3rem 1.25rem;
+  border-radius: 1rem;
+  padding: 1.5rem 1rem;
   text-align: center;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.82rem;
+  line-height: 1.45;
   background: rgba(255, 255, 255, 0.12);
   -webkit-backdrop-filter: blur(32px) saturate(160%);
   backdrop-filter: blur(32px) saturate(160%);
   border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 
 #module-schedule .sched-card {
   display: flex;
   overflow: hidden;
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   background: rgba(255, 255, 255, 0.16);
   -webkit-backdrop-filter: blur(40px) saturate(180%);
   backdrop-filter: blur(40px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.32);
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.18),
+    0 6px 22px rgba(0, 0, 0, 0.16),
     inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
@@ -293,14 +304,14 @@
 }
 
 #module-schedule .sched-date {
-  width: 4.75rem;
+  width: 3.4rem;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   align-self: stretch;
-  padding: 1rem 0;
+  padding: 0.7rem 0;
   color: #fff;
   background: rgba(255, 255, 255, 0.2);
   -webkit-backdrop-filter: blur(32px) saturate(180%);
@@ -317,14 +328,14 @@
 }
 
 #module-schedule .sched-date-day {
-  font-size: 1.875rem;
+  font-size: 1.35rem;
   font-weight: 700;
   line-height: 1;
 }
 
 #module-schedule .sched-date-month {
-  margin-top: 0.125rem;
-  font-size: 0.75rem;
+  margin-top: 0.1rem;
+  font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -336,35 +347,42 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  padding: 0.875rem;
+  gap: 0.85rem;
+  padding: 0.65rem 0.7rem;
 }
 
 #module-schedule .sched-event-title {
   margin: 0;
   text-align: left;
-  font-size: 1rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  line-height: 1.25;
+  letter-spacing: 0.03em;
+  line-height: 1.3;
   text-transform: uppercase;
   color: #fff;
 }
 
 #module-schedule .sched-meta {
-  margin-top: 0.375rem;
+  margin-top: 0.3rem;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 
 #module-schedule .sched-meta-row {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
-  font-size: 0.875rem;
+  gap: 0.4rem;
+  font-size: 0.75rem;
   line-height: 1.35;
   color: rgba(255, 255, 255, 0.8);
+}
+
+#module-schedule .sched-meta-row p,
+#module-schedule .sched-meta-row span {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 #module-schedule .sched-meta-row.is-location {
@@ -376,10 +394,10 @@
 }
 
 #module-schedule .sched-icon {
-  width: 1rem;
-  height: 1rem;
+  width: 0.85rem;
+  height: 0.85rem;
   flex-shrink: 0;
-  margin-top: 0.125rem;
+  margin-top: 0.12rem;
 }
 
 #module-schedule .sched-icon.is-stroke {
@@ -411,14 +429,15 @@
 }
 
 #module-schedule .sched-official {
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
   display: inline-flex;
   width: fit-content;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  padding: 0.25rem 1rem;
-  font-size: 0.75rem;
+  padding: 0.28rem 0.85rem;
+  min-height: 1.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
   color: #fff;
   text-decoration: none;
@@ -426,6 +445,8 @@
   border: 1px solid rgba(255, 170, 90, 0.55);
   -webkit-backdrop-filter: blur(28px) saturate(190%);
   backdrop-filter: blur(28px) saturate(190%);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 #module-schedule .sched-official:hover,
@@ -433,26 +454,26 @@
   border-color: rgba(255, 220, 150, 0.95);
   background: rgba(255, 255, 255, 0.24);
   box-shadow:
-    0 0 18px rgba(255, 150, 60, 0.38),
-    0 6px 24px rgba(0, 0, 0, 0.16);
+    0 0 14px rgba(255, 150, 60, 0.34),
+    0 4px 16px rgba(0, 0, 0, 0.14);
 }
 
 #module-schedule .sched-trend {
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 
 #module-schedule .sched-trend .sched-meta-row {
-  font-size: 0.75rem;
+  font-size: 0.68rem;
 }
 
 #module-schedule .sched-tags {
   display: flex;
   min-width: 0;
   flex-wrap: wrap;
-  gap: 0.375rem;
+  gap: 0.3rem;
 }
 
 #module-schedule .sched-tag {
@@ -460,11 +481,12 @@
   align-items: center;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.35);
-  padding: 0.125rem 0.75rem;
-  font-size: 0.75rem;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.68rem;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 #module-schedule .sched-tag:hover {
@@ -472,22 +494,75 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+/* 桌面端略放大，但仍对齐 420px dashboard，不撑过导航栏 */
 @media (min-width: 640px) {
-  #module-schedule .sched-title {
-    font-size: 2.25rem;
+  #module-schedule .sched-avatar-wrap {
+    width: 5rem;
+    height: 5rem;
   }
+
+  #module-schedule .sched-title {
+    font-size: 1.5rem;
+  }
+
   #module-schedule .sched-subtitle {
+    font-size: 0.85rem;
+  }
+
+  #module-schedule .sched-btn-round {
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 2.5rem;
+  }
+
+  #module-schedule .sched-month-trigger {
+    min-width: 8rem;
+    padding: 0.6rem 1.15rem;
+  }
+
+  #module-schedule .sched-month-trigger span {
     font-size: 1rem;
   }
+
   #module-schedule .sched-date {
-    width: 5rem;
-    padding: 1.25rem 0;
+    width: 3.65rem;
+    padding: 0.8rem 0;
   }
+
+  #module-schedule .sched-date-day {
+    font-size: 1.45rem;
+  }
+
   #module-schedule .sched-entries {
-    padding: 1rem;
+    padding: 0.75rem 0.8rem;
   }
+
   #module-schedule .sched-event-title {
-    font-size: 1.125rem;
+    font-size: 0.88rem;
+  }
+
+  #module-schedule .sched-meta-row {
+    font-size: 0.78rem;
+  }
+}
+
+/* 很窄的手机：再收一点左右内边距，避免卡片拥挤 */
+@media (max-width: 360px) {
+  #module-schedule .sched-date {
+    width: 3.1rem;
+  }
+
+  #module-schedule .sched-entries {
+    padding: 0.55rem 0.55rem;
+  }
+
+  #module-schedule .sched-month-nav {
+    gap: 0.4rem;
+  }
+
+  #module-schedule .sched-month-trigger {
+    min-width: 6.8rem;
+    padding: 0.5rem 0.75rem;
   }
 }
 
