@@ -999,6 +999,8 @@
       font-family: var(--font-th);
     }
   </style>
+  <!-- SCHEDULE 专用样式，选择器全部限定在 #module-schedule -->
+  <link rel="stylesheet" href="/public/schedule/schedule.css" />
 </head>
 <body class="min-h-screen font-sans">
 
@@ -1195,15 +1197,51 @@
       </div>
     </section>
 
-    <!-- SCHEDULE：占位 -->
+    <!-- SCHEDULE：迁自 embnany-schedule，不含门户返回/时区按钮 -->
     <section id="module-schedule" class="app-module" data-app-tab="schedule" role="tabpanel" hidden>
-      <div class="app-shell liquid-glass placeholder-shell">
-        <header class="mb-1">
-          <h1 class="brand-mark text-[22px] font-semibold tracking-tight brand-neon-yellow">SCHEDULE</h1>
+      <div class="sched-root">
+        <header class="sched-header">
+          <div class="sched-avatar-wrap">
+            <img
+              class="sched-avatar"
+              src="/public/images/schedule/avatar.jpg"
+              alt="EmiBonnieAny Schedule"
+              width="112"
+              height="112"
+            />
+          </div>
+          <h1 class="sched-title">EmiBonnieAny Schedule</h1>
+          <p class="sched-subtitle">All Events Schedule for MimiNini&amp;Any</p>
         </header>
-        <div class="divider"></div>
-        <p class="placeholder-hint" data-i18n="comingSoon">Coming Soon</p>
-        <p class="placeholder-hint" data-i18n="comingSoonHint">This module is under construction. Use TREND for now.</p>
+
+        <div class="sched-body">
+          <div class="sched-month-sticky">
+            <nav class="sched-month-nav" aria-label="Month navigation">
+              <button type="button" id="sched-prev" class="sched-btn sched-btn-round" aria-label="Previous month"></button>
+              <button
+                type="button"
+                id="sched-month-label"
+                class="sched-btn sched-month-trigger"
+                aria-expanded="false"
+                aria-haspopup="dialog"
+              >
+                <span id="sched-month-text">Apr 2026</span>
+              </button>
+              <div id="sched-picker" class="sched-picker" role="dialog" aria-modal="true" aria-label="Select year and month" hidden>
+                <div class="sched-picker-year">
+                  <button type="button" id="sched-year-prev" class="sched-btn sched-btn-round" aria-label="Previous year"></button>
+                  <span id="sched-picker-year">2026</span>
+                  <button type="button" id="sched-year-next" class="sched-btn sched-btn-round" aria-label="Next year"></button>
+                </div>
+                <div id="sched-picker-grid" class="sched-picker-grid"></div>
+              </div>
+              <button type="button" id="sched-next" class="sched-btn sched-btn-round" aria-label="Next month"></button>
+            </nav>
+          </div>
+
+          <button type="button" id="sched-picker-backdrop" class="sched-picker-backdrop" aria-label="Close calendar" hidden></button>
+          <section id="sched-list" class="sched-list" aria-label="Event schedule"></section>
+        </div>
       </div>
     </section>
 
@@ -1218,5 +1256,6 @@
   </div>
 
   <script src="app.js"></script>
+  <script src="schedule.js"></script>
 </body>
 </html>

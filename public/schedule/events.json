@@ -1,0 +1,187 @@
+{
+  "profile": {
+    "name": "EmiBonnieAny Schedule",
+    "subtitle": "All Events Schedule for MimiNini&Any",
+    "avatarSrc": "/public/images/schedule/avatar.jpg",
+    "avatarPosition": "65% center"
+  },
+  "events": [
+    {
+      "id": "1",
+      "date": "2026-04-04",
+      "title": "GMMTV FANIVAL 2026",
+      "location": "Impact Arena, Muang Thong Thani",
+      "locationUrl": "https://maps.google.com",
+      "time": "06:00 pm",
+      "guests": [
+        "Emi Thasorn",
+        "Bonnie Dolnun",
+        "Namtan Tipnaree"
+      ],
+      "trendingKeyword": "GMMTVFANIVAL2026 PRESS TOUR D1",
+      "hashtag": "#GMMTVFANIVAL2026xEmiBonnie",
+      "officialUrl": "https://www.gmm-tv.com"
+    },
+    {
+      "id": "2",
+      "date": "2026-04-12",
+      "title": "LOVE OUT LOUD FAN MEET 2026",
+      "location": "YouTube Live — GMMTV Official",
+      "time": "07:30 pm",
+      "guests": [
+        "Emi Thasorn",
+        "Pond Naravit",
+        "Phuwin Tangsakyuen"
+      ],
+      "trendingKeyword": "LOVE OUT LOUD 2026 FAN MEET",
+      "hashtag": "#LOutLoud2026xEmiBonnie",
+      "officialUrl": "https://www.youtube.com/@GMMTV"
+    },
+    {
+      "id": "3",
+      "date": "2026-04-18",
+      "title": "EMI BONNIE FAN SIGNING — BANGKOK",
+      "location": "Siam Paragon, Bangkok",
+      "locationUrl": "https://maps.google.com",
+      "time": "02:00 pm",
+      "guests": [
+        "Emi Thasorn",
+        "Bonnie Dolnun"
+      ],
+      "trendingKeyword": "EMI BONNIE FANSIGN BKK",
+      "hashtag": "#jessie",
+      "officialUrl": "https://example.com/fansign-bkk"
+    },
+    {
+      "id": "4",
+      "date": "2026-04-26",
+      "title": "VARIETY SHOW RECORDING — THE WALL SONG",
+      "location": "GMM Grammy Place Studio",
+      "time": "10:00 am",
+      "guests": [
+        "Emi Thasorn"
+      ],
+      "trendingKeyword": "THE WALL SONG RECORDING",
+      "hashtag": "#TheWallSongxEmi",
+      "officialUrl": "https://example.com/the-wall-song"
+    },
+    {
+      "id": "5",
+      "date": "2026-05-03",
+      "title": "BRAND AMBASSADOR LAUNCH — SKINCARE LINE",
+      "location": "CentralWorld, Bangkok",
+      "locationUrl": "https://maps.google.com",
+      "time": "05:00 pm",
+      "guests": [
+        "Emi Thasorn",
+        "Milk Pansa"
+      ],
+      "trendingKeyword": "SKINCARE BRAND LAUNCH 2026",
+      "hashtag": "#EmiBonnieSkincare",
+      "officialUrl": "https://example.com/skincare-launch"
+    },
+    {
+      "id": "6",
+      "date": "2026-05-15",
+      "title": "AIRPORT SEND-OFF — FAN PROJECT",
+      "location": "Suvarnabhumi Airport (Terminal 1)",
+      "time": "08:30 am",
+      "guests": [
+        "Emi Thasorn",
+        "Bonnie Dolnun"
+      ],
+      "trendingKeyword": "AIRPORT SEND OFF PROJECT",
+      "hashtag": "#EmiBonnieSafeFlight",
+      "officialUrl": "https://example.com/airport-sendoff"
+    },
+    {
+      "id": "7",
+      "date": "2026-05-22",
+      "title": "OVERSEAS PROMO — TOKYO MEDIA DAY",
+      "location": "Shibuya Stream Hall, Tokyo",
+      "locationUrl": "https://maps.google.com",
+      "time": "04:00 pm",
+      "guests": [
+        "Emi Thasorn",
+        "Bonnie Dolnun",
+        "GMMTV Press Team"
+      ],
+      "trendingKeyword": "TOKYO MEDIA DAY 2026",
+      "hashtag": "#EmiBonnieInTokyo",
+      "officialUrl": "https://example.com/tokyo-media"
+    },
+    {
+      "id": "10",
+      "date": "2026-06-03",
+      "title": "BRAND AMBASSADOR LAUNCH — SKINCARE LINE",
+      "location": "CentralWorld, Bangkok",
+      "locationUrl": "https://maps.google.com",
+      "time": "05:00 pm",
+      "guests": [
+        "Emi Thasorn",
+        "Milk Pansa"
+      ],
+      "trendingKeyword": "SKINCARE BRAND LAUNCH 2026",
+      "hashtag": "#EmiBonnieSkincare",
+      "officialUrl": "https://example.com/skincare-launch"
+    },
+    {
+      "id": "11",
+      "date": "2026-06-15",
+      "title": "AIRPORT SEND-OFF — FAN PROJECT",
+      "location": "Suvarnabhumi Airport (Terminal 1)",
+      "time": "08:30 am",
+      "guests": [
+        "Emi Thasorn",
+        "Bonnie Dolnun"
+      ],
+      "trendingKeyword": "AIRPORT SEND OFF PROJECT",
+      "hashtag": "#EmiBonnieSafeFlight",
+      "officialUrl": "https://example.com/airport-sendoff"
+    },
+    {
+      "id": "12",
+      "date": "2026-06-22",
+      "title": "OVERSEAS PROMO — TOKYO MEDIA DAY",
+      "location": "Shibuya Stream Hall, Tokyo",
+      "locationUrl": "https://maps.google.com",
+      "time": "04:00 pm",
+      "guests": [
+        "Emi Thasorn",
+        "Bonnie Dolnun",
+        "GMMTV Press Team"
+      ],
+      "trendingKeyword": "TOKYO MEDIA DAY 2026",
+      "hashtag": "#EmiBonnieInTokyo",
+      "officialUrl": "https://example.com/tokyo-media"
+    },
+    {
+      "id": "8",
+      "date": "2026-03-08",
+      "title": "INTERNATIONAL WOMEN'S DAY FAN LIVE",
+      "location": "Instagram Live — @emi.thasorn",
+      "time": "08:00 pm",
+      "guests": [
+        "Emi Thasorn"
+      ],
+      "trendingKeyword": "IWD FAN LIVE 2026",
+      "hashtag": "#EmiBonnieIWD",
+      "officialUrl": "https://www.instagram.com"
+    },
+    {
+      "id": "9",
+      "date": "2026-03-21",
+      "title": "DRAMA PRESS CONFERENCE — NEW SERIES",
+      "location": "GMM Grammy Place, Event Hall B",
+      "time": "11:00 am",
+      "guests": [
+        "Emi Thasorn",
+        "Bonnie Dolnun",
+        "Luke Ishikawa"
+      ],
+      "trendingKeyword": "NEW SERIES PRESS CON D1",
+      "hashtag": "#EmiBonnieNewSeries",
+      "officialUrl": "https://example.com/drama-press"
+    }
+  ]
+}
