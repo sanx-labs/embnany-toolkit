@@ -385,10 +385,12 @@
   color: #fff;
 }
 
+/* Official Post：放在话题/热搜下方，作为卡片内容收尾按钮 */
 #module-schedule .sched-official {
-  margin-top: 0.4rem;
+  margin-top: 0.55rem;
   display: inline-flex;
   width: fit-content;
+  max-width: 100%;
   align-items: center;
   justify-content: center;
   border-radius: 999px;

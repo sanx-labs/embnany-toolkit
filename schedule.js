@@ -21,21 +21,21 @@
       noEvents: "No events scheduled for this month.",
       syncFailed: "Live Notion sync failed: {reason} Showing local sample data.",
       tba: "TBA",
-      timeZone: "(BKK Time)",
+      timeZone: "(Local Time)",
     },
     th: {
       loading: "กำลังโหลดตารางกิจกรรม…",
       noEvents: "เดือนนี้ไม่มีกำหนดกิจกรรม",
       syncFailed: "ซิงก์ Notion แบบเรียลไทม์ไม่สำเร็จ: {reason} กำลังแสดงข้อมูลตัวอย่างในเครื่อง",
       tba: "ยังไม่ระบุ",
-      timeZone: "(เวลาในกรุงเทพฯ)",
+      timeZone: "(เวลาท้องถิ่น)",
     },
     zh: {
       loading: "正在加载日程…",
       noEvents: "本月暂无活动。",
       syncFailed: "Notion 实时同步失败：{reason}。已显示本地示例数据。",
       tba: "待定",
-      timeZone: "（曼谷时间）",
+      timeZone: "（当地时间）",
     },
   };
   const CHEVRON_LEFT =
@@ -68,12 +68,11 @@
   let loaded = false;
   let loading = false;
   let syncNotice = "";
-  let language = document.documentElement.lang;
-  let officialPostLabel = language === "zh"
-    ? "官方动态"
-    : language === "th"
-      ? "โพสต์อย่างเป็นทางการ"
-      : "Official Post";
+  let language = document.documentElement.lang || "en";
+  // 运行时文案：优先用 app.js 通过 site-language-change 下发的 i18n，本地 SCHEDULE_TEXT 作兜底
+  let scheduleTextOverrides = null;
+  let officialPostLabel =
+    language === "zh" ? "官方动态" : language === "th" ? "โพสต์อย่างเป็นทางการ" : "Official Post";
 
   function escapeHtml(value) {
     return String(value)
@@ -118,6 +117,9 @@
   }
 
   function getScheduleText(key) {
+    if (scheduleTextOverrides && scheduleTextOverrides[key]) {
+      return scheduleTextOverrides[key];
+    }
     return (SCHEDULE_TEXT[language] || SCHEDULE_TEXT.en)[key];
   }
 
@@ -154,7 +156,8 @@
 
   function formatEventTime(event) {
     const time = String(event.time || "").trim();
-    if (!time || time.toUpperCase() === "TBA") return getScheduleText("tba");
+    // 没有具体时间时整行不显示，也不再占位 TBA
+    if (!time || time.toUpperCase() === "TBA") return "";
     return `${time} ${getScheduleText("timeZone")}`;
   }
 
@@ -286,6 +289,7 @@
   }
 
   function renderEventEntry(event) {
+    const timeLabel = formatEventTime(event);
     const trendingKeyword = String(event.trendingKeyword || "").trim();
     const hashtag = String(event.hashtag || "").trim();
     const guests = Array.isArray(event.guests) ? event.guests.filter(Boolean) : [];
@@ -336,11 +340,13 @@
       escapeHtml(event.title || "") +
       "</h2>" +
       '<div class="sched-meta">' +
-      '<div class="sched-meta-row">' +
-      CLOCK_ICON +
-      "<span>" +
-      escapeHtml(formatEventTime(event)) +
-      "</span></div>" +
+      (timeLabel
+        ? '<div class="sched-meta-row">' +
+          CLOCK_ICON +
+          "<span>" +
+          escapeHtml(timeLabel) +
+          "</span></div>"
+        : "") +
       '<div class="sched-meta-row is-location"><img class="sched-icon is-pin" src="/public/images/schedule/location-pin.png" alt="" aria-hidden="true"><p>' +
       location +
       "</p></div>" +
@@ -352,8 +358,9 @@
           "</p></div>"
         : "") +
       "</div>" +
-      official +
+      // 话题/热搜在上，Official Post 按钮固定在卡片内容最底部
       trending +
+      official +
       "</div>"
     );
   }
@@ -519,6 +526,9 @@
     language = event.detail && event.detail.lang ? event.detail.lang : "en";
     if (event.detail && event.detail.officialPost) {
       officialPostLabel = event.detail.officialPost;
+    }
+    if (event.detail && event.detail.scheduleText) {
+      scheduleTextOverrides = event.detail.scheduleText;
     }
     syncMonthLabel();
     if (pickerOpen) renderPicker();

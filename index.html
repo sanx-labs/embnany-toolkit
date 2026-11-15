@@ -656,6 +656,44 @@
         0 1px 0 rgba(255, 255, 255, 0.08) inset;
     }
 
+    /* EMV 指南图收进标题旁折叠区，完整显示不裁切 */
+    #module-emv .emv-inline-banner {
+      width: 100%;
+      margin: 0;
+    }
+    #module-emv .emv-inline-banner img {
+      aspect-ratio: auto;
+      object-fit: contain;
+    }
+    .emv-header {
+      width: 100%;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+    #module-emv .emv-guide-toggle {
+      width: 22px;
+      min-width: 22px;
+      height: 22px;
+      min-height: 22px;
+      border-radius: 6px;
+      padding: 0;
+    }
+    .emv-guide-toggle svg {
+      width: 12px;
+      height: 12px;
+      transition: transform 0.2s ease;
+    }
+    .emv-guide-toggle[aria-expanded="true"] svg {
+      transform: rotate(180deg);
+    }
+    .emv-guide-panel {
+      margin: 10px 0 2px;
+    }
+    .emv-guide-panel[hidden] {
+      display: none;
+    }
+
     .menu-item {
       height: 38px;
       padding: 0 6px;
@@ -903,6 +941,9 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
     }
+    .defense-actions-row > .defense-action:only-child {
+      grid-column: 1 / -1;
+    }
     .defense-action {
       min-height: 40px;
       height: auto;
@@ -987,6 +1028,46 @@
       max-width: 280px;
     }
 
+    /* EMV 待办：复用 defense 卡片，补一条进度条 */
+    .emv-progress {
+      margin: 0 0 12px;
+    }
+    .emv-progress-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    #emv-progress-text {
+      font-weight: 650;
+      color: var(--text-primary);
+      letter-spacing: 0.02em;
+    }
+    .emv-progress-track {
+      height: 6px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(191, 0, 255, 0.18);
+    }
+    .emv-progress-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: var(--gradient-neon);
+      transition: width 0.28s ease;
+    }
+    .emv-local-note {
+      margin: 12px 0 0;
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
     body[data-ui-lang="th"] .app-shell,
     body[data-ui-lang="th"] .creator-credit,
     body[data-ui-lang="th"] .event-picker-label,
@@ -1031,9 +1112,9 @@
       </nav>
 
       <div class="lang-switcher" id="lang-switcher" role="group" aria-label="Language switcher" data-i18n-aria="langSwitcherAria">
-        <button type="button" class="lang-option" role="switch" aria-checked="false" data-lang="zh">ZH</button>
         <button type="button" class="lang-option active" role="switch" aria-checked="true" data-lang="en">EN</button>
         <button type="button" class="lang-option" role="switch" aria-checked="false" data-lang="th">TH</button>
+        <button type="button" class="lang-option" role="switch" aria-checked="false" data-lang="zh">ZH</button>
       </div>
     </div>
 
@@ -1143,15 +1224,76 @@
 
     </section>
 
-    <!-- EMV：占位，结构与 SCHEDULE 一致 -->
+    <!-- EMV：标题旁折叠指南图 + 待办 dashboard -->
     <section id="module-emv" class="app-module" data-app-tab="emv" role="tabpanel" hidden>
-      <div class="app-shell liquid-glass placeholder-shell">
-        <header class="mb-1">
+      <div class="app-shell liquid-glass defense-shell">
+        <header class="defense-header emv-header mb-1">
           <h1 class="brand-mark text-[22px] font-semibold tracking-tight brand-neon-yellow">EMV</h1>
+          <button
+            type="button"
+            id="emv-guide-toggle"
+            class="defense-refresh emv-guide-toggle"
+            aria-expanded="false"
+            aria-controls="emv-guide-panel"
+            data-i18n-aria="emv.labels.expandGuide"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
         </header>
+        <div id="emv-guide-panel" class="emv-guide-panel" hidden>
+          <figure class="top-banner emv-inline-banner">
+            <img
+              id="emv-banner-img"
+              src="/public/images/emv/guide-en.jpg"
+              data-banner-src-en="/public/images/emv/guide-en.jpg"
+              data-banner-src-th="/public/images/emv/guide-th.jpg"
+              data-banner-src-zh="/public/images/emv/guide-zh.jpg"
+              alt="Instagram algorithm and interaction guide"
+              width="1024"
+              height="571"
+              decoding="async"
+              data-i18n-alt="emv.bannerAlt"
+            />
+          </figure>
+        </div>
         <div class="divider"></div>
-        <p class="placeholder-hint" data-i18n="comingSoon">Coming Soon</p>
-        <p class="placeholder-hint" data-i18n="comingSoonHint">This module is under construction. Use TREND for now.</p>
+
+        <div class="emv-progress" aria-live="polite">
+          <div class="emv-progress-meta">
+            <span id="emv-progress-text">0 / 0</span>
+            <span id="emv-progress-hint"></span>
+          </div>
+          <div class="emv-progress-track" aria-hidden="true">
+            <div id="emv-progress-bar" class="emv-progress-bar"></div>
+          </div>
+        </div>
+
+        <div class="defense-toolbar">
+          <div class="defense-tabs" id="emv-tabs" role="tablist">
+            <button type="button" class="defense-tab active" role="tab" data-emv-tab="uncompleted" aria-selected="true" data-i18n="emv.tabs.uncompleted">Pending</button>
+            <button type="button" class="defense-tab" role="tab" data-emv-tab="completed" aria-selected="false" data-i18n="emv.tabs.completed">Completed</button>
+            <button type="button" class="defense-tab" role="tab" data-emv-tab="skipped" aria-selected="false" data-i18n="emv.tabs.skipped">Skipped</button>
+            <button type="button" class="defense-tab" role="tab" data-emv-tab="all" aria-selected="false" data-i18n="emv.tabs.all">All</button>
+          </div>
+          <button
+            type="button"
+            id="emv-refresh"
+            class="defense-refresh"
+            data-i18n-aria="emv.labels.refresh"
+          >
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.001 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+          </button>
+        </div>
+
+        <div id="emv-list" class="defense-list" aria-live="polite"></div>
+        <div id="emv-empty" class="defense-empty" hidden>
+          <p id="emv-empty-text"></p>
+        </div>
+        <p class="emv-local-note" data-i18n="emv.labels.localNote">Progress is saved in this browser only.</p>
       </div>
     </section>
 
@@ -1248,7 +1390,7 @@
     </p>
   </div>
 
-  <script src="app.js?v=20261115"></script>
-  <script src="schedule.js?v=20261115.3"></script>
+  <script src="app.js?v=20261116.1"></script>
+  <script src="schedule.js?v=20261115.7"></script>
 </body>
 </html>

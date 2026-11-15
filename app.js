@@ -7,7 +7,7 @@
     zh: "/public/prompts/zh.txt",
   };
 
-  const UI_LANGS = ["zh", "en", "th"];
+  const UI_LANGS = ["en", "th", "zh"];
   const SITE_LANG_KEY = "site_lang";
   const MESSAGES_URL = "/public/i18n/messages.json";
 
@@ -35,8 +35,46 @@
       comingSoonHint: "该模块正在搭建，请先使用 TREND。",
       boosting: "打榜目标",
       eventSelectAria: "选择活动",
+      emv: {
+        bannerAlt: "Instagram algorithm and interaction guide",
+        tabs: {
+          uncompleted: "Pending",
+          completed: "Completed",
+          skipped: "Skipped",
+          all: "All",
+        },
+        actions: {
+          openPost: "Open Post",
+          markDone: "Mark Done",
+          skip: "Skip",
+          undo: "Undo",
+        },
+        labels: {
+          artist: "Artist",
+          handle: "Handle",
+          accountType: "Account Type",
+          priority: "Priority",
+          postedTime: "Posted Time",
+          guide: "How to do it",
+          expandGuide: "Show interaction guide",
+          collapseGuide: "Hide interaction guide",
+          emptyPending: "🎉 All EMV tasks for this round are done.",
+          emptyList: "No tasks in this view",
+          refresh: "Refresh",
+          loading: "Loading tasks…",
+          loadError: "Failed to load tasks. Please try again.",
+          progress: "{done} / {total}",
+          progressHint: "{pending} pending · {skipped} skipped",
+          localNote: "Progress is saved in this browser only.",
+        },
+      },
       schedule: {
         officialPost: "Official Post",
+        timeZone: "(Local Time)",
+        loading: "Loading schedule…",
+        noEvents: "No events scheduled for this month.",
+        syncFailed: "Live Notion sync failed: {reason} Showing local sample data.",
+        tba: "TBA",
         monthNavigationAria: "Month navigation",
         prevMonthAria: "Previous month",
         nextMonthAria: "Next month",
@@ -74,8 +112,46 @@
       },
     },
     th: {
+      emv: {
+        bannerAlt: "คู่มืออัลกอริทึมและการมีส่วนร่วมบน Instagram",
+        tabs: {
+          uncompleted: "รอดำเนินการ",
+          completed: "เสร็จสิ้น",
+          skipped: "ข้าม",
+          all: "ทั้งหมด",
+        },
+        actions: {
+          openPost: "เปิดโพสต์",
+          markDone: "ทำเครื่องหมายว่าเสร็จ",
+          skip: "ข้าม",
+          undo: "เลิกทำ",
+        },
+        labels: {
+          artist: "ศิลปิน",
+          handle: "แฮนเดิล",
+          accountType: "ประเภทบัญชี",
+          priority: "ความสำคัญ",
+          postedTime: "เวลาโพสต์",
+          guide: "วิธีทำ",
+          expandGuide: "แสดงคู่มือการมีส่วนร่วม",
+          collapseGuide: "ซ่อนคู่มือการมีส่วนร่วม",
+          emptyPending: "🎉 เคลียร์ภารกิจ EMV รอบนี้ครบแล้ว",
+          emptyList: "ไม่มีรายการในมุมนี้",
+          refresh: "รีเฟรช",
+          loading: "กำลังโหลดภารกิจ…",
+          loadError: "โหลดภารกิจไม่สำเร็จ กรุณาลองอีกครั้ง",
+          progress: "{done} / {total}",
+          progressHint: "รอดำเนินการ {pending} · ข้าม {skipped}",
+          localNote: "ความคืบหน้าเก็บไว้ในเบราว์เซอร์นี้เท่านั้น",
+        },
+      },
       schedule: {
         officialPost: "โพสต์อย่างเป็นทางการ",
+        timeZone: "(เวลาท้องถิ่น)",
+        loading: "กำลังโหลดตารางกิจกรรม…",
+        noEvents: "เดือนนี้ไม่มีกำหนดกิจกรรม",
+        syncFailed: "ซิงก์ Notion แบบเรียลไทม์ไม่สำเร็จ: {reason} กำลังแสดงข้อมูลตัวอย่างในเครื่อง",
+        tba: "ยังไม่ระบุ",
         monthNavigationAria: "การนำทางเดือน",
         prevMonthAria: "เดือนก่อนหน้า",
         nextMonthAria: "เดือนถัดไป",
@@ -109,8 +185,46 @@
       comingSoonHint: "该模块正在开发中，请先使用 TREND。",
       boosting: "打榜目标",
       eventSelectAria: "选择活动",
+      emv: {
+        bannerAlt: "Instagram 算法与互动指南",
+        tabs: {
+          uncompleted: "未完成",
+          completed: "已完成",
+          skipped: "跳过",
+          all: "全部",
+        },
+        actions: {
+          openPost: "打开原帖",
+          markDone: "标记完成",
+          skip: "跳过",
+          undo: "撤销",
+        },
+        labels: {
+          artist: "艺人",
+          handle: "账号",
+          accountType: "账号类型",
+          priority: "优先级",
+          postedTime: "发布时间",
+          guide: "怎么做",
+          expandGuide: "展开互动指南",
+          collapseGuide: "收起互动指南",
+          emptyPending: "🎉 本轮 EMV 待办已全部完成",
+          emptyList: "该分类下暂无任务",
+          refresh: "刷新",
+          loading: "正在加载任务…",
+          loadError: "加载失败，请稍后重试",
+          progress: "{done} / {total}",
+          progressHint: "待办 {pending} · 跳过 {skipped}",
+          localNote: "进度只保存在本机浏览器，换设备不会同步",
+        },
+      },
       schedule: {
         officialPost: "官方动态",
+        timeZone: "（当地时间）",
+        loading: "正在加载日程…",
+        noEvents: "本月暂无活动。",
+        syncFailed: "Notion 实时同步失败：{reason}。已显示本地示例数据。",
+        tba: "待定",
         monthNavigationAria: "月份导航",
         prevMonthAria: "上个月",
         nextMonthAria: "下个月",
@@ -157,6 +271,14 @@
   const DEFENSE_OPEN_KEY = "defense-open-v1";
   const DEFENSE_TAB_KEY = "defense-tab-v1";
   const DEFENSE_TABS = ["uncompleted", "completed", "skipped", "all"];
+  const EMV_LIVE_URL = "/api/emv";
+  const EMV_FALLBACK_URL = "/public/emv/tasks.json";
+  const EMV_DONE_KEY = "emv-done-v1";
+  const EMV_SKIP_KEY = "emv-skip-v1";
+  const EMV_OPEN_KEY = "emv-open-v1";
+  const EMV_TAB_KEY = "emv-tab-v1";
+  const EMV_GUIDE_KEY = "emv-guide-open-v1";
+  const EMV_TABS = ["uncompleted", "completed", "skipped", "all"];
 
   const EVENT_IDS = ["EmiBonnie", "Emi", "Bonnie", "Any", "EmiBonnieAny", "EmiAny", "BonnieAny"];
   // 旧下拉 id 映射到 config.js 里的正式键名
@@ -234,6 +356,15 @@
   let defenseDone = {};
   let defenseSkip = {};
   let defenseOpen = {};
+
+  let emvTasks = [];
+  let emvLoaded = false;
+  let emvLoading = false;
+  let emvLoadError = false;
+  let emvView = "uncompleted";
+  let emvDone = {};
+  let emvSkip = {};
+  let emvOpen = {};
 
   const $ = (id) => document.getElementById(id);
 
@@ -367,9 +498,8 @@
     ).map((code) => String(code || "").toLowerCase());
 
     for (const code of codes) {
-      if (code.startsWith("zh")) return "zh";
-      if (code.startsWith("th")) return "th";
-      if (code.startsWith("en")) return "en";
+      const matched = UI_LANGS.find((lang) => code === lang || code.startsWith(lang + "-"));
+      if (matched) return matched;
     }
     return "en";
   }
@@ -392,6 +522,29 @@
     if (!res.ok) throw new Error("Failed to load i18n dictionary");
     messages = await res.json();
     if (!messages.en) messages = FALLBACK_MESSAGES;
+  }
+
+  /**
+   * 按当前语言切换带 data-banner-src-{lang} 的图片。
+   * 只换 src，不重建 DOM，语言切换时更顺滑。
+   */
+  let bannersPrefetched = false;
+  function syncLocalizedBanners() {
+    document.querySelectorAll("[data-banner-src-en]").forEach((img) => {
+      const next =
+        img.getAttribute("data-banner-src-" + currentLang) ||
+        img.getAttribute("data-banner-src-en");
+      if (next && img.getAttribute("src") !== next) img.src = next;
+    });
+    if (bannersPrefetched) return;
+    bannersPrefetched = true;
+    // 预热另外两种语言的图，切语言时不会闪一下空白
+    document.querySelectorAll("[data-banner-src-en]").forEach((img) => {
+      UI_LANGS.forEach((lang) => {
+        const src = img.getAttribute("data-banner-src-" + lang);
+        if (src) new Image().src = src;
+      });
+    });
   }
 
   function syncLangSwitcher() {
@@ -418,14 +571,31 @@
       if (el.getAttribute("aria-label") === t("copiedAria")) return;
       el.setAttribute("aria-label", t(el.dataset.i18nAria));
     });
+    document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
+      el.setAttribute("alt", t(el.dataset.i18nAlt));
+    });
+    syncLocalizedBanners();
+    syncEmvGuidePanel();
 
     syncLangSwitcher();
     syncPreviewState();
     // 列表文案由 JS 渲染，语言切换后需要重绘
     if ($("defense-list")) renderDefenseList();
+    if ($("emv-list")) renderEmvList();
+    // 通知 SCHEDULE 模块同步语言（含当地时间后缀等动态文案）
     document.dispatchEvent(
       new CustomEvent("site-language-change", {
-        detail: { lang: currentLang, officialPost: t("schedule.officialPost") },
+        detail: {
+          lang: currentLang,
+          officialPost: t("schedule.officialPost"),
+          scheduleText: {
+            loading: t("schedule.loading"),
+            noEvents: t("schedule.noEvents"),
+            syncFailed: t("schedule.syncFailed"),
+            tba: t("schedule.tba"),
+            timeZone: t("schedule.timeZone"),
+          },
+        },
       })
     );
   }
@@ -777,9 +947,345 @@
     localStorage.setItem(APP_TAB_KEY, tab);
     if (writeHash) syncHash();
 
-    // 进入 VOTING（原 DEFENSE）时再懒加载线索，避免拖慢 TREND 首屏
-    if (tab === "voting") {
-      ensureDefenseReady();
+    // 进入模块后再拉清单，避免拖慢 TREND 首屏
+    if (tab === "emv") ensureEmvReady();
+    if (tab === "voting") ensureDefenseReady();
+  }
+
+  /* ================= EMV：Notion 帖子待办（UI 对齐 clue-list） ================= */
+
+  function emvStateOf(task) {
+    const id = task && task.id;
+    if (!id) return "uncompleted";
+    if (emvDone[id]) return "completed";
+    if (emvSkip[id]) return "skipped";
+    return "uncompleted";
+  }
+
+  function loadEmvLocalState() {
+    emvDone = readJsonMap(EMV_DONE_KEY);
+    emvSkip = readJsonMap(EMV_SKIP_KEY);
+    const savedTab = localStorage.getItem(EMV_TAB_KEY);
+    emvView = EMV_TABS.includes(savedTab) ? savedTab : "uncompleted";
+  }
+
+  function isEmvGuideOpen() {
+    const btn = $("emv-guide-toggle");
+    return Boolean(btn && btn.getAttribute("aria-expanded") === "true");
+  }
+
+  function syncEmvGuidePanel() {
+    const btn = $("emv-guide-toggle");
+    const panel = $("emv-guide-panel");
+    if (!btn || !panel) return;
+    const open = isEmvGuideOpen();
+    panel.hidden = !open;
+    btn.setAttribute("aria-label", open ? t("emv.labels.collapseGuide") : t("emv.labels.expandGuide"));
+  }
+
+  function setEmvGuideOpen(open) {
+    const btn = $("emv-guide-toggle");
+    if (!btn) return;
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    localStorage.setItem(EMV_GUIDE_KEY, open ? "1" : "0");
+    syncEmvGuidePanel();
+    if (open) syncLocalizedBanners();
+  }
+
+  function syncEmvTabs() {
+    document.querySelectorAll("#emv-tabs [data-emv-tab]").forEach((btn) => {
+      const active = btn.dataset.emvTab === emvView;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-selected", active ? "true" : "false");
+    });
+  }
+
+  function setEmvView(view) {
+    if (!EMV_TABS.includes(view)) view = "uncompleted";
+    emvView = view;
+    localStorage.setItem(EMV_TAB_KEY, view);
+    syncEmvTabs();
+    renderEmvList();
+  }
+
+  function getFilteredEmvTasks() {
+    if (emvView === "all") return emvTasks.slice();
+    return emvTasks.filter((task) => emvStateOf(task) === emvView);
+  }
+
+  function renderEmvProgress() {
+    const textEl = $("emv-progress-text");
+    const hintEl = $("emv-progress-hint");
+    const barEl = $("emv-progress-bar");
+    const total = emvTasks.length;
+    const done = emvTasks.filter((task) => emvStateOf(task) === "completed").length;
+    const skipped = emvTasks.filter((task) => emvStateOf(task) === "skipped").length;
+    const pending = Math.max(0, total - done - skipped);
+    const percent = total ? Math.round((done / total) * 100) : 0;
+    if (textEl) textEl.textContent = t("emv.labels.progress", { done, total }) + " · " + percent + "%";
+    if (hintEl) hintEl.textContent = t("emv.labels.progressHint", { pending, skipped });
+    if (barEl) barEl.style.width = percent + "%";
+  }
+
+  function renderEmvEmpty(visibleCount) {
+    const emptyEl = $("emv-empty");
+    const emptyText = $("emv-empty-text");
+    if (!emptyEl || !emptyText) return;
+
+    if (!emvLoaded) {
+      emptyEl.hidden = false;
+      emptyText.textContent = emvLoadError ? t("emv.labels.loadError") : t("emv.labels.loading");
+      return;
+    }
+    if (visibleCount > 0) {
+      emptyEl.hidden = true;
+      emptyText.textContent = "";
+      return;
+    }
+    emptyEl.hidden = false;
+    emptyText.textContent =
+      emvView === "uncompleted" ? t("emv.labels.emptyPending") : t("emv.labels.emptyList");
+  }
+
+  function formatEmvPostedTime(raw) {
+    const value = String(raw || "").trim();
+    if (!value) return "";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    const hasTime = /T\d{2}:\d{2}/.test(value);
+    const locale =
+      currentLang === "zh" ? "zh-CN" : currentLang === "th" ? "th-TH" : "en-US";
+    return date.toLocaleString(locale, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      ...(hasTime ? { hour: "numeric", minute: "2-digit" } : {}),
+    });
+  }
+
+  function renderEmvCard(task) {
+    const state = emvStateOf(task);
+    const eventName = String(task.event || "").trim() || String(task.artist || "").trim();
+    const artist = String(task.artist || "").trim();
+    const handle = String(task.handle || "").trim();
+    const accountType = String(task.accountType || "").trim();
+    const priority = String(task.priority || "").trim();
+    const postedTime = formatEmvPostedTime(task.postedTime);
+    const postLink = String(task.postLink || "").trim();
+
+    const card = document.createElement("article");
+    card.className =
+      "defense-card" +
+      (state === "completed" ? " is-done" : "") +
+      (state === "skipped" ? " is-skipped" : "");
+    card.dataset.emvId = task.id;
+
+    const badges = [];
+    if (state === "completed") {
+      badges.push(
+        `<span class="defense-badge is-status is-status-done">${escapeHtml(t("emv.tabs.completed"))}</span>`
+      );
+    } else if (state === "skipped") {
+      badges.push(`<span class="defense-badge is-status">${escapeHtml(t("emv.tabs.skipped"))}</span>`);
+    }
+    if (artist) {
+      badges.push(
+        `<span class="defense-badge">${escapeHtml(t("emv.labels.artist"))} · ${escapeHtml(artist)}</span>`
+      );
+    }
+    if (handle) {
+      badges.push(
+        `<span class="defense-badge">${escapeHtml(t("emv.labels.handle"))} · ${escapeHtml(handle)}</span>`
+      );
+    }
+    if (accountType) {
+      badges.push(
+        `<span class="defense-badge">${escapeHtml(t("emv.labels.accountType"))} · ${escapeHtml(accountType)}</span>`
+      );
+    }
+    if (priority) {
+      const hi = /high|urgent|高|ด่วน/i.test(priority);
+      badges.push(
+        `<span class="defense-badge${hi ? " is-score-hi" : ""}">${escapeHtml(t("emv.labels.priority"))} · ${escapeHtml(priority)}</span>`
+      );
+    }
+
+    const openButton = postLink
+      ? `<button type="button" class="defense-action is-primary" data-emv-action="open">${escapeHtml(t("emv.actions.openPost"))}</button>`
+      : "";
+    const skipButton = `<button type="button" class="defense-action${postLink ? "" : " is-primary"}" data-emv-action="skip">${escapeHtml(t("emv.actions.skip"))}</button>`;
+    const undoButton = `<button type="button" class="defense-action${postLink ? "" : " is-primary"}" data-emv-action="undo">${escapeHtml(t("emv.actions.undo"))}</button>`;
+    // 完成改由左侧钩按钮完成，这里只保留「打开原帖」和「跳过」并排，少占一行。
+    const actionButtons =
+      state === "uncompleted"
+        ? `<div class="defense-actions-row">${openButton}${skipButton}</div>`
+        : `<div class="defense-actions-row">${openButton}${undoButton}</div>`;
+
+    const tickAction = state === "uncompleted" ? "done" : "undo";
+    const tickLabel =
+      state === "completed" || state === "skipped"
+        ? t("emv.actions.undo")
+        : t("emv.actions.markDone");
+
+    card.innerHTML = `
+      <div class="defense-card-top">
+        <button type="button" class="defense-tick${state === "completed" ? " is-checked" : ""}" data-emv-action="${tickAction}" aria-pressed="${state === "completed" ? "true" : "false"}" aria-label="${escapeHtml(tickLabel)}">✓</button>
+        <div class="defense-card-body">
+          <h3 class="defense-card-title">${escapeHtml(eventName)}</h3>
+          ${badges.length ? `<div class="defense-badges">${badges.join("")}</div>` : ""}
+          ${postedTime ? `<p class="defense-meta">${escapeHtml(t("emv.labels.postedTime"))} · ${escapeHtml(postedTime)}</p>` : ""}
+          <div class="defense-actions">${actionButtons}</div>
+        </div>
+      </div>
+    `;
+    return card;
+  }
+
+  function renderEmvList() {
+    const listEl = $("emv-list");
+    if (!listEl) return;
+    syncEmvTabs();
+    renderEmvProgress();
+    const items = getFilteredEmvTasks();
+    listEl.innerHTML = "";
+    items.forEach((task) => listEl.appendChild(renderEmvCard(task)));
+    renderEmvEmpty(items.length);
+  }
+
+  function markEmvDone(taskId) {
+    if (!taskId) return;
+    emvDone[taskId] = { at: new Date().toISOString().slice(0, 16).replace("T", " ") };
+    delete emvSkip[taskId];
+    writeJsonMap(EMV_DONE_KEY, emvDone);
+    writeJsonMap(EMV_SKIP_KEY, emvSkip);
+    renderEmvList();
+  }
+
+  function markEmvSkip(taskId) {
+    if (!taskId) return;
+    emvSkip[taskId] = 1;
+    delete emvDone[taskId];
+    writeJsonMap(EMV_DONE_KEY, emvDone);
+    writeJsonMap(EMV_SKIP_KEY, emvSkip);
+    renderEmvList();
+  }
+
+  function undoEmvStatus(taskId) {
+    if (!taskId) return;
+    delete emvDone[taskId];
+    delete emvSkip[taskId];
+    writeJsonMap(EMV_DONE_KEY, emvDone);
+    writeJsonMap(EMV_SKIP_KEY, emvSkip);
+    renderEmvList();
+  }
+
+  function findEmvTask(taskId) {
+    return emvTasks.find((item) => item.id === taskId) || null;
+  }
+
+  function openEmvPost(task) {
+    if (!task || !task.postLink) return;
+    window.open(task.postLink, "_blank", "noopener,noreferrer");
+  }
+
+  async function fetchEmvPayload(url) {
+    const response = await fetch(bustCache(url), { cache: "no-store" });
+    const payload = await response.json().catch(() => null);
+    if (!response.ok) {
+      const detail = payload && typeof payload.detail === "string" ? payload.detail.trim() : "";
+      throw new Error(detail || "emv api " + response.status);
+    }
+    return payload || {};
+  }
+
+  async function loadEmvTasks(options) {
+    const force = Boolean(options && options.force);
+    if (emvLoading) return;
+    if (emvLoaded && !force) {
+      renderEmvList();
+      return;
+    }
+
+    emvLoading = true;
+    emvLoadError = false;
+    const refreshBtn = $("emv-refresh");
+    if (refreshBtn) refreshBtn.classList.add("is-spinning");
+    if (!emvTasks.length) renderEmvList();
+
+    try {
+      let payload;
+      try {
+        payload = await fetchEmvPayload(EMV_LIVE_URL);
+      } catch (liveError) {
+        console.warn("[EMV] live Notion API unavailable, using local fallback", liveError);
+        payload = await fetchEmvPayload(EMV_FALLBACK_URL);
+      }
+      const tasks = Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload && payload.tasks)
+          ? payload.tasks
+          : [];
+      emvTasks = tasks.filter(
+        (item) =>
+          item &&
+          item.id &&
+          (String(item.event || "").trim() || String(item.artist || "").trim()),
+      );
+      emvLoaded = true;
+      emvLoadError = false;
+      renderEmvList();
+    } catch (err) {
+      console.error(err);
+      emvTasks = [];
+      emvLoaded = true;
+      emvLoadError = true;
+      renderEmvList();
+    } finally {
+      emvLoading = false;
+      if (refreshBtn) {
+        setTimeout(() => refreshBtn.classList.remove("is-spinning"), 560);
+      }
+    }
+  }
+
+  function ensureEmvReady() {
+    loadEmvLocalState();
+    syncEmvTabs();
+    setEmvGuideOpen(localStorage.getItem(EMV_GUIDE_KEY) === "1");
+    loadEmvTasks();
+  }
+
+  function bindEmvEvents() {
+    const toggle = $("emv-guide-toggle");
+    if (toggle) {
+      toggle.addEventListener("click", () => {
+        setEmvGuideOpen(!isEmvGuideOpen());
+      });
+    }
+    const tabs = $("emv-tabs");
+    if (tabs) {
+      tabs.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-emv-tab]");
+        if (btn) setEmvView(btn.dataset.emvTab);
+      });
+    }
+    const refreshBtn = $("emv-refresh");
+    if (refreshBtn) {
+      refreshBtn.addEventListener("click", () => loadEmvTasks({ force: true }));
+    }
+    const listEl = $("emv-list");
+    if (listEl) {
+      listEl.addEventListener("click", (e) => {
+        const actionBtn = e.target.closest("[data-emv-action]");
+        const card = e.target.closest("[data-emv-id]");
+        if (!actionBtn || !card) return;
+        const taskId = card.dataset.emvId;
+        const action = actionBtn.dataset.emvAction;
+        if (action === "open") openEmvPost(findEmvTask(taskId));
+        else if (action === "done") markEmvDone(taskId);
+        else if (action === "skip") markEmvSkip(taskId);
+        else if (action === "undo") undoEmvStatus(taskId);
+      });
     }
   }
 
@@ -1178,6 +1684,8 @@
     currentLang = detectSiteLang();
     loadDefenseLocalState();
     bindDefenseEvents();
+    loadEmvLocalState();
+    bindEmvEvents();
     applyI18n();
 
     const savedEvent = localStorage.getItem(EVENT_KEY);

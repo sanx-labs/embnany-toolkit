@@ -1,0 +1,25 @@
+{
+  "source": "sample",
+  "tasks": [
+    {
+      "id": "sample-emv-1",
+      "event": "GMMTVNEXT: GENERATION HAPPY",
+      "artist": "EMI - BONNIE",
+      "handle": "@emibonnie",
+      "accountType": "Official",
+      "priority": "High",
+      "postedTime": "2026-11-03T16:00:00",
+      "postLink": "https://www.instagram.com/"
+    },
+    {
+      "id": "sample-emv-2",
+      "event": "BLUSH BLOSSOM FANFEST 2026",
+      "artist": "EMI / BONNIE",
+      "handle": "@gmmofficial",
+      "accountType": "Fan",
+      "priority": "Normal",
+      "postedTime": "2026-11-07T15:00:00",
+      "postLink": "https://x.com/"
+    }
+  ]
+}

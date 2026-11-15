@@ -40,9 +40,18 @@ function isPlaceholderValue(value) {
   );
 }
 
+function getScheduleDatabaseId() {
+  // 正式变量名是 NOTION_Schedule_ID；大写 / 旧名仍兼容
+  return (
+    readEnv("NOTION_Schedule_ID") ||
+    readEnv("NOTION_SCHEDULE_ID") ||
+    readEnv("NOTION_DATABASE_ID")
+  );
+}
+
 function isConfigured() {
   const apiKey = readEnv("NOTION_API_KEY");
-  const databaseId = readEnv("NOTION_DATABASE_ID");
+  const databaseId = getScheduleDatabaseId();
   return Boolean(
     apiKey &&
       databaseId &&
@@ -295,6 +304,10 @@ function zonedLocalToUtc(isoDate, hour24, minute, timeZone) {
   return new Date(ms);
 }
 
+/**
+ * 直接沿用 Notion Date 字段里的墙钟时间（不做国旗/时区换算），
+ * 保证页面显示与 Notion 表格看到的一致；排序用的 startsAt 统一按曼谷时区解释。
+ */
 function parseEventDateTimeFromNotion(notionStart) {
   if (!notionStart) return { time: "TBA" };
 
@@ -312,9 +325,10 @@ function parseEventDateTimeFromNotion(notionStart) {
 
   return {
     date: wallClock.date,
+    // 小时/分钟取自 Notion start 字符串本身，不做跨时区换算
     time: formatTime12h(wallClock.hour, wallClock.minute),
     startsAt: instant.toISOString(),
-    eventTimeZone,
+    eventTimeZone: EVENT_TIMEZONE,
   };
 }
 
@@ -340,7 +354,10 @@ function mapNotionPageToEvent(page) {
   if (!title || !parsed.date) return null;
 
   const hashtagField = getRichTextWithLink(properties[props.hashtag]);
-  const officialUrl = getUrl(properties[props.officialUrl]) || "";
+  // Official Post：优先按列名取 URL；缺失时回退到第一个 url 类型属性
+  const officialProp =
+    properties[props.officialUrl] || firstPropertyOfType(properties, "url");
+  const officialUrl = getUrl(officialProp) || "";
 
   return {
     id: page.id,
@@ -373,7 +390,7 @@ async function getScheduleEventsFromNotion() {
     return scheduleCache.events;
   }
 
-  const databaseId = normalizeNotionId(readEnv("NOTION_DATABASE_ID"));
+  const databaseId = normalizeNotionId(getScheduleDatabaseId());
   const dataSourceId = await resolveDataSourceId(databaseId);
   const events = [];
   let cursor;
@@ -450,7 +467,7 @@ module.exports = async function handler(req, res) {
   if (!isConfigured()) {
     sendJson(res, 503, {
       error: "Notion is not configured",
-      detail: "Set NOTION_API_KEY and NOTION_DATABASE_ID in server environment variables.",
+      detail: "Set NOTION_API_KEY and NOTION_Schedule_ID in server environment variables.",
     });
     return;
   }

@@ -18,8 +18,46 @@
     "comingSoonHint": "This module is under construction. Use TREND for now.",
     "boosting": "Boosting",
     "eventSelectAria": "Select event",
+    "emv": {
+      "bannerAlt": "Instagram algorithm and interaction guide",
+      "tabs": {
+        "uncompleted": "Pending",
+        "completed": "Completed",
+        "skipped": "Skipped",
+        "all": "All"
+      },
+      "actions": {
+        "openPost": "Open Post",
+        "markDone": "Mark Done",
+        "skip": "Skip",
+        "undo": "Undo"
+      },
+      "labels": {
+        "artist": "Artist",
+        "handle": "Handle",
+        "accountType": "Account Type",
+        "priority": "Priority",
+        "postedTime": "Posted Time",
+        "guide": "How to do it",
+        "expandGuide": "Show interaction guide",
+        "collapseGuide": "Hide interaction guide",
+        "emptyPending": "🎉 All EMV tasks for this round are done.",
+        "emptyList": "No tasks in this view",
+        "refresh": "Refresh",
+        "loading": "Loading tasks…",
+        "loadError": "Failed to load tasks. Please try again.",
+        "progress": "{done} / {total}",
+        "progressHint": "{pending} pending · {skipped} skipped",
+        "localNote": "Progress is saved in this browser only."
+      }
+    },
     "schedule": {
       "officialPost": "Official Post",
+      "timeZone": "(Local Time)",
+      "loading": "Loading schedule…",
+      "noEvents": "No events scheduled for this month.",
+      "syncFailed": "Live Notion sync failed: {reason} Showing local sample data.",
+      "tba": "TBA",
       "monthNavigationAria": "Month navigation",
       "prevMonthAria": "Previous month",
       "nextMonthAria": "Next month",
@@ -78,8 +116,46 @@
     "comingSoonHint": "โมดูลนี้กำลังจัดทำ ใช้ TREND ไปก่อนได้เลย",
     "boosting": "บูสต์ให้",
     "eventSelectAria": "เลือกอีเวนต์",
+    "emv": {
+      "bannerAlt": "คู่มืออัลกอริทึมและการมีส่วนร่วมบน Instagram",
+      "tabs": {
+        "uncompleted": "รอดำเนินการ",
+        "completed": "เสร็จสิ้น",
+        "skipped": "ข้าม",
+        "all": "ทั้งหมด"
+      },
+      "actions": {
+        "openPost": "เปิดโพสต์",
+        "markDone": "ทำเครื่องหมายว่าเสร็จ",
+        "skip": "ข้าม",
+        "undo": "เลิกทำ"
+      },
+      "labels": {
+        "artist": "ศิลปิน",
+        "handle": "แฮนเดิล",
+        "accountType": "ประเภทบัญชี",
+        "priority": "ความสำคัญ",
+        "postedTime": "เวลาโพสต์",
+        "guide": "วิธีทำ",
+        "expandGuide": "แสดงคู่มือการมีส่วนร่วม",
+        "collapseGuide": "ซ่อนคู่มือการมีส่วนร่วม",
+        "emptyPending": "🎉 เคลียร์ภารกิจ EMV รอบนี้ครบแล้ว",
+        "emptyList": "ไม่มีรายการในมุมนี้",
+        "refresh": "รีเฟรช",
+        "loading": "กำลังโหลดภารกิจ…",
+        "loadError": "โหลดภารกิจไม่สำเร็จ กรุณาลองอีกครั้ง",
+        "progress": "{done} / {total}",
+        "progressHint": "รอดำเนินการ {pending} · ข้าม {skipped}",
+        "localNote": "ความคืบหน้าเก็บไว้ในเบราว์เซอร์นี้เท่านั้น"
+      }
+    },
     "schedule": {
       "officialPost": "โพสต์อย่างเป็นทางการ",
+      "timeZone": "(เวลาท้องถิ่น)",
+      "loading": "กำลังโหลดตารางกิจกรรม…",
+      "noEvents": "เดือนนี้ไม่มีกำหนดกิจกรรม",
+      "syncFailed": "ซิงก์ Notion แบบเรียลไทม์ไม่สำเร็จ: {reason} กำลังแสดงข้อมูลตัวอย่างในเครื่อง",
+      "tba": "ยังไม่ระบุ",
       "monthNavigationAria": "การนำทางเดือน",
       "prevMonthAria": "เดือนก่อนหน้า",
       "nextMonthAria": "เดือนถัดไป",
@@ -138,8 +214,46 @@
     "comingSoonHint": "该模块正在开发中，请先使用 TREND。",
     "boosting": "打榜目标",
     "eventSelectAria": "选择活动",
+    "emv": {
+      "bannerAlt": "Instagram 算法与互动指南",
+      "tabs": {
+        "uncompleted": "未完成",
+        "completed": "已完成",
+        "skipped": "跳过",
+        "all": "全部"
+      },
+      "actions": {
+        "openPost": "打开原帖",
+        "markDone": "标记完成",
+        "skip": "跳过",
+        "undo": "撤销"
+      },
+      "labels": {
+        "artist": "艺人",
+        "handle": "账号",
+        "accountType": "账号类型",
+        "priority": "优先级",
+        "postedTime": "发布时间",
+        "guide": "怎么做",
+        "expandGuide": "展开互动指南",
+        "collapseGuide": "收起互动指南",
+        "emptyPending": "🎉 本轮 EMV 待办已全部完成",
+        "emptyList": "该分类下暂无任务",
+        "refresh": "刷新",
+        "loading": "正在加载任务…",
+        "loadError": "加载失败，请稍后重试",
+        "progress": "{done} / {total}",
+        "progressHint": "待办 {pending} · 跳过 {skipped}",
+        "localNote": "进度只保存在本机浏览器，换设备不会同步"
+      }
+    },
     "schedule": {
       "officialPost": "官方动态",
+      "timeZone": "（当地时间）",
+      "loading": "正在加载日程…",
+      "noEvents": "本月暂无活动。",
+      "syncFailed": "Notion 实时同步失败：{reason}。已显示本地示例数据。",
+      "tba": "待定",
       "monthNavigationAria": "月份导航",
       "prevMonthAria": "上个月",
       "nextMonthAria": "下个月",
