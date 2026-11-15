@@ -21,18 +21,21 @@
       noEvents: "No events scheduled for this month.",
       syncFailed: "Live Notion sync failed: {reason} Showing local sample data.",
       tba: "TBA",
+      timeZone: "(BKK Time)",
     },
     th: {
       loading: "กำลังโหลดตารางกิจกรรม…",
       noEvents: "เดือนนี้ไม่มีกำหนดกิจกรรม",
       syncFailed: "ซิงก์ Notion แบบเรียลไทม์ไม่สำเร็จ: {reason} กำลังแสดงข้อมูลตัวอย่างในเครื่อง",
       tba: "ยังไม่ระบุ",
+      timeZone: "(เวลาในกรุงเทพฯ)",
     },
     zh: {
       loading: "正在加载日程…",
       noEvents: "本月暂无活动。",
       syncFailed: "Notion 实时同步失败：{reason}。已显示本地示例数据。",
       tba: "待定",
+      timeZone: "（曼谷时间）",
     },
   };
   const CHEVRON_LEFT =
@@ -150,29 +153,9 @@
   }
 
   function formatEventTime(event) {
-    if (!event.startsAt) {
-      const time = event.time || "TBA";
-      if (time.toUpperCase() === "TBA") return getScheduleText("tba");
-      if (!isChinese() && language !== "th") return time;
-      const match = time.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-      if (!match) return time;
-      let hour = Number.parseInt(match[1], 10);
-      const period = match[3].toUpperCase();
-      if (period === "PM" && hour !== 12) hour += 12;
-      if (period === "AM" && hour === 12) hour = 0;
-      if (language === "th") {
-        return `${String(hour).padStart(2, "0")}:${match[2]} น.`;
-      }
-      return `${hour < 12 ? "上午" : "下午"} ${hour % 12 || 12}:${match[2]}`;
-    }
-    const instant = new Date(event.startsAt);
-    if (Number.isNaN(instant.getTime())) return event.time || getScheduleText("tba");
-    const locale = language === "zh" ? "zh-CN" : language === "th" ? "th-TH" : "en-US";
-    return instant.toLocaleTimeString(locale, {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: language !== "th",
-    }) + (language === "th" ? " น." : "");
+    const time = String(event.time || "").trim();
+    if (!time || time.toUpperCase() === "TBA") return getScheduleText("tba");
+    return `${time} ${getScheduleText("timeZone")}`;
   }
 
   function splitHashtagTags(raw) {

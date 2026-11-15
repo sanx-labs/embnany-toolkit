@@ -10,27 +10,7 @@ const NOTION_API_BASE = "https://api.notion.com/v1";
 const NOTION_VERSION = "2025-09-03";
 const SCHEDULE_CACHE_MS = 60_000;
 
-const FLAG_TIMEZONES = {
-  "🇹🇭": "Asia/Bangkok",
-  "🇨🇳": "Asia/Shanghai",
-  "🇭🇰": "Asia/Hong_Kong",
-  "🇲🇴": "Asia/Macau",
-  "🇹🇼": "Asia/Taipei",
-  "🇰🇷": "Asia/Seoul",
-  "🇯🇵": "Asia/Tokyo",
-  "🇸🇬": "Asia/Singapore",
-  "🇵🇭": "Asia/Manila",
-  "🇻🇳": "Asia/Ho_Chi_Minh",
-  "🇫🇷": "Europe/Paris",
-  "🇮🇹": "Europe/Rome",
-  "🇬🇧": "Europe/London",
-  "🇩🇪": "Europe/Berlin",
-  "🇺🇸": "America/New_York",
-  "🇦🇺": "Australia/Sydney",
-};
-
-const TITLE_FLAG_PATTERN = /^(\uD83C[\uDDE6-\uDDFF]\uD83C[\uDDE6-\uDDFF])\s*/;
-const DEFAULT_EVENT_TIMEZONE = "Asia/Shanghai";
+const EVENT_TIMEZONE = "Asia/Bangkok";
 
 /** 简易内存缓存，减轻 Notion 压力 */
 let scheduleCache = null;
@@ -267,12 +247,6 @@ function formatTime12h(hour24, minute) {
   return `${hour12}:${String(minute).padStart(2, "0")} ${period}`;
 }
 
-function getEventTimeZoneFromTitle(title) {
-  const match = String(title || "").match(TITLE_FLAG_PATTERN);
-  if (!match) return DEFAULT_EVENT_TIMEZONE;
-  return FLAG_TIMEZONES[match[1]] || DEFAULT_EVENT_TIMEZONE;
-}
-
 function parseNotionWallClock(notionStart) {
   const dateOnly = notionStart.match(/^(\d{4}-\d{2}-\d{2})$/);
   if (dateOnly) return { date: dateOnly[1], hasTime: false };
@@ -321,20 +295,19 @@ function zonedLocalToUtc(isoDate, hour24, minute, timeZone) {
   return new Date(ms);
 }
 
-function parseEventDateTimeFromNotion(notionStart, title) {
+function parseEventDateTimeFromNotion(notionStart) {
   if (!notionStart) return { time: "TBA" };
 
-  const eventTimeZone = getEventTimeZoneFromTitle(title);
   const wallClock = parseNotionWallClock(notionStart);
   if (!wallClock.hasTime) {
-    return { date: wallClock.date, time: "TBA", eventTimeZone };
+    return { date: wallClock.date, time: "TBA", eventTimeZone: EVENT_TIMEZONE };
   }
 
   const instant = zonedLocalToUtc(
     wallClock.date,
     wallClock.hour,
     wallClock.minute,
-    eventTimeZone,
+    EVENT_TIMEZONE,
   );
 
   return {
@@ -362,7 +335,7 @@ function mapNotionPageToEvent(page) {
       : firstPropertyOfType(properties, "date");
   const notionStart =
     dateProp && dateProp.type === "date" && dateProp.date ? dateProp.date.start : undefined;
-  const parsed = parseEventDateTimeFromNotion(notionStart, title);
+  const parsed = parseEventDateTimeFromNotion(notionStart);
 
   if (!title || !parsed.date) return null;
 
