@@ -10,13 +10,6 @@ const NOTION_API_BASE = "https://api.notion.com/v1";
 const NOTION_VERSION = "2025-09-03";
 const SCHEDULE_CACHE_MS = 60_000;
 
-const DEFAULT_PROFILE = {
-  name: "EmiBonnieAny Schedule",
-  subtitle: "All Events Schedule for MimiNini&Any",
-  avatarSrc: "/public/images/schedule/avatar.jpg",
-  avatarPosition: "65% center",
-};
-
 const FLAG_TIMEZONES = {
   "🇹🇭": "Asia/Bangkok",
   "🇨🇳": "Asia/Shanghai",
@@ -495,7 +488,6 @@ module.exports = async function handler(req, res) {
       res,
       200,
       {
-        profile: DEFAULT_PROFILE,
         events,
         source: "notion",
       },

@@ -546,9 +546,11 @@
     .app-navbar {
       flex: 1;
       min-width: 0;
+      height: 50px;
       margin: 0;
       border-radius: 16px;
       padding: 5px 6px;
+      box-sizing: border-box;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 5px;
@@ -568,15 +570,17 @@
       gap: 4px;
       padding: 5px;
       border-radius: 16px;
-      min-height: 48px;
+      height: 50px;
+      min-height: 50px;
+      box-sizing: border-box;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(191, 0, 255, 0.2);
       box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
     }
     .lang-option {
       height: 34px;
-      min-width: 54px;
-      padding: 0 12px;
+      min-width: 44px;
+      padding: 0 8px;
       border: none;
       border-radius: 10px;
       background: transparent;
@@ -1026,7 +1030,8 @@
         </button>
       </nav>
 
-      <div class="lang-switcher" id="lang-switcher" role="group" aria-label="Language switcher">
+      <div class="lang-switcher" id="lang-switcher" role="group" aria-label="Language switcher" data-i18n-aria="langSwitcherAria">
+        <button type="button" class="lang-option" role="switch" aria-checked="false" data-lang="zh">ZH</button>
         <button type="button" class="lang-option active" role="switch" aria-checked="true" data-lang="en">EN</button>
         <button type="button" class="lang-option" role="switch" aria-checked="false" data-lang="th">TH</button>
       </div>
@@ -1200,47 +1205,35 @@
     <!-- SCHEDULE：迁自 embnany-schedule，不含门户返回/时区按钮 -->
     <section id="module-schedule" class="app-module" data-app-tab="schedule" role="tabpanel" hidden>
       <div class="sched-root">
-        <header class="sched-header">
-          <div class="sched-avatar-wrap">
-            <img
-              class="sched-avatar"
-              src="/public/images/schedule/avatar.jpg"
-              alt="EmiBonnieAny Schedule"
-              width="80"
-              height="80"
-            />
-          </div>
-          <h1 class="sched-title">EmiBonnieAny Schedule</h1>
-          <p class="sched-subtitle">All Events Schedule for MimiNini&amp;Any</p>
-        </header>
-
         <div class="sched-body">
           <div class="sched-month-sticky">
-            <nav class="sched-month-nav" aria-label="Month navigation">
-              <button type="button" id="sched-prev" class="sched-btn sched-btn-round" aria-label="Previous month"></button>
+            <nav class="sched-month-nav" aria-label="Month navigation" data-i18n-aria="schedule.monthNavigationAria">
+              <button type="button" id="sched-prev" class="sched-btn sched-btn-round" aria-label="Previous month" data-i18n-aria="schedule.prevMonthAria"></button>
               <button
                 type="button"
                 id="sched-month-label"
                 class="sched-btn sched-month-trigger"
+                aria-label="Select year and month"
+                data-i18n-aria="schedule.selectMonthAria"
                 aria-expanded="false"
                 aria-haspopup="dialog"
               >
                 <span id="sched-month-text">Apr 2026</span>
               </button>
-              <div id="sched-picker" class="sched-picker" role="dialog" aria-modal="true" aria-label="Select year and month" hidden>
+              <div id="sched-picker" class="sched-picker" role="dialog" aria-modal="true" aria-label="Select year and month" data-i18n-aria="schedule.pickerDialogAria" hidden>
                 <div class="sched-picker-year">
-                  <button type="button" id="sched-year-prev" class="sched-btn sched-btn-round" aria-label="Previous year"></button>
+                  <button type="button" id="sched-year-prev" class="sched-btn sched-btn-round" aria-label="Previous year" data-i18n-aria="schedule.prevYearAria"></button>
                   <span id="sched-picker-year">2026</span>
-                  <button type="button" id="sched-year-next" class="sched-btn sched-btn-round" aria-label="Next year"></button>
+                  <button type="button" id="sched-year-next" class="sched-btn sched-btn-round" aria-label="Next year" data-i18n-aria="schedule.nextYearAria"></button>
                 </div>
                 <div id="sched-picker-grid" class="sched-picker-grid"></div>
               </div>
-              <button type="button" id="sched-next" class="sched-btn sched-btn-round" aria-label="Next month"></button>
+              <button type="button" id="sched-next" class="sched-btn sched-btn-round" aria-label="Next month" data-i18n-aria="schedule.nextMonthAria"></button>
             </nav>
           </div>
 
-          <button type="button" id="sched-picker-backdrop" class="sched-picker-backdrop" aria-label="Close calendar" hidden></button>
-          <section id="sched-list" class="sched-list" aria-label="Event schedule"></section>
+          <button type="button" id="sched-picker-backdrop" class="sched-picker-backdrop" aria-label="Close calendar" data-i18n-aria="schedule.closeCalendarAria" hidden></button>
+          <section id="sched-list" class="sched-list" aria-label="Event schedule" data-i18n-aria="schedule.eventScheduleAria"></section>
         </div>
       </div>
     </section>
@@ -1255,7 +1248,7 @@
     </p>
   </div>
 
-  <script src="app.js"></script>
-  <script src="schedule.js"></script>
+  <script src="app.js?v=20261115"></script>
+  <script src="schedule.js?v=20261115.2"></script>
 </body>
 </html>

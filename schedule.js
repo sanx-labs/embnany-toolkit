@@ -11,6 +11,30 @@
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December",
   ];
+  const ZH_MONTH_LABELS = [
+    "1月", "2月", "3月", "4月", "5月", "6月",
+    "7月", "8月", "9月", "10月", "11月", "12月",
+  ];
+  const SCHEDULE_TEXT = {
+    en: {
+      loading: "Loading schedule…",
+      noEvents: "No events scheduled for this month.",
+      syncFailed: "Live Notion sync failed: {reason} Showing local sample data.",
+      tba: "TBA",
+    },
+    th: {
+      loading: "กำลังโหลดตารางกิจกรรม…",
+      noEvents: "เดือนนี้ไม่มีกำหนดกิจกรรม",
+      syncFailed: "ซิงก์ Notion แบบเรียลไทม์ไม่สำเร็จ: {reason} กำลังแสดงข้อมูลตัวอย่างในเครื่อง",
+      tba: "ยังไม่ระบุ",
+    },
+    zh: {
+      loading: "正在加载日程…",
+      noEvents: "本月暂无活动。",
+      syncFailed: "Notion 实时同步失败：{reason}。已显示本地示例数据。",
+      tba: "待定",
+    },
+  };
   const CHEVRON_LEFT =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>';
   const CHEVRON_RIGHT =
@@ -21,9 +45,6 @@
     '<svg class="sched-icon is-stroke" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="3"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>';
 
   const els = {
-    avatar: root.querySelector(".sched-avatar"),
-    title: root.querySelector(".sched-title"),
-    subtitle: root.querySelector(".sched-subtitle"),
     prev: document.getElementById("sched-prev"),
     next: document.getElementById("sched-next"),
     monthBtn: document.getElementById("sched-month-label"),
@@ -44,6 +65,12 @@
   let loaded = false;
   let loading = false;
   let syncNotice = "";
+  let language = document.documentElement.lang;
+  let officialPostLabel = language === "zh"
+    ? "官方动态"
+    : language === "th"
+      ? "โพสต์อย่างเป็นทางการ"
+      : "Official Post";
 
   function escapeHtml(value) {
     return String(value)
@@ -63,6 +90,32 @@
 
   function parseEventDate(isoDate) {
     return new Date(isoDate + "T12:00:00");
+  }
+
+  function isChinese() {
+    return language === "zh";
+  }
+
+  function getMonthLabels() {
+    if (language === "zh") return ZH_MONTH_LABELS;
+    if (language === "th") {
+      const formatter = new Intl.DateTimeFormat("th-TH", { month: "long" });
+      return MONTH_LABELS.map((_, month) => formatter.format(new Date(2026, month, 1)));
+    }
+    return MONTH_LABELS;
+  }
+
+  function formatPickerYear(year) {
+    if (language === "th") {
+      return new Intl.DateTimeFormat("th-TH", { year: "numeric" }).format(
+        new Date(year, 0, 1),
+      );
+    }
+    return String(year);
+  }
+
+  function getScheduleText(key) {
+    return (SCHEDULE_TEXT[language] || SCHEDULE_TEXT.en)[key];
   }
 
   function isSameMonth(a, b) {
@@ -97,14 +150,29 @@
   }
 
   function formatEventTime(event) {
-    if (!event.startsAt) return event.time || "TBA";
+    if (!event.startsAt) {
+      const time = event.time || "TBA";
+      if (time.toUpperCase() === "TBA") return getScheduleText("tba");
+      if (!isChinese() && language !== "th") return time;
+      const match = time.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+      if (!match) return time;
+      let hour = Number.parseInt(match[1], 10);
+      const period = match[3].toUpperCase();
+      if (period === "PM" && hour !== 12) hour += 12;
+      if (period === "AM" && hour === 12) hour = 0;
+      if (language === "th") {
+        return `${String(hour).padStart(2, "0")}:${match[2]} น.`;
+      }
+      return `${hour < 12 ? "上午" : "下午"} ${hour % 12 || 12}:${match[2]}`;
+    }
     const instant = new Date(event.startsAt);
-    if (Number.isNaN(instant.getTime())) return event.time || "TBA";
-    return instant.toLocaleTimeString(undefined, {
+    if (Number.isNaN(instant.getTime())) return event.time || getScheduleText("tba");
+    const locale = language === "zh" ? "zh-CN" : language === "th" ? "th-TH" : "en-US";
+    return instant.toLocaleTimeString(locale, {
       hour: "numeric",
       minute: "2-digit",
-      hour12: true,
-    });
+      hour12: language !== "th",
+    }) + (language === "th" ? " น." : "");
   }
 
   function splitHashtagTags(raw) {
@@ -168,11 +236,30 @@
   }
 
   function formatMonthLabel(date) {
+    if (isChinese()) return `${date.getFullYear()}年${date.getMonth() + 1}月`;
+    if (language === "th") {
+      return new Intl.DateTimeFormat("th-TH", {
+        month: "short",
+        year: "numeric",
+      }).format(date);
+    }
     return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
   }
 
   function formatDateParts(isoDate) {
     const date = parseEventDate(isoDate);
+    if (isChinese()) {
+      return {
+        day: date.toLocaleDateString("zh-CN", { day: "2-digit" }),
+        month: `${date.getMonth() + 1}月`,
+      };
+    }
+    if (language === "th") {
+      return {
+        day: date.toLocaleDateString("th-TH", { day: "2-digit" }),
+        month: date.toLocaleDateString("th-TH", { month: "short" }),
+      };
+    }
     return {
       day: date.toLocaleDateString("en-US", { day: "2-digit" }),
       month: date.toLocaleDateString("en-US", { month: "short" }),
@@ -192,11 +279,11 @@
 
   function renderPicker() {
     if (!els.pickerYear || !els.pickerGrid) return;
-    els.pickerYear.textContent = String(pickerYear);
+    els.pickerYear.textContent = formatPickerYear(pickerYear);
     const selectedYear = currentMonth.getFullYear();
     const selectedMonth = currentMonth.getMonth();
     const dotted = monthsWithEvents();
-    els.pickerGrid.innerHTML = MONTH_LABELS.map((label, month) => {
+    els.pickerGrid.innerHTML = getMonthLabels().map((label, month) => {
       const selected = pickerYear === selectedYear && month === selectedMonth;
       const hasEvents = dotted.has(pickerYear + "-" + month);
       const dot = hasEvents && !selected ? '<span class="sched-picker-dot" aria-hidden="true"></span>' : "";
@@ -205,6 +292,8 @@
         (selected ? " is-selected" : "") +
         '" data-sched-month="' +
         month +
+        '" aria-label="' +
+        escapeHtml(label) +
         '">' +
         label +
         dot +
@@ -223,7 +312,9 @@
         "</a>"
       : "<span>" + escapeHtml(event.location || "") + "</span>";
     const official = String(event.officialUrl || "").trim()
-      ? '<a class="sched-official" href="' + escapeHtml(event.officialUrl) + '" target="_blank" rel="noopener noreferrer">Official Post</a>'
+      ? '<a class="sched-official" href="' + escapeHtml(event.officialUrl) + '" target="_blank" rel="noopener noreferrer">' +
+        escapeHtml(officialPostLabel) +
+        "</a>"
       : "";
     const tags = splitHashtagTags(hashtag)
       .map((tag) => {
@@ -287,18 +378,27 @@
   function renderList() {
     if (!els.list) return;
     if (loading) {
-      els.list.innerHTML = '<p class="sched-empty">Loading schedule…</p>';
+      els.list.innerHTML =
+        '<p class="sched-empty">' +
+        getScheduleText("loading") +
+        "</p>";
       return;
     }
-    const notice = syncNotice
-      ? '<p class="sched-empty">' + escapeHtml(syncNotice) + "</p>"
+    const noticeText = !syncNotice
+      ? ""
+      : getScheduleText("syncFailed").replace("{reason}", syncNotice);
+    const notice = noticeText
+      ? '<p class="sched-empty">' + escapeHtml(noticeText) + "</p>"
       : "";
     const key = monthKey(currentMonth);
     const monthEvents = events.filter((event) => monthKey(parseEventDate(event.date)) === key);
     const groups = groupEventsByDate(sortEventsForMonth(monthEvents, currentMonth));
     if (!groups.length) {
       els.list.innerHTML =
-        notice + '<p class="sched-empty">No events scheduled for this month.</p>';
+        notice +
+        '<p class="sched-empty">' +
+        getScheduleText("noEvents") +
+        "</p>";
       return;
     }
     els.list.innerHTML =
@@ -336,17 +436,6 @@
     root.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  function applyProfile(profile) {
-    if (!profile) return;
-    if (els.title && profile.name) els.title.textContent = profile.name;
-    if (els.subtitle && profile.subtitle) els.subtitle.textContent = profile.subtitle;
-    if (els.avatar && profile.avatarSrc) {
-      els.avatar.src = profile.avatarSrc;
-      els.avatar.alt = profile.name || "Schedule";
-      if (profile.avatarPosition) els.avatar.style.objectPosition = profile.avatarPosition;
-    }
-  }
-
   async function fetchSchedulePayload(url) {
     const response = await fetch(url, { cache: "no-store" });
     const payload = await response.json().catch(() => null);
@@ -374,11 +463,10 @@
           liveError instanceof Error && liveError.message
             ? liveError.message
             : "Notion sync unavailable";
-        syncNotice = "Live Notion sync failed: " + reason + " Showing local sample data.";
+        syncNotice = reason;
         data = await fetchSchedulePayload(FALLBACK_URL);
       }
       events = Array.isArray(data.events) ? data.events : [];
-      applyProfile(data.profile);
       currentMonth = pickInitialMonth();
       loaded = true;
     } catch (err) {
@@ -444,7 +532,15 @@
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") setPickerOpen(false);
   });
-
+  document.addEventListener("site-language-change", (event) => {
+    language = event.detail && event.detail.lang ? event.detail.lang : "en";
+    if (event.detail && event.detail.officialPost) {
+      officialPostLabel = event.detail.officialPost;
+    }
+    syncMonthLabel();
+    if (pickerOpen) renderPicker();
+    renderList();
+  });
   const tabBtn = document.querySelector('#app-navbar [data-app-tab="schedule"]');
   if (tabBtn) tabBtn.addEventListener("click", () => loadEvents());
   window.addEventListener("hashchange", maybeLoad);

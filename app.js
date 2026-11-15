@@ -4,9 +4,10 @@
   const LANG_FILES = {
     en: "/public/prompts/en.txt",
     th: "/public/prompts/th.txt",
+    zh: "/public/prompts/zh.txt",
   };
 
-  const UI_LANGS = ["en", "th"];
+  const UI_LANGS = ["zh", "en", "th"];
   const SITE_LANG_KEY = "site_lang";
   const MESSAGES_URL = "/public/i18n/messages.json";
 
@@ -34,6 +35,18 @@
       comingSoonHint: "该模块正在搭建，请先使用 TREND。",
       boosting: "打榜目标",
       eventSelectAria: "选择活动",
+      schedule: {
+        officialPost: "Official Post",
+        monthNavigationAria: "Month navigation",
+        prevMonthAria: "Previous month",
+        nextMonthAria: "Next month",
+        selectMonthAria: "Select year and month",
+        pickerDialogAria: "Select year and month",
+        prevYearAria: "Previous year",
+        nextYearAria: "Next year",
+        closeCalendarAria: "Close calendar",
+        eventScheduleAria: "Event schedule",
+      },
       defense: {
         tabs: {
           uncompleted: "未完成",
@@ -57,6 +70,80 @@
           loadError: "加载失败，请稍后重试",
           progress: "{done} / {total}",
           progressHint: "待办 {pending} · 跳过 {skipped}",
+        },
+      },
+    },
+    th: {
+      schedule: {
+        officialPost: "โพสต์อย่างเป็นทางการ",
+        monthNavigationAria: "การนำทางเดือน",
+        prevMonthAria: "เดือนก่อนหน้า",
+        nextMonthAria: "เดือนถัดไป",
+        selectMonthAria: "เลือกปีและเดือน",
+        pickerDialogAria: "เลือกปีและเดือน",
+        prevYearAria: "ปีก่อนหน้า",
+        nextYearAria: "ปีถัดไป",
+        closeCalendarAria: "ปิดปฏิทิน",
+        eventScheduleAria: "ตารางกิจกรรม",
+      },
+    },
+    zh: {
+      navAria: "站点模块",
+      navTrend: "TREND",
+      navEmv: "EMV",
+      navStreaming: "STREAMING",
+      navVoting: "VOTING",
+      navSchedule: "SCHEDULE",
+      langSwitcherAria: "切换语言",
+      previewLabel: "文案预览",
+      previewAria: "文案编辑",
+      charCount: "{n} 字符",
+      placeholder: "点击“随机文案”生成内容",
+      randomBtn: "随机文案",
+      tweetBtn: "发布推文",
+      reportBtn: "举报",
+      contactBefore: "有问题或反馈？通过 X 联系 ",
+      copyAria: "复制",
+      copiedAria: "已复制",
+      comingSoon: "即将推出",
+      comingSoonHint: "该模块正在开发中，请先使用 TREND。",
+      boosting: "打榜目标",
+      eventSelectAria: "选择活动",
+      schedule: {
+        officialPost: "官方动态",
+        monthNavigationAria: "月份导航",
+        prevMonthAria: "上个月",
+        nextMonthAria: "下个月",
+        selectMonthAria: "选择年月",
+        pickerDialogAria: "选择年份和月份",
+        prevYearAria: "上一年",
+        nextYearAria: "下一年",
+        closeCalendarAria: "关闭日历",
+        eventScheduleAria: "活动日程",
+      },
+      defense: {
+        tabs: {
+          uncompleted: "未完成",
+          completed: "已完成",
+          skipped: "已跳过",
+          all: "全部",
+        },
+        actions: {
+          openPost: "打开原帖",
+          markDone: "标记完成",
+          skip: "跳过",
+          undo: "撤销",
+        },
+        labels: {
+          author: "作者",
+          guide: "指引",
+          emptyPending: "🎉 太棒了！当前待办已全部完成。",
+          emptyList: "暂无记录",
+          refresh: "刷新",
+          loading: "正在加载线索…",
+          loadError: "加载失败，请稍后重试。",
+          progress: "{done} / {total}",
+          progressHint: "待办 {pending} · 已跳过 {skipped}",
         },
       },
     },
@@ -272,7 +359,7 @@
     }
   }
 
-  /** 浏览器语言降级：优先使用 EN / TH，并默认回落到英文。 */
+  /** 根据浏览器语言选择支持的界面语言，未支持时回落到英文。 */
   function matchNavigatorLang() {
     const codes = (navigator.languages && navigator.languages.length
       ? navigator.languages
@@ -280,6 +367,7 @@
     ).map((code) => String(code || "").toLowerCase());
 
     for (const code of codes) {
+      if (code.startsWith("zh")) return "zh";
       if (code.startsWith("th")) return "th";
       if (code.startsWith("en")) return "en";
     }
@@ -335,6 +423,11 @@
     syncPreviewState();
     // 列表文案由 JS 渲染，语言切换后需要重绘
     if ($("defense-list")) renderDefenseList();
+    document.dispatchEvent(
+      new CustomEvent("site-language-change", {
+        detail: { lang: currentLang, officialPost: t("schedule.officialPost") },
+      })
+    );
   }
 
   function switchLang(lang) {
@@ -1046,10 +1139,9 @@
     });
   }
 
-  document.querySelectorAll("#lang-switcher [data-lang]").forEach((button) => {
-    button.addEventListener("click", () => {
-      switchLang(button.dataset.lang);
-    });
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("#lang-switcher [data-lang]");
+    if (button) switchLang(button.dataset.lang);
   });
 
   document.addEventListener("click", (e) => {

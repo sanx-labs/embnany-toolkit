@@ -18,6 +18,18 @@
     "comingSoonHint": "This module is under construction. Use TREND for now.",
     "boosting": "Boosting",
     "eventSelectAria": "Select event",
+    "schedule": {
+      "officialPost": "Official Post",
+      "monthNavigationAria": "Month navigation",
+      "prevMonthAria": "Previous month",
+      "nextMonthAria": "Next month",
+      "selectMonthAria": "Select year and month",
+      "pickerDialogAria": "Select year and month",
+      "prevYearAria": "Previous year",
+      "nextYearAria": "Next year",
+      "closeCalendarAria": "Close calendar",
+      "eventScheduleAria": "Event schedule"
+    },
     "defense": {
       "tabs": {
         "uncompleted": "Pending",
@@ -66,6 +78,18 @@
     "comingSoonHint": "โมดูลนี้กำลังจัดทำ ใช้ TREND ไปก่อนได้เลย",
     "boosting": "บูสต์ให้",
     "eventSelectAria": "เลือกอีเวนต์",
+    "schedule": {
+      "officialPost": "โพสต์อย่างเป็นทางการ",
+      "monthNavigationAria": "การนำทางเดือน",
+      "prevMonthAria": "เดือนก่อนหน้า",
+      "nextMonthAria": "เดือนถัดไป",
+      "selectMonthAria": "เลือกปีและเดือน",
+      "pickerDialogAria": "เลือกปีและเดือน",
+      "prevYearAria": "ปีก่อนหน้า",
+      "nextYearAria": "ปีถัดไป",
+      "closeCalendarAria": "ปิดปฏิทิน",
+      "eventScheduleAria": "ตารางกิจกรรม"
+    },
     "defense": {
       "tabs": {
         "uncompleted": "รอดำเนินการ",
@@ -89,6 +113,66 @@
         "loadError": "โหลดไม่สำเร็จ กรุณาลองอีกครั้ง",
         "progress": "{done} / {total}",
         "progressHint": "รอดำเนินการ {pending} · ข้าม {skipped}"
+      }
+    },
+    "navStreaming": "STREAMING",
+    "navVoting": "VOTING",
+    "navSchedule": "SCHEDULE"
+  },
+  "zh": {
+    "navAria": "站点模块",
+    "navTrend": "TREND",
+    "navEmv": "EMV",
+    "langSwitcherAria": "切换语言",
+    "previewLabel": "文案预览",
+    "previewAria": "文案编辑",
+    "charCount": "{n} 字符",
+    "placeholder": "点击“随机文案”生成内容",
+    "randomBtn": "随机文案",
+    "tweetBtn": "发布推文",
+    "reportBtn": "举报",
+    "contactBefore": "有问题或反馈？通过 X 联系 ",
+    "copyAria": "复制",
+    "copiedAria": "已复制",
+    "comingSoon": "即将推出",
+    "comingSoonHint": "该模块正在开发中，请先使用 TREND。",
+    "boosting": "打榜目标",
+    "eventSelectAria": "选择活动",
+    "schedule": {
+      "officialPost": "官方动态",
+      "monthNavigationAria": "月份导航",
+      "prevMonthAria": "上个月",
+      "nextMonthAria": "下个月",
+      "selectMonthAria": "选择年月",
+      "pickerDialogAria": "选择年份和月份",
+      "prevYearAria": "上一年",
+      "nextYearAria": "下一年",
+      "closeCalendarAria": "关闭日历",
+      "eventScheduleAria": "活动日程"
+    },
+    "defense": {
+      "tabs": {
+        "uncompleted": "未完成",
+        "completed": "已完成",
+        "skipped": "已跳过",
+        "all": "全部"
+      },
+      "actions": {
+        "openPost": "打开原帖",
+        "markDone": "标记完成",
+        "skip": "跳过",
+        "undo": "撤销"
+      },
+      "labels": {
+        "author": "作者",
+        "guide": "指引",
+        "emptyPending": "🎉 太棒了！当前待办已全部完成。",
+        "emptyList": "暂无记录",
+        "refresh": "刷新",
+        "loading": "正在加载线索…",
+        "loadError": "加载失败，请稍后重试。",
+        "progress": "{done} / {total}",
+        "progressHint": "待办 {pending} · 已跳过 {skipped}"
       }
     },
     "navStreaming": "STREAMING",
