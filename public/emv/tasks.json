@@ -2,24 +2,60 @@
   "source": "sample",
   "tasks": [
     {
-      "id": "sample-emv-1",
-      "event": "GMMTVNEXT: GENERATION HAPPY",
+      "id": "sample-emv-archived",
+      "event": "ARCHIVED SAMPLE",
       "artist": "EMI - BONNIE",
       "handle": "@emibonnie",
       "accountType": "Official",
-      "priority": "High",
-      "postedTime": "2026-11-03T16:00:00",
+      "status": "Archived",
+      "postedTime": "2026-11-10T10:00:00+08:00",
       "postLink": "https://www.instagram.com/"
     },
     {
-      "id": "sample-emv-2",
-      "event": "BLUSH BLOSSOM FANFEST 2026",
+      "id": "sample-emv-pending",
+      "event": "PENDING SAMPLE",
       "artist": "EMI / BONNIE",
       "handle": "@gmmofficial",
       "accountType": "Fan",
-      "priority": "Normal",
-      "postedTime": "2026-11-07T15:00:00",
-      "postLink": "https://x.com/"
+      "postLink": "https://www.instagram.com/"
+    },
+    {
+      "id": "sample-emv-extended",
+      "event": "72H SAMPLE",
+      "artist": "EMI - BONNIE",
+      "handle": "@emibonnie",
+      "accountType": "Official",
+      "postedTime": "2026-11-13T14:00:00+08:00",
+      "postLink": "https://www.instagram.com/"
+    },
+    {
+      "id": "sample-emv-prime",
+      "event": "48H SAMPLE",
+      "artist": "EMI / BONNIE",
+      "handle": "@gmmofficial",
+      "accountType": "Fan",
+      "postedTime": "2026-11-14T12:00:00+08:00",
+      "postLink": "https://www.instagram.com/"
+    },
+    {
+      "id": "sample-emv-peak",
+      "event": "24H SAMPLE",
+      "artist": "EMI - BONNIE",
+      "handle": "@emibonnie",
+      "accountType": "Official",
+      "status": "24h Peak Sprint",
+      "postedTime": "2026-11-15T20:00:00+08:00",
+      "postLink": "https://www.instagram.com/"
+    },
+    {
+      "id": "sample-emv-active",
+      "event": "SHOULD NOT APPEAR",
+      "artist": "HIDDEN",
+      "handle": "@hidden",
+      "accountType": "Official",
+      "status": "Active",
+      "postedTime": "2026-11-15T22:00:00+08:00",
+      "postLink": "https://www.instagram.com/"
     }
   ]
 }

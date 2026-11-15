@@ -53,7 +53,7 @@
           artist: "Artist",
           handle: "Handle",
           accountType: "Account Type",
-          priority: "Priority",
+          status: "Status",
           postedTime: "Posted Time",
           guide: "How to do it",
           expandGuide: "Show interaction guide",
@@ -66,6 +66,13 @@
           progress: "{done} / {total}",
           progressHint: "{pending} pending · {skipped} skipped",
           localNote: "Progress is saved in this browser only.",
+        },
+        sprint: {
+          peak24h: "24h Peak Sprint",
+          prime48h: "48h Prime Boosting",
+          extended72h: "72h Extended Window",
+          archived: "Archived",
+          pending: "Pending",
         },
       },
       schedule: {
@@ -130,7 +137,7 @@
           artist: "ศิลปิน",
           handle: "แฮนเดิล",
           accountType: "ประเภทบัญชี",
-          priority: "ความสำคัญ",
+          status: "สถานะ",
           postedTime: "เวลาโพสต์",
           guide: "วิธีทำ",
           expandGuide: "แสดงคู่มือการมีส่วนร่วม",
@@ -143,6 +150,13 @@
           progress: "{done} / {total}",
           progressHint: "รอดำเนินการ {pending} · ข้าม {skipped}",
           localNote: "ความคืบหน้าเก็บไว้ในเบราว์เซอร์นี้เท่านั้น",
+        },
+        sprint: {
+          peak24h: "ช่วงเร่งด่วน 24 ชม.",
+          prime48h: "ช่วงดันยอด 48 ชม.",
+          extended72h: "ช่วงต่อเนื่อง 72 ชม.",
+          archived: "สิ้นสุดแล้ว",
+          pending: "รอดำเนินการ",
         },
       },
       schedule: {
@@ -203,7 +217,7 @@
           artist: "艺人",
           handle: "账号",
           accountType: "账号类型",
-          priority: "优先级",
+          status: "状态",
           postedTime: "发布时间",
           guide: "怎么做",
           expandGuide: "展开互动指南",
@@ -216,6 +230,13 @@
           progress: "{done} / {total}",
           progressHint: "待办 {pending} · 跳过 {skipped}",
           localNote: "进度只保存在本机浏览器，换设备不会同步",
+        },
+        sprint: {
+          peak24h: "24h 黄金冲刺",
+          prime48h: "48h 核心冲量",
+          extended72h: "72h 长尾延续",
+          archived: "已结束",
+          pending: "待定",
         },
       },
       schedule: {
@@ -279,6 +300,7 @@
   const EMV_TAB_KEY = "emv-tab-v1";
   const EMV_GUIDE_KEY = "emv-guide-open-v1";
   const EMV_TABS = ["uncompleted", "completed", "skipped", "all"];
+  const EMV_SPRINT_TICK_MS = 60 * 1000;
 
   const EVENT_IDS = ["EmiBonnie", "Emi", "Bonnie", "Any", "EmiBonnieAny", "EmiAny", "BonnieAny"];
   // 旧下拉 id 映射到 config.js 里的正式键名
@@ -365,6 +387,7 @@
   let emvDone = {};
   let emvSkip = {};
   let emvOpen = {};
+  let emvSprintTimer = null;
 
   const $ = (id) => document.getElementById(id);
 
@@ -962,6 +985,72 @@
     return "uncompleted";
   }
 
+  function isHiddenEmvStatus(status) {
+    // Status 为 Active 的帖子不进待办（大小写不敏感）
+    return String(status || "")
+      .split("/")
+      .map((part) => part.trim().toLowerCase())
+      .filter(Boolean)
+      .includes("active");
+  }
+
+  function getEmvPostedTimeMs(postedTime) {
+    const raw = String(postedTime || "").trim();
+    if (!raw) return NaN;
+    const ms = new Date(raw).getTime();
+    return Number.isFinite(ms) ? ms : NaN;
+  }
+
+  // 用浏览器当前时间重算冲刺阶段，不依赖 Notion 构建时的 Sprint Status / Sort Priority
+  function getEmvSprint(task) {
+    const postedMs = getEmvPostedTimeMs(task && task.postedTime);
+    if (!Number.isFinite(postedMs)) {
+      return { key: "pending", sortPriority: 99, hours: null };
+    }
+    const hours = (Date.now() - postedMs) / 3600000;
+    if (hours <= 24) return { key: "peak24h", sortPriority: 1, hours };
+    if (hours <= 48) return { key: "prime48h", sortPriority: 2, hours };
+    if (hours <= 72) return { key: "extended72h", sortPriority: 3, hours };
+    return { key: "archived", sortPriority: 4, hours };
+  }
+
+  function formatEmvStatusLabel(raw) {
+    const text = String(raw || "")
+      .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!text) return "";
+    const lower = text.toLowerCase();
+    if (/(24h|peak sprint|黄金冲刺|เร่งด่วน 24)/i.test(lower)) return t("emv.sprint.peak24h");
+    if (/(48h|prime boosting|核心冲量|ดันยอด 48)/i.test(lower)) return t("emv.sprint.prime48h");
+    if (/(72h|extended window|长尾|ต่อเนื่อง 72)/i.test(lower)) return t("emv.sprint.extended72h");
+    if (/(archived|已结束|สิ้นสุด)/i.test(lower)) return t("emv.sprint.archived");
+    if (/(pending|待定|รอดำเนินการ)/i.test(lower)) return t("emv.sprint.pending");
+    return text;
+  }
+
+  function compareEmvTasks(left, right) {
+    const leftSprint = getEmvSprint(left);
+    const rightSprint = getEmvSprint(right);
+    if (leftSprint.sortPriority !== rightSprint.sortPriority) {
+      return leftSprint.sortPriority - rightSprint.sortPriority;
+    }
+    const leftPosted = getEmvPostedTimeMs(left && left.postedTime);
+    const rightPosted = getEmvPostedTimeMs(right && right.postedTime);
+    const leftKey = Number.isFinite(leftPosted) ? leftPosted : 0;
+    const rightKey = Number.isFinite(rightPosted) ? rightPosted : 0;
+    return rightKey - leftKey;
+  }
+
+  function startEmvSprintTicker() {
+    if (emvSprintTimer) return;
+    emvSprintTimer = setInterval(() => {
+      const panel = $("module-emv");
+      if (!panel || panel.hidden || !emvLoaded) return;
+      renderEmvList();
+    }, EMV_SPRINT_TICK_MS);
+  }
+
   function loadEmvLocalState() {
     emvDone = readJsonMap(EMV_DONE_KEY);
     emvSkip = readJsonMap(EMV_SKIP_KEY);
@@ -1009,8 +1098,13 @@
   }
 
   function getFilteredEmvTasks() {
-    if (emvView === "all") return emvTasks.slice();
-    return emvTasks.filter((task) => emvStateOf(task) === emvView);
+    const list =
+      emvView === "all"
+        ? emvTasks.slice()
+        : emvTasks.filter((task) => emvStateOf(task) === emvView);
+    // 筛选后仍按实时冲刺权重置顶，同阶段内最新帖在前
+    list.sort(compareEmvTasks);
+    return list;
   }
 
   function renderEmvProgress() {
@@ -1059,17 +1153,18 @@
       year: "numeric",
       month: "short",
       day: "numeric",
-      ...(hasTime ? { hour: "numeric", minute: "2-digit" } : {}),
+      ...(hasTime ? { hour: "2-digit", minute: "2-digit", hourCycle: "h23" } : {}),
     });
   }
 
   function renderEmvCard(task) {
     const state = emvStateOf(task);
+    const sprint = getEmvSprint(task);
     const eventName = String(task.event || "").trim() || String(task.artist || "").trim();
     const artist = String(task.artist || "").trim();
     const handle = String(task.handle || "").trim();
     const accountType = String(task.accountType || "").trim();
-    const priority = String(task.priority || "").trim();
+    const statusLabel = formatEmvStatusLabel(task.status);
     const postedTime = formatEmvPostedTime(task.postedTime);
     const postLink = String(task.postLink || "").trim();
 
@@ -1079,6 +1174,8 @@
       (state === "completed" ? " is-done" : "") +
       (state === "skipped" ? " is-skipped" : "");
     card.dataset.emvId = task.id;
+    card.dataset.emvSprint = sprint.key;
+    card.dataset.emvSort = String(sprint.sortPriority);
 
     const badges = [];
     if (state === "completed") {
@@ -1103,10 +1200,10 @@
         `<span class="defense-badge">${escapeHtml(t("emv.labels.accountType"))} · ${escapeHtml(accountType)}</span>`
       );
     }
-    if (priority) {
-      const hi = /high|urgent|高|ด่วน/i.test(priority);
+    const statusText = statusLabel || t("emv.sprint." + sprint.key);
+    if (statusText) {
       badges.push(
-        `<span class="defense-badge${hi ? " is-score-hi" : ""}">${escapeHtml(t("emv.labels.priority"))} · ${escapeHtml(priority)}</span>`
+        `<span class="defense-badge">${escapeHtml(t("emv.labels.status"))} · ${escapeHtml(statusText)}</span>`
       );
     }
 
@@ -1133,7 +1230,7 @@
         <div class="defense-card-body">
           <h3 class="defense-card-title">${escapeHtml(eventName)}</h3>
           ${badges.length ? `<div class="defense-badges">${badges.join("")}</div>` : ""}
-          ${postedTime ? `<p class="defense-meta">${escapeHtml(t("emv.labels.postedTime"))} · ${escapeHtml(postedTime)}</p>` : ""}
+          ${postedTime ? `<p class="defense-meta emv-time">${escapeHtml(t("emv.labels.postedTime"))} · ${escapeHtml(postedTime)}</p>` : ""}
           <div class="defense-actions">${actionButtons}</div>
         </div>
       </div>
@@ -1229,7 +1326,8 @@
         (item) =>
           item &&
           item.id &&
-          (String(item.event || "").trim() || String(item.artist || "").trim()),
+          (String(item.event || "").trim() || String(item.artist || "").trim()) &&
+          !isHiddenEmvStatus(item.status),
       );
       emvLoaded = true;
       emvLoadError = false;
@@ -1252,6 +1350,7 @@
     loadEmvLocalState();
     syncEmvTabs();
     setEmvGuideOpen(localStorage.getItem(EMV_GUIDE_KEY) === "1");
+    startEmvSprintTicker();
     loadEmvTasks();
   }
 

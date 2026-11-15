@@ -36,7 +36,7 @@
         "artist": "Artist",
         "handle": "Handle",
         "accountType": "Account Type",
-        "priority": "Priority",
+        "status": "Status",
         "postedTime": "Posted Time",
         "guide": "How to do it",
         "expandGuide": "Show interaction guide",
@@ -49,6 +49,13 @@
         "progress": "{done} / {total}",
         "progressHint": "{pending} pending · {skipped} skipped",
         "localNote": "Progress is saved in this browser only."
+      },
+      "sprint": {
+        "peak24h": "24h Peak Sprint",
+        "prime48h": "48h Prime Boosting",
+        "extended72h": "72h Extended Window",
+        "archived": "Archived",
+        "pending": "Pending"
       }
     },
     "schedule": {
@@ -134,7 +141,7 @@
         "artist": "ศิลปิน",
         "handle": "แฮนเดิล",
         "accountType": "ประเภทบัญชี",
-        "priority": "ความสำคัญ",
+        "status": "สถานะ",
         "postedTime": "เวลาโพสต์",
         "guide": "วิธีทำ",
         "expandGuide": "แสดงคู่มือการมีส่วนร่วม",
@@ -147,6 +154,13 @@
         "progress": "{done} / {total}",
         "progressHint": "รอดำเนินการ {pending} · ข้าม {skipped}",
         "localNote": "ความคืบหน้าเก็บไว้ในเบราว์เซอร์นี้เท่านั้น"
+      },
+      "sprint": {
+        "peak24h": "ช่วงเร่งด่วน 24 ชม.",
+        "prime48h": "ช่วงดันยอด 48 ชม.",
+        "extended72h": "ช่วงต่อเนื่อง 72 ชม.",
+        "archived": "สิ้นสุดแล้ว",
+        "pending": "รอดำเนินการ"
       }
     },
     "schedule": {
@@ -232,7 +246,7 @@
         "artist": "艺人",
         "handle": "账号",
         "accountType": "账号类型",
-        "priority": "优先级",
+        "status": "状态",
         "postedTime": "发布时间",
         "guide": "怎么做",
         "expandGuide": "展开互动指南",
@@ -245,6 +259,13 @@
         "progress": "{done} / {total}",
         "progressHint": "待办 {pending} · 跳过 {skipped}",
         "localNote": "进度只保存在本机浏览器，换设备不会同步"
+      },
+      "sprint": {
+        "peak24h": "24h 黄金冲刺",
+        "prime48h": "48h 核心冲量",
+        "extended72h": "72h 长尾延续",
+        "archived": "已结束",
+        "pending": "待定"
       }
     },
     "schedule": {

@@ -1,7 +1,9 @@
 /**
  * EMV 待办专用 Vercel Serverless API。
  * 读取另一份 Notion 数据库：
- * Artist / Handle / Event / Account Type / View Post / Priority / Posted Time。
+ * Artist / Handle / Event / Account Type / View Post / Posted Time / Status。
+ * Status 为 Active 的记录不进入待办清单。
+ * Sprint Status / Sort Priority 仅作 Notion 侧自动化参考，前端会按 Posted Time 实时重算并置顶。
  * 密钥只读 process.env，不会写进前端或响应体。
  */
 
@@ -68,9 +70,18 @@ function getPropertyNames() {
     event: readEnv("NOTION_EMV_PROP_EVENT") || "Event",
     accountType: readEnv("NOTION_EMV_PROP_ACCOUNT_TYPE") || "Account Type",
     viewPost: readEnv("NOTION_EMV_PROP_VIEW_POST") || "View Post",
-    priority: readEnv("NOTION_EMV_PROP_PRIORITY") || "Priority",
     postedTime: readEnv("NOTION_EMV_PROP_POSTED_TIME") || "Posted Time",
+    status: readEnv("NOTION_EMV_PROP_STATUS") || "Status",
   };
+}
+
+function isHiddenEmvStatus(status) {
+  // Notion 可能是 Status 或 Select；多选会用 “ / ” 拼接
+  return String(status || "")
+    .split("/")
+    .map((part) => part.trim().toLowerCase())
+    .filter(Boolean)
+    .includes("active");
 }
 
 class NotionSyncError extends Error {
@@ -155,11 +166,19 @@ async function resolveDataSourceId(databaseId) {
   }
 }
 
+function normalizePropName(name) {
+  return String(name || "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
+
 function findProperty(properties, name) {
   if (!properties || !name) return undefined;
   if (properties[name]) return properties[name];
-  const lower = String(name).toLowerCase();
-  const key = Object.keys(properties).find((item) => item.toLowerCase() === lower);
+  const target = normalizePropName(name);
+  if (!target) return undefined;
+  const key = Object.keys(properties).find((item) => normalizePropName(item) === target);
   return key ? properties[key] : undefined;
 }
 
@@ -242,15 +261,21 @@ function mapNotionPageToTask(page) {
   const artist = getDisplayText(artistProp) || getPlainText(artistProp);
   if (!event && !artist) return null;
 
+  const status = getDisplayText(
+    findProperty(properties, names.status) || findProperty(properties, "Sprint Status"),
+  );
+  // Active 表示这条不需要出现在待办里（例如已在互动中）
+  if (isHiddenEmvStatus(status)) return null;
+
   return {
     id: page.id,
     event,
     artist,
     handle: getDisplayText(findProperty(properties, names.handle)),
     accountType: getDisplayText(findProperty(properties, names.accountType)),
-    priority: getDisplayText(findProperty(properties, names.priority)),
     postedTime: getDateStart(findProperty(properties, names.postedTime)),
     postLink: getUrl(findProperty(properties, names.viewPost)),
+    status,
   };
 }
 
@@ -267,35 +292,18 @@ async function getEmvTasksFromNotion() {
   const dataSourceId = await resolveDataSourceId(databaseId);
   const tasks = [];
   let cursor;
-  let usedSort = true;
 
   do {
+    // 不传 sorts，也不在本地重排，沿用 Notion 返回顺序（库内自动化负责排序）
     const payload = {
       start_cursor: cursor,
       page_size: 100,
     };
-    if (usedSort) {
-      payload.sorts = [{ timestamp: "last_edited_time", direction: "descending" }];
-    }
 
-    let response;
-    try {
-      response = await notionRequest(`/data_sources/${dataSourceId}/query`, {
-        method: "POST",
-        body: JSON.stringify(payload),
-      });
-    } catch (error) {
-      if (
-        usedSort &&
-        error instanceof NotionSyncError &&
-        (error.code === "validation_error" || error.status === 400)
-      ) {
-        usedSort = false;
-        cursor = undefined;
-        continue;
-      }
-      throw error;
-    }
+    const response = await notionRequest(`/data_sources/${dataSourceId}/query`, {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
 
     for (const result of response.results || []) {
       if (!isQueryablePage(result)) continue;
@@ -305,17 +313,6 @@ async function getEmvTasksFromNotion() {
 
     cursor = response.has_more ? response.next_cursor || undefined : undefined;
   } while (cursor);
-
-  tasks.sort((left, right) => {
-    const leftKey = left.postedTime || "";
-    const rightKey = right.postedTime || "";
-    if (leftKey && rightKey) return rightKey.localeCompare(leftKey);
-    if (leftKey) return -1;
-    if (rightKey) return 1;
-    return String(left.event || left.artist || "").localeCompare(
-      String(right.event || right.artist || ""),
-    );
-  });
 
   emvCache = {
     tasks,
