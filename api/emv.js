@@ -76,12 +76,12 @@ function getPropertyNames() {
 }
 
 function isHiddenEmvStatus(status) {
-  // Notion 可能是 Status 或 Select；多选会用 “ / ” 拼接
+  // Notion 可能是 Status、Select 或公式结果；只隐藏 Archived 状态
   return String(status || "")
     .split("/")
     .map((part) => part.trim().toLowerCase())
     .filter(Boolean)
-    .includes("active");
+    .includes("archived");
 }
 
 class NotionSyncError extends Error {

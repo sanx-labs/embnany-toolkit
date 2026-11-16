@@ -1,11 +1,11 @@
 /* SCHEDULE 模块专用样式，全部挂在 #module-schedule 下，避免影响 TREND / EMV */
-/* 宽度与 .app-shell / .app-navbar（420px）对齐，做成 dashboard 比例 */
+/* 与站点仪表盘容器对齐，宽屏时充分利用可用空间 */
 
 #module-schedule {
-  width: min(100%, 420px);
+  width: 100%;
+  max-width: 1280px;
   align-items: stretch;
-  font-family: "New York", "New York Small", "Iowan Old Style", "Apple Garamond",
-    "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  font-family: var(--font-ui);
 }
 
 #module-schedule button {
@@ -21,7 +21,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.85rem;
+  gap: 1rem;
 }
 
 #module-schedule .sched-month-sticky {
@@ -43,15 +43,14 @@
 }
 
 #module-schedule .sched-btn {
-  background: rgba(255, 255, 255, 0.18);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.38);
-  color: #fff;
+  background: var(--glass-inset);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
   box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.14),
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 4px 14px rgba(0, 0, 0, 0.16);
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -64,13 +63,20 @@
 }
 
 #module-schedule .sched-btn:hover {
-  background: rgba(255, 255, 255, 0.28);
-  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 107, 0, 0.1);
+  border-color: rgba(255, 149, 0, 0.45);
 }
 
 #module-schedule .sched-btn:active {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(191, 0, 255, 0.14);
   transform: scale(0.97);
+}
+
+#module-schedule .sched-btn:focus-visible,
+#module-schedule .sched-official:focus-visible,
+#module-schedule .sched-tag:focus-visible {
+  outline: 2px solid var(--neon-orange-light);
+  outline-offset: 3px;
 }
 
 #module-schedule .sched-btn-round {
@@ -102,7 +108,7 @@
 #module-schedule .sched-month-trigger span {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-primary);
   line-height: 1.2;
 }
 
@@ -110,9 +116,9 @@
   position: fixed;
   inset: 0;
   z-index: 30;
-  background: rgba(0, 0, 0, 0.18);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
+  background: rgba(10, 6, 18, 0.48);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   border: none;
   padding: 0;
   cursor: default;
@@ -128,14 +134,15 @@
   transform: translateX(-50%);
   border-radius: 0.9rem;
   padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.16);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  color: #fff;
+  background: rgba(20, 8, 40, 0.94);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
   box-shadow:
-    0 12px 36px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    0 12px 36px rgba(0, 0, 0, 0.4),
+    0 0 28px rgba(191, 0, 255, 0.14),
+    inset 0 1px 0 var(--glass-highlight);
 }
 
 #module-schedule .sched-picker[hidden],
@@ -153,7 +160,7 @@
 #module-schedule .sched-picker-year span {
   font-size: 0.95rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 #module-schedule .sched-picker-year .sched-btn-round {
@@ -181,25 +188,26 @@
   font-size: 0.72rem;
   font-weight: 600;
   line-height: 1.2;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--glass-inset);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
   backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  color: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
 #module-schedule .sched-picker-month:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.38);
+  background: rgba(255, 107, 0, 0.1);
+  border-color: rgba(255, 149, 0, 0.45);
 }
 
 #module-schedule .sched-picker-month.is-selected {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.52);
+  background: var(--gradient-neon);
+  border-color: transparent;
   color: #fff;
+  box-shadow: 0 2px 12px rgba(255, 107, 0, 0.3);
 }
 
 #module-schedule .sched-picker-dot {
@@ -222,42 +230,46 @@
 
 #module-schedule .sched-empty {
   margin: 0;
-  border-radius: 1rem;
+  border-radius: 18px;
   padding: 1.5rem 1rem;
   text-align: center;
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 0.82rem;
-  line-height: 1.45;
-  background: rgba(255, 255, 255, 0.12);
-  -webkit-backdrop-filter: blur(32px) saturate(160%);
-  backdrop-filter: blur(32px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.65;
+  background: rgba(255, 255, 255, 0.03);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  border: 1px dashed rgba(255, 149, 0, 0.22);
+  box-shadow: 0 1px 0 var(--glass-highlight) inset;
 }
 
 #module-schedule .sched-card {
   display: flex;
   overflow: hidden;
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.16);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  backdrop-filter: blur(40px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 1px 0 var(--glass-highlight) inset;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
+}
+
+#module-schedule .sched-card:hover {
+  border-color: rgba(255, 149, 0, 0.34);
   box-shadow:
-    0 6px 22px rgba(0, 0, 0, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    0 1px 0 var(--glass-highlight) inset,
+    0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
 #module-schedule .sched-card.is-past {
-  opacity: 0.6;
-  filter: saturate(0.78) brightness(0.97);
-  transition: opacity 0.3s ease, filter 0.3s ease;
+  opacity: 0.72;
+  transition: opacity 0.3s ease;
 }
 
 #module-schedule .sched-card.is-past:hover,
 #module-schedule .sched-card.is-past:focus-within {
   opacity: 0.9;
-  filter: saturate(0.96) brightness(1);
 }
 
 #module-schedule .sched-date {
@@ -269,19 +281,19 @@
   justify-content: center;
   align-self: stretch;
   padding: 0.7rem 0;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.2);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  backdrop-filter: blur(32px) saturate(180%);
-  border-right: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--text-primary);
+  background: rgba(123, 47, 255, 0.14);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
+  border-right: 1px solid var(--glass-border);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.5),
-    inset -1px 0 0 rgba(255, 255, 255, 0.08);
+    inset 0 1px 0 var(--glass-highlight),
+    inset -1px 0 0 rgba(255, 255, 255, 0.04);
 }
 
 #module-schedule .sched-card.is-past .sched-date {
-  background: rgba(255, 255, 255, 0.1);
-  border-right-color: rgba(255, 255, 255, 0.18);
+  background: rgba(123, 47, 255, 0.08);
+  border-right-color: var(--glass-border);
 }
 
 #module-schedule .sched-date-day {
@@ -296,7 +308,7 @@
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--text-secondary);
 }
 
 #module-schedule .sched-entries {
@@ -316,7 +328,7 @@
   letter-spacing: 0.03em;
   line-height: 1.3;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 #module-schedule .sched-meta {
@@ -332,7 +344,7 @@
   gap: 0.4rem;
   font-size: 0.75rem;
   line-height: 1.35;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary);
 }
 
 #module-schedule .sched-meta-row p,
@@ -343,7 +355,7 @@
 }
 
 #module-schedule .sched-meta-row.is-location {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--text-primary);
 }
 
 #module-schedule .sched-meta-row.is-guests {
@@ -358,7 +370,7 @@
 }
 
 #module-schedule .sched-icon.is-stroke {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--neon-orange-light);
 }
 
 #module-schedule .sched-icon.is-pin {
@@ -382,7 +394,9 @@
 }
 
 #module-schedule .sched-meta-row a:hover {
-  color: #fff;
+  color: var(--neon-orange-light);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* Official Post：放在话题/热搜下方，作为卡片内容收尾按钮 */
@@ -400,21 +414,23 @@
   font-weight: 600;
   color: #fff;
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 170, 90, 0.55);
-  -webkit-backdrop-filter: blur(28px) saturate(190%);
-  backdrop-filter: blur(28px) saturate(190%);
+  line-height: 1.3;
+  background: var(--gradient-neon);
+  border: 1px solid transparent;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.2) inset,
+    0 3px 12px rgba(255, 107, 0, 0.24);
+  transition: transform 0.18s ease, box-shadow 0.2s ease;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
 
 #module-schedule .sched-official:hover,
 #module-schedule .sched-official:focus-visible {
-  border-color: rgba(255, 220, 150, 0.95);
-  background: rgba(255, 255, 255, 0.24);
+  transform: translateY(-1px);
   box-shadow:
     0 0 14px rgba(255, 150, 60, 0.34),
-    0 4px 16px rgba(0, 0, 0, 0.14);
+    0 4px 16px rgba(0, 0, 0, 0.22);
 }
 
 #module-schedule .sched-trend {
@@ -425,7 +441,8 @@
 }
 
 #module-schedule .sched-trend .sched-meta-row {
-  font-size: 0.68rem;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
 }
 
 #module-schedule .sched-tags {
@@ -439,21 +456,23 @@
   display: inline-flex;
   align-items: center;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 149, 0, 0.22);
   padding: 0.15rem 0.55rem;
   font-size: 0.68rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
+  color: #ffd6a8;
   text-decoration: none;
+  background: rgba(255, 149, 0, 0.12);
   -webkit-tap-highlight-color: transparent;
+  overflow-wrap: anywhere;
 }
 
 #module-schedule .sched-tag:hover {
-  border-color: rgba(255, 255, 255, 0.55);
-  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 149, 0, 0.45);
+  background: rgba(255, 149, 0, 0.18);
 }
 
-/* 桌面端略放大，但仍对齐 420px dashboard，不撑过导航栏 */
+/* 桌面端略放大，保持日程卡片内容的可读性 */
 @media (min-width: 640px) {
   #module-schedule .sched-btn-round {
     width: 2.5rem;

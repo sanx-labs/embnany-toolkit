@@ -19,7 +19,6 @@
     "boosting": "Boosting",
     "eventSelectAria": "Select event",
     "emv": {
-      "bannerAlt": "Instagram algorithm and interaction guide",
       "tabs": {
         "uncompleted": "Pending",
         "completed": "Completed",
@@ -124,7 +123,6 @@
     "boosting": "บูสต์ให้",
     "eventSelectAria": "เลือกอีเวนต์",
     "emv": {
-      "bannerAlt": "คู่มืออัลกอริทึมและการมีส่วนร่วมบน Instagram",
       "tabs": {
         "uncompleted": "รอดำเนินการ",
         "completed": "เสร็จสิ้น",
@@ -229,7 +227,6 @@
     "boosting": "打榜目标",
     "eventSelectAria": "选择活动",
     "emv": {
-      "bannerAlt": "Instagram 算法与互动指南",
       "tabs": {
         "uncompleted": "未完成",
         "completed": "已完成",

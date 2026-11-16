@@ -527,6 +527,11 @@
     }
 
     .page-stack {
+      width: 100%;
+      max-width: 1440px;
+      margin-inline: auto;
+      padding-inline: clamp(16px, 3vw, 40px);
+      align-items: stretch;
       padding-top: max(12px, env(safe-area-inset-top, 0px));
       padding-bottom: max(24px, env(safe-area-inset-bottom, 0px));
     }
@@ -536,16 +541,18 @@
       position: sticky;
       top: max(8px, env(safe-area-inset-top, 0px));
       z-index: 50;
-      width: min(100%, 420px);
+      width: 100%;
       margin: 0 0 12px;
       display: flex;
-      align-items: stretch;
-      flex-wrap: nowrap;
-      gap: 10px;
+      flex-direction: column;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
     }
     .app-navbar {
-      flex: 1;
+      flex: 0 1 auto;
       min-width: 0;
+      width: 100%;
       height: 50px;
       margin: 0;
       border-radius: 16px;
@@ -565,6 +572,7 @@
     .lang-switcher {
       position: relative;
       flex-shrink: 0;
+      align-self: center;
       display: inline-flex;
       align-items: center;
       gap: 4px;
@@ -656,15 +664,6 @@
         0 1px 0 rgba(255, 255, 255, 0.08) inset;
     }
 
-    /* EMV 指南图收进标题旁折叠区，完整显示不裁切 */
-    #module-emv .emv-inline-banner {
-      width: 100%;
-      margin: 0;
-    }
-    #module-emv .emv-inline-banner img {
-      aspect-ratio: auto;
-      object-fit: contain;
-    }
     .emv-header {
       width: 100%;
       align-items: center;
@@ -692,6 +691,20 @@
     }
     .emv-guide-panel[hidden] {
       display: none;
+    }
+    .emv-guide-links {
+      display: grid;
+      gap: 6px;
+      padding: 8px 0;
+    }
+    .emv-guide-link-row {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+    .emv-guide-link-row a {
+      color: var(--neon-orange-light);
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
 
     .menu-item {
@@ -734,6 +747,8 @@
 
     /* ── DEFENSE：待办清单 ── */
     .defense-shell {
+      width: 100%;
+      max-width: 1280px;
       padding-top: 22px;
     }
     .defense-header {
@@ -808,15 +823,18 @@
         0 1px 0 rgba(255, 255, 255, 0.28) inset;
     }
     .defense-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      align-items: stretch;
+      gap: 14px;
       max-height: min(58vh, 560px);
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       padding-right: 2px;
     }
     .defense-card {
+      display: flex;
+      min-width: 0;
       border-radius: 18px;
       padding: 14px;
       border: 1px solid var(--glass-border);
@@ -832,8 +850,10 @@
     }
     .defense-card-top {
       display: flex;
+      flex: 1;
       align-items: flex-start;
       gap: 10px;
+      min-width: 0;
     }
     .defense-tick {
       flex-shrink: 0;
@@ -862,8 +882,10 @@
         0 0 16px rgba(191, 0, 255, 0.25);
     }
     .defense-card-body {
-      min-width: 0;
+      display: flex;
       flex: 1;
+      flex-direction: column;
+      min-width: 0;
     }
     .defense-card-no {
       margin: 0 0 4px;
@@ -893,12 +915,15 @@
     .defense-badge {
       display: inline-flex;
       align-items: center;
+      max-width: 100%;
+      min-width: 0;
       min-height: 22px;
       padding: 2px 8px;
       border-radius: 999px;
       font-size: 11px;
       font-weight: 550;
       line-height: 1.2;
+      overflow-wrap: anywhere;
       color: #ffd6a8;
       background: rgba(255, 149, 0, 0.12);
       border: 1px solid rgba(255, 149, 0, 0.22);
@@ -938,7 +963,8 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: 12px;
+      margin-top: auto;
+      padding-top: 12px;
     }
     .defense-actions-row {
       display: grid;
@@ -947,6 +973,9 @@
     }
     .defense-actions-row > .defense-action:only-child {
       grid-column: 1 / -1;
+    }
+    .defense-actions-row > .defense-action {
+      min-width: 0;
     }
     .defense-action {
       min-height: 40px;
@@ -1097,6 +1126,35 @@
     .lang-option[data-lang="th"] {
       font-family: var(--font-th);
     }
+
+    @media (min-width: 768px) {
+      .top-chrome {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .app-navbar {
+        flex: 0 1 420px;
+        width: auto;
+      }
+      .lang-switcher {
+        align-self: auto;
+      }
+      .defense-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        max-height: none;
+        overflow: visible;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .defense-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+    }
   </style>
   <!-- SCHEDULE 专用样式，选择器全部限定在 #module-schedule -->
   <link rel="stylesheet" href="/public/schedule/schedule.css" />
@@ -1238,11 +1296,11 @@
 
     </section>
 
-    <!-- EMV：标题旁折叠指南图 + 待办 dashboard -->
+    <!-- EMV：标题旁折叠链接 + 待办 dashboard -->
     <section id="module-emv" class="app-module" data-app-tab="emv" role="tabpanel" hidden>
       <div class="app-shell liquid-glass defense-shell">
         <header class="defense-header emv-header mb-1">
-          <h1 class="brand-mark text-[22px] font-semibold tracking-tight brand-neon-yellow">EMV</h1>
+          <h1 class="brand-mark text-[22px] font-semibold tracking-tight brand-neon-yellow">BOOST GUIDE</h1>
           <button
             type="button"
             id="emv-guide-toggle"
@@ -1257,20 +1315,16 @@
           </button>
         </header>
         <div id="emv-guide-panel" class="emv-guide-panel" hidden>
-          <figure class="top-banner emv-inline-banner">
-            <img
-              id="emv-banner-img"
-              src="/public/images/emv/guide-en.jpg"
-              data-banner-src-en="/public/images/emv/guide-en.jpg"
-              data-banner-src-th="/public/images/emv/guide-th.jpg"
-              data-banner-src-zh="/public/images/emv/guide-zh.jpg"
-              alt="Instagram algorithm and interaction guide"
-              width="1024"
-              height="571"
-              decoding="async"
-              data-i18n-alt="emv.bannerAlt"
-            />
-          </figure>
+          <div class="emv-guide-links">
+            <p class="emv-guide-link-row">
+              <strong>Instagram：</strong>
+              <a href="https://x.com/SundazeQG/status/2119864898205126853" target="_blank" rel="noopener noreferrer">https://x.com/SundazeQG/status/2119864898205126853</a>
+            </p>
+            <p class="emv-guide-link-row">
+              <strong>YouTube：</strong>
+              <a href="https://x.com/EmiBonnieIndia/status/2119831423754641638" target="_blank" rel="noopener noreferrer">https://x.com/EmiBonnieIndia/status/2119831423754641638</a>
+            </p>
+          </div>
         </div>
         <div class="divider"></div>
 

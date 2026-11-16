@@ -36,7 +36,6 @@
       boosting: "打榜目标",
       eventSelectAria: "选择活动",
       emv: {
-        bannerAlt: "Instagram algorithm and interaction guide",
         tabs: {
           uncompleted: "Pending",
           completed: "Completed",
@@ -120,7 +119,6 @@
     },
     th: {
       emv: {
-        bannerAlt: "คู่มืออัลกอริทึมและการมีส่วนร่วมบน Instagram",
         tabs: {
           uncompleted: "รอดำเนินการ",
           completed: "เสร็จสิ้น",
@@ -200,7 +198,6 @@
       boosting: "打榜目标",
       eventSelectAria: "选择活动",
       emv: {
-        bannerAlt: "Instagram 算法与互动指南",
         tabs: {
           uncompleted: "未完成",
           completed: "已完成",
@@ -547,29 +544,6 @@
     if (!messages.en) messages = FALLBACK_MESSAGES;
   }
 
-  /**
-   * 按当前语言切换带 data-banner-src-{lang} 的图片。
-   * 只换 src，不重建 DOM，语言切换时更顺滑。
-   */
-  let bannersPrefetched = false;
-  function syncLocalizedBanners() {
-    document.querySelectorAll("[data-banner-src-en]").forEach((img) => {
-      const next =
-        img.getAttribute("data-banner-src-" + currentLang) ||
-        img.getAttribute("data-banner-src-en");
-      if (next && img.getAttribute("src") !== next) img.src = next;
-    });
-    if (bannersPrefetched) return;
-    bannersPrefetched = true;
-    // 预热另外两种语言的图，切语言时不会闪一下空白
-    document.querySelectorAll("[data-banner-src-en]").forEach((img) => {
-      UI_LANGS.forEach((lang) => {
-        const src = img.getAttribute("data-banner-src-" + lang);
-        if (src) new Image().src = src;
-      });
-    });
-  }
-
   function syncLangSwitcher() {
     document.querySelectorAll("#lang-switcher [data-lang]").forEach((btn) => {
       const active = btn.dataset.lang === currentLang;
@@ -594,10 +568,6 @@
       if (el.getAttribute("aria-label") === t("copiedAria")) return;
       el.setAttribute("aria-label", t(el.dataset.i18nAria));
     });
-    document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
-      el.setAttribute("alt", t(el.dataset.i18nAlt));
-    });
-    syncLocalizedBanners();
     syncEmvGuidePanel();
 
     syncLangSwitcher();
@@ -986,12 +956,12 @@
   }
 
   function isHiddenEmvStatus(status) {
-    // Status 为 Active 的帖子不进待办（大小写不敏感）
+    // 只隐藏 Archived 帖子；Active 状态仍显示在 EMV 列表中
     return String(status || "")
       .split("/")
       .map((part) => part.trim().toLowerCase())
       .filter(Boolean)
-      .includes("active");
+      .includes("archived");
   }
 
   function getEmvPostedTimeMs(postedTime) {
@@ -1078,7 +1048,6 @@
     btn.setAttribute("aria-expanded", open ? "true" : "false");
     localStorage.setItem(EMV_GUIDE_KEY, open ? "1" : "0");
     syncEmvGuidePanel();
-    if (open) syncLocalizedBanners();
   }
 
   function syncEmvTabs() {
@@ -1161,7 +1130,6 @@
     const state = emvStateOf(task);
     const sprint = getEmvSprint(task);
     const eventName = String(task.event || "").trim() || String(task.artist || "").trim();
-    const artist = String(task.artist || "").trim();
     const handle = String(task.handle || "").trim();
     const accountType = String(task.accountType || "").trim();
     const statusLabel = formatEmvStatusLabel(task.status);
@@ -1184,11 +1152,6 @@
       );
     } else if (state === "skipped") {
       badges.push(`<span class="defense-badge is-status">${escapeHtml(t("emv.tabs.skipped"))}</span>`);
-    }
-    if (artist) {
-      badges.push(
-        `<span class="defense-badge">${escapeHtml(t("emv.labels.artist"))} · ${escapeHtml(artist)}</span>`
-      );
     }
     if (handle) {
       badges.push(
