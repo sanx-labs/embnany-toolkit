@@ -20,21 +20,18 @@
       loading: "Loading schedule…",
       noEvents: "No events scheduled for this month.",
       syncFailed: "Live Notion sync failed: {reason} Showing local sample data.",
-      tba: "TBA",
       timeZone: "(Local Time)",
     },
     th: {
       loading: "กำลังโหลดตารางกิจกรรม…",
       noEvents: "เดือนนี้ไม่มีกำหนดกิจกรรม",
       syncFailed: "ซิงก์ Notion แบบเรียลไทม์ไม่สำเร็จ: {reason} กำลังแสดงข้อมูลตัวอย่างในเครื่อง",
-      tba: "ยังไม่ระบุ",
       timeZone: "(เวลาท้องถิ่น)",
     },
     zh: {
       loading: "正在加载日程…",
       noEvents: "本月暂无活动。",
       syncFailed: "Notion 实时同步失败：{reason}。已显示本地示例数据。",
-      tba: "待定",
       timeZone: "（当地时间）",
     },
   };
@@ -446,7 +443,6 @@
       syncNotice = "";
       try {
         data = await fetchSchedulePayload(LIVE_URL);
-        syncNotice = data.source === "notion" ? "" : "";
       } catch (liveError) {
         console.warn("[SCHEDULE] live Notion API unavailable, using local fallback", liveError);
         const reason =

@@ -70,7 +70,7 @@ function getPropertyNames() {
     event: readEnv("NOTION_EMV_PROP_EVENT") || "Event",
     accountType: readEnv("NOTION_EMV_PROP_ACCOUNT_TYPE") || "Account Type",
     viewPost: readEnv("NOTION_EMV_PROP_VIEW_POST") || "View Post",
-    status: readEnv("NOTION_EMV_PROP_STATUS") || "Status",
+    status: "Status",
   };
 }
 
@@ -256,7 +256,7 @@ function mapNotionPageToTask(page) {
   if (!event && !artist) return null;
 
   const status = getDisplayText(findProperty(properties, names.status));
-  // Active 表示这条不需要出现在待办里（例如已在互动中）
+  // Archived 记录不进入网站待办清单。
   if (isHiddenEmvStatus(status)) return null;
 
   return {

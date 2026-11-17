@@ -17,8 +17,6 @@
       navAria: "站点模块",
       navTrend: "TREND",
       navEmv: "EMV",
-      navStreaming: "STREAMING",
-      navVoting: "VOTING",
       navSchedule: "SCHEDULE",
       langSwitcherAria: "切换语言",
       previewLabel: "文案预览",
@@ -27,7 +25,6 @@
       placeholder: "点击「随机文案」生成内容",
       randomBtn: "随机文案",
       tweetBtn: "一键发推",
-      reportBtn: "举报",
       contactBefore: "有问题或反馈？通过 X 联系 ",
       copyAria: "复制",
       copiedAria: "已复制",
@@ -83,7 +80,6 @@
         loading: "Loading schedule…",
         noEvents: "No events scheduled for this month.",
         syncFailed: "Live Notion sync failed: {reason} Showing local sample data.",
-        tba: "TBA",
         monthNavigationAria: "Month navigation",
         prevMonthAria: "Previous month",
         nextMonthAria: "Next month",
@@ -169,7 +165,6 @@
         loading: "กำลังโหลดตารางกิจกรรม…",
         noEvents: "เดือนนี้ไม่มีกำหนดกิจกรรม",
         syncFailed: "ซิงก์ Notion แบบเรียลไทม์ไม่สำเร็จ: {reason} กำลังแสดงข้อมูลตัวอย่างในเครื่อง",
-        tba: "ยังไม่ระบุ",
         monthNavigationAria: "การนำทางเดือน",
         prevMonthAria: "เดือนก่อนหน้า",
         nextMonthAria: "เดือนถัดไป",
@@ -185,8 +180,6 @@
       navAria: "站点模块",
       navTrend: "TREND",
       navEmv: "EMV",
-      navStreaming: "STREAMING",
-      navVoting: "VOTING",
       navSchedule: "SCHEDULE",
       langSwitcherAria: "切换语言",
       previewLabel: "文案预览",
@@ -195,7 +188,6 @@
       placeholder: "点击“随机文案”生成内容",
       randomBtn: "随机文案",
       tweetBtn: "发布推文",
-      reportBtn: "举报",
       contactBefore: "有问题或反馈？通过 X 联系 ",
       copyAria: "复制",
       copiedAria: "已复制",
@@ -251,7 +243,6 @@
         loading: "正在加载日程…",
         noEvents: "本月暂无活动。",
         syncFailed: "Notion 实时同步失败：{reason}。已显示本地示例数据。",
-        tba: "待定",
         monthNavigationAria: "月份导航",
         prevMonthAria: "上个月",
         nextMonthAria: "下个月",
@@ -302,7 +293,6 @@
   const EMV_FALLBACK_URL = "/public/emv/tasks.json";
   const EMV_DONE_KEY = "emv-done-v1";
   const EMV_SKIP_KEY = "emv-skip-v1";
-  const EMV_OPEN_KEY = "emv-open-v1";
   const EMV_TAB_KEY = "emv-tab-v1";
   const EMV_GUIDE_KEY = "emv-guide-open-v1";
   const EMV_TABS = ["uncompleted", "completed", "skipped", "all"];
@@ -391,7 +381,6 @@
   let emvView = "uncompleted";
   let emvDone = {};
   let emvSkip = {};
-  let emvOpen = {};
 
   const $ = (id) => document.getElementById(id);
 
@@ -594,7 +583,6 @@
             loading: t("schedule.loading"),
             noEvents: t("schedule.noEvents"),
             syncFailed: t("schedule.syncFailed"),
-            tba: t("schedule.tba"),
             timeZone: t("schedule.timeZone"),
           },
         },
@@ -965,7 +953,7 @@
   }
 
   function isHiddenEmvStatus(status) {
-    // 只隐藏 Archived 帖子；Active 状态仍显示在 EMV 列表中
+    // Notion Status 为 Archived 时不显示；其他状态继续显示。
     return String(status || "")
       .split("/")
       .map((part) => part.trim().toLowerCase())

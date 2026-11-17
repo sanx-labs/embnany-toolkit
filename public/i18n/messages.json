@@ -10,7 +10,6 @@
     "placeholder": "Click \"Random\" to generate",
     "randomBtn": "Random",
     "tweetBtn": "Post Tweet",
-    "reportBtn": "Report",
     "contactBefore": "Have questions or feedback? Contact via X ",
     "copyAria": "Copy",
     "copiedAria": "Copied",
@@ -66,7 +65,6 @@
       "loading": "Loading schedule…",
       "noEvents": "No events scheduled for this month.",
       "syncFailed": "Live Notion sync failed: {reason} Showing local sample data.",
-      "tba": "TBA",
       "monthNavigationAria": "Month navigation",
       "prevMonthAria": "Previous month",
       "nextMonthAria": "Next month",
@@ -102,8 +100,6 @@
         "progressHint": "{pending} pending · {skipped} skipped"
       }
     },
-    "navStreaming": "STREAMING",
-    "navVoting": "VOTING",
     "navSchedule": "SCHEDULE"
   },
   "th": {
@@ -117,7 +113,6 @@
     "placeholder": "กด \"สุ่มข้อความ\" เพื่อสร้าง",
     "randomBtn": "สุ่มข้อความ",
     "tweetBtn": "โพสต์ทวีต",
-    "reportBtn": "รายงาน",
     "contactBefore": "มีคำถามหรือข้อเสนอแนะ? ติดต่อผ่าน X ",
     "copyAria": "คัดลอก",
     "copiedAria": "คัดลอกแล้ว",
@@ -173,7 +168,6 @@
       "loading": "กำลังโหลดตารางกิจกรรม…",
       "noEvents": "เดือนนี้ไม่มีกำหนดกิจกรรม",
       "syncFailed": "ซิงก์ Notion แบบเรียลไทม์ไม่สำเร็จ: {reason} กำลังแสดงข้อมูลตัวอย่างในเครื่อง",
-      "tba": "ยังไม่ระบุ",
       "monthNavigationAria": "การนำทางเดือน",
       "prevMonthAria": "เดือนก่อนหน้า",
       "nextMonthAria": "เดือนถัดไป",
@@ -209,8 +203,6 @@
         "progressHint": "รอดำเนินการ {pending} · ข้าม {skipped}"
       }
     },
-    "navStreaming": "STREAMING",
-    "navVoting": "VOTING",
     "navSchedule": "SCHEDULE"
   },
   "zh": {
@@ -224,7 +216,6 @@
     "placeholder": "点击“随机文案”生成内容",
     "randomBtn": "随机文案",
     "tweetBtn": "发布推文",
-    "reportBtn": "举报",
     "contactBefore": "有问题或反馈？通过 X 联系 ",
     "copyAria": "复制",
     "copiedAria": "已复制",
@@ -280,7 +271,6 @@
       "loading": "正在加载日程…",
       "noEvents": "本月暂无活动。",
       "syncFailed": "Notion 实时同步失败：{reason}。已显示本地示例数据。",
-      "tba": "待定",
       "monthNavigationAria": "月份导航",
       "prevMonthAria": "上个月",
       "nextMonthAria": "下个月",
@@ -316,8 +306,6 @@
         "progressHint": "待办 {pending} · 已跳过 {skipped}"
       }
     },
-    "navStreaming": "STREAMING",
-    "navVoting": "VOTING",
     "navSchedule": "SCHEDULE"
   }
 }
