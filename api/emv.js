@@ -1,9 +1,9 @@
 /**
  * EMV 待办专用 Vercel Serverless API。
  * 读取另一份 Notion 数据库：
- * Artist / Handle / Event / Account Type / View Post / Posted Time (BKK) / Status。
- * Status 为 Active 的记录不进入待办清单。
- * Sprint Status / Sort Priority 仅作 Notion 侧自动化参考，前端会按 Posted Time (BKK) 实时重算并置顶。
+ * Artist / Handle / Event / Account Type / View Post / Status。
+ * Status 为 Archived 的记录不进入待办清单。
+ * 前端按 Notion Status 展示并排列任务。
  * 密钥只读 process.env，不会写进前端或响应体。
  */
 
@@ -70,7 +70,6 @@ function getPropertyNames() {
     event: readEnv("NOTION_EMV_PROP_EVENT") || "Event",
     accountType: readEnv("NOTION_EMV_PROP_ACCOUNT_TYPE") || "Account Type",
     viewPost: readEnv("NOTION_EMV_PROP_VIEW_POST") || "View Post",
-    postedTime: readEnv("NOTION_EMV_PROP_POSTED_TIME") || "Posted Time (BKK)",
     status: readEnv("NOTION_EMV_PROP_STATUS") || "Status",
   };
 }
@@ -230,11 +229,6 @@ function getDisplayText(prop) {
   return getPlainText(prop);
 }
 
-function getDateStart(prop) {
-  if (!prop || prop.type !== "date" || !prop.date) return "";
-  return String(prop.date.start || "").trim();
-}
-
 function getUrl(prop) {
   if (!prop) return "";
   if (prop.type === "url") return (prop.url && prop.url.trim()) || "";
@@ -261,9 +255,7 @@ function mapNotionPageToTask(page) {
   const artist = getDisplayText(artistProp) || getPlainText(artistProp);
   if (!event && !artist) return null;
 
-  const status = getDisplayText(
-    findProperty(properties, names.status) || findProperty(properties, "Sprint Status"),
-  );
+  const status = getDisplayText(findProperty(properties, names.status));
   // Active 表示这条不需要出现在待办里（例如已在互动中）
   if (isHiddenEmvStatus(status)) return null;
 
@@ -273,7 +265,6 @@ function mapNotionPageToTask(page) {
     artist,
     handle: getDisplayText(findProperty(properties, names.handle)),
     accountType: getDisplayText(findProperty(properties, names.accountType)),
-    postedTime: getDateStart(findProperty(properties, names.postedTime)),
     postLink: getUrl(findProperty(properties, names.viewPost)),
     status,
   };

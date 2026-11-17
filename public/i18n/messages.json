@@ -27,7 +27,7 @@
       },
       "actions": {
         "openPost": "Open Post",
-        "markDone": "Mark Done",
+        "markDone": "Mark as done",
         "skip": "Skip",
         "undo": "Undo"
       },
@@ -36,7 +36,6 @@
         "handle": "Handle",
         "accountType": "Account Type",
         "status": "Status",
-        "postedTime": "Posted Time (BKK)",
         "guide": "How to do it",
         "expandGuide": "Show interaction guide",
         "collapseGuide": "Hide interaction guide",
@@ -135,7 +134,7 @@
       },
       "actions": {
         "openPost": "เปิดโพสต์",
-        "markDone": "ทำเครื่องหมายว่าเสร็จ",
+        "markDone": "ทำเครื่องหมายว่าเสร็จแล้ว",
         "skip": "ข้าม",
         "undo": "เลิกทำ"
       },
@@ -144,7 +143,6 @@
         "handle": "แฮนเดิล",
         "accountType": "ประเภทบัญชี",
         "status": "สถานะ",
-        "postedTime": "เวลาโพสต์ (BKK)",
         "guide": "วิธีทำ",
         "expandGuide": "แสดงคู่มือการมีส่วนร่วม",
         "collapseGuide": "ซ่อนคู่มือการมีส่วนร่วม",
@@ -243,7 +241,7 @@
       },
       "actions": {
         "openPost": "打开原帖",
-        "markDone": "标记完成",
+        "markDone": "标记为已完成",
         "skip": "跳过",
         "undo": "撤销"
       },
@@ -252,7 +250,6 @@
         "handle": "账号",
         "accountType": "账号类型",
         "status": "状态",
-        "postedTime": "发布时间 (BKK)",
         "guide": "怎么做",
         "expandGuide": "展开互动指南",
         "collapseGuide": "收起互动指南",

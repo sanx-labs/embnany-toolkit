@@ -44,7 +44,7 @@
         },
         actions: {
           openPost: "Open Post",
-          markDone: "Mark Done",
+          markDone: "Mark as done",
           skip: "Skip",
           undo: "Undo",
         },
@@ -53,7 +53,6 @@
           handle: "Handle",
           accountType: "Account Type",
           status: "Status",
-          postedTime: "Posted Time (BKK)",
           guide: "How to do it",
           expandGuide: "Show interaction guide",
           collapseGuide: "Hide interaction guide",
@@ -131,7 +130,7 @@
         },
         actions: {
           openPost: "เปิดโพสต์",
-          markDone: "ทำเครื่องหมายว่าเสร็จ",
+          markDone: "ทำเครื่องหมายว่าเสร็จแล้ว",
           skip: "ข้าม",
           undo: "เลิกทำ",
         },
@@ -140,7 +139,6 @@
           handle: "แฮนเดิล",
           accountType: "ประเภทบัญชี",
           status: "สถานะ",
-          postedTime: "เวลาโพสต์ (BKK)",
           guide: "วิธีทำ",
           expandGuide: "แสดงคู่มือการมีส่วนร่วม",
           collapseGuide: "ซ่อนคู่มือการมีส่วนร่วม",
@@ -214,7 +212,7 @@
         },
         actions: {
           openPost: "打开原帖",
-          markDone: "标记完成",
+          markDone: "标记为已完成",
           skip: "跳过",
           undo: "撤销",
         },
@@ -223,7 +221,6 @@
           handle: "账号",
           accountType: "账号类型",
           status: "状态",
-          postedTime: "发布时间 (BKK)",
           guide: "怎么做",
           expandGuide: "展开互动指南",
           collapseGuide: "收起互动指南",
@@ -309,7 +306,6 @@
   const EMV_TAB_KEY = "emv-tab-v1";
   const EMV_GUIDE_KEY = "emv-guide-open-v1";
   const EMV_TABS = ["uncompleted", "completed", "skipped", "all"];
-  const EMV_SPRINT_TICK_MS = 60 * 1000;
 
   const EVENT_IDS = ["EmiBonnie", "Emi", "Bonnie", "Any", "EmiBonnieAny", "EmiAny", "BonnieAny"];
   // 旧下拉 id 映射到 config.js 里的正式键名
@@ -396,7 +392,6 @@
   let emvDone = {};
   let emvSkip = {};
   let emvOpen = {};
-  let emvSprintTimer = null;
 
   const $ = (id) => document.getElementById(id);
 
@@ -978,24 +973,22 @@
       .includes("archived");
   }
 
-  function getEmvPostedTimeMs(postedTime) {
-    const raw = String(postedTime || "").trim();
-    if (!raw) return NaN;
-    const ms = new Date(raw).getTime();
-    return Number.isFinite(ms) ? ms : NaN;
-  }
-
-  // 用浏览器当前时间重算冲刺阶段，不依赖 Notion 构建时的 Sprint Status / Sort Priority
+  // 冲刺分组和展示都以 Notion 的 Status 字段为准。
   function getEmvSprint(task) {
-    const postedMs = getEmvPostedTimeMs(task && task.postedTime);
-    if (!Number.isFinite(postedMs)) {
-      return { key: "pending", sortPriority: 99, hours: null };
+    const status = String(task && task.status || "").toLowerCase();
+    if (/(24h|peak sprint|黄金冲刺|เร่งด่วน 24)/i.test(status)) {
+      return { key: "peak24h", sortPriority: 1 };
     }
-    const hours = (Date.now() - postedMs) / 3600000;
-    if (hours <= 24) return { key: "peak24h", sortPriority: 1, hours };
-    if (hours <= 48) return { key: "prime48h", sortPriority: 2, hours };
-    if (hours <= 72) return { key: "extended72h", sortPriority: 3, hours };
-    return { key: "archived", sortPriority: 4, hours };
+    if (/(48h|prime boosting|核心冲量|ดันยอด 48)/i.test(status)) {
+      return { key: "prime48h", sortPriority: 2 };
+    }
+    if (/(72h|extended window|长尾|ต่อเนื่อง 72)/i.test(status)) {
+      return { key: "extended72h", sortPriority: 3 };
+    }
+    if (/(archived|已结束|สิ้นสุด)/i.test(status)) {
+      return { key: "archived", sortPriority: 4 };
+    }
+    return { key: "pending", sortPriority: 99 };
   }
 
   function formatEmvStatusLabel(raw) {
@@ -1016,23 +1009,7 @@
   function compareEmvTasks(left, right) {
     const leftSprint = getEmvSprint(left);
     const rightSprint = getEmvSprint(right);
-    if (leftSprint.sortPriority !== rightSprint.sortPriority) {
-      return leftSprint.sortPriority - rightSprint.sortPriority;
-    }
-    const leftPosted = getEmvPostedTimeMs(left && left.postedTime);
-    const rightPosted = getEmvPostedTimeMs(right && right.postedTime);
-    const leftKey = Number.isFinite(leftPosted) ? leftPosted : 0;
-    const rightKey = Number.isFinite(rightPosted) ? rightPosted : 0;
-    return rightKey - leftKey;
-  }
-
-  function startEmvSprintTicker() {
-    if (emvSprintTimer) return;
-    emvSprintTimer = setInterval(() => {
-      const panel = $("module-emv");
-      if (!panel || panel.hidden || !emvLoaded) return;
-      renderEmvList();
-    }, EMV_SPRINT_TICK_MS);
+    return leftSprint.sortPriority - rightSprint.sortPriority;
   }
 
   function loadEmvLocalState() {
@@ -1085,7 +1062,7 @@
       emvView === "all"
         ? emvTasks.slice()
         : emvTasks.filter((task) => emvStateOf(task) === emvView);
-    // 筛选后仍按实时冲刺权重置顶，同阶段内最新帖在前
+    // 按 Notion Status 中的冲刺状态分组排序。
     list.sort(compareEmvTasks);
     return list;
   }
@@ -1124,22 +1101,6 @@
       emvView === "uncompleted" ? t("emv.labels.emptyPending") : t("emv.labels.emptyList");
   }
 
-  function formatEmvPostedTime(raw) {
-    const value = String(raw || "").trim();
-    if (!value) return "";
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) return value;
-    const hasTime = /T\d{2}:\d{2}/.test(value);
-    const locale =
-      currentLang === "zh" ? "zh-CN" : currentLang === "th" ? "th-TH" : "en-US";
-    return date.toLocaleString(locale, {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      ...(hasTime ? { hour: "2-digit", minute: "2-digit", hourCycle: "h23" } : {}),
-    });
-  }
-
   function formatEmvAccountType(raw) {
     const value = String(raw || "").trim();
     const key = value.toLowerCase();
@@ -1155,7 +1116,6 @@
     const handle = String(task.handle || "").trim();
     const accountType = formatEmvAccountType(task.accountType);
     const statusLabel = formatEmvStatusLabel(task.status);
-    const postedTime = formatEmvPostedTime(task.postedTime);
     const postLink = String(task.postLink || "").trim();
 
     const card = document.createElement("article");
@@ -1185,7 +1145,7 @@
         `<span class="defense-badge">${escapeHtml(t("emv.labels.accountType"))} · ${escapeHtml(accountType)}</span>`
       );
     }
-    const statusText = statusLabel || t("emv.sprint." + sprint.key);
+    const statusText = statusLabel;
     if (statusText) {
       badges.push(
         `<span class="defense-badge">${escapeHtml(t("emv.labels.status"))} · ${escapeHtml(statusText)}</span>`
@@ -1195,27 +1155,22 @@
     const openButton = postLink
       ? `<button type="button" class="defense-action is-primary" data-emv-action="open">${escapeHtml(t("emv.actions.openPost"))}</button>`
       : "";
-    const skipButton = `<button type="button" class="defense-action${postLink ? "" : " is-primary"}" data-emv-action="skip">${escapeHtml(t("emv.actions.skip"))}</button>`;
+    const skipButton = `<button type="button" class="defense-action" data-emv-action="skip">${escapeHtml(t("emv.actions.skip"))}</button>`;
     const undoButton = `<button type="button" class="defense-action${postLink ? "" : " is-primary"}" data-emv-action="undo">${escapeHtml(t("emv.actions.undo"))}</button>`;
-    // 完成改由左侧钩按钮完成，这里只保留「打开原帖」和「跳过」并排，少占一行。
+    const doneButton =
+      state === "uncompleted"
+        ? `<button type="button" class="defense-action emv-mark-done" data-emv-action="done" aria-pressed="false"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg>${escapeHtml(t("emv.actions.markDone"))}</button>`
+        : "";
     const actionButtons =
       state === "uncompleted"
-        ? `<div class="defense-actions-row">${openButton}${skipButton}</div>`
+        ? `<div class="defense-actions-row emv-actions-row${postLink ? "" : " has-no-post"}">${openButton}${skipButton}${doneButton}</div>`
         : `<div class="defense-actions-row">${openButton}${undoButton}</div>`;
-
-    const tickAction = state === "uncompleted" ? "done" : "undo";
-    const tickLabel =
-      state === "completed" || state === "skipped"
-        ? t("emv.actions.undo")
-        : t("emv.actions.markDone");
 
     card.innerHTML = `
       <div class="defense-card-top">
-        <button type="button" class="defense-tick${state === "completed" ? " is-checked" : ""}" data-emv-action="${tickAction}" aria-pressed="${state === "completed" ? "true" : "false"}" aria-label="${escapeHtml(tickLabel)}">✓</button>
         <div class="defense-card-body">
           <h3 class="defense-card-title">${escapeHtml(eventName)}</h3>
           ${badges.length ? `<div class="defense-badges">${badges.join("")}</div>` : ""}
-          ${postedTime ? `<p class="defense-meta emv-time">${escapeHtml(t("emv.labels.postedTime"))} · ${escapeHtml(postedTime)}</p>` : ""}
           <div class="defense-actions">${actionButtons}</div>
         </div>
       </div>
@@ -1335,7 +1290,6 @@
     loadEmvLocalState();
     syncEmvTabs();
     setEmvGuideOpen(localStorage.getItem(EMV_GUIDE_KEY) === "1");
-    startEmvSprintTicker();
     loadEmvTasks();
   }
 

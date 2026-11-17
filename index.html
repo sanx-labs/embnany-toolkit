@@ -1024,6 +1024,26 @@
     .defense-actions-row > .defense-action {
       min-width: 0;
     }
+    .emv-actions-row {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .emv-actions-row.has-no-post {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .emv-mark-done {
+      border-color: rgba(74, 222, 128, 0.3);
+      background: rgba(34, 197, 94, 0.1);
+      color: #bbf7d0;
+    }
+    .emv-mark-done:hover {
+      border-color: rgba(74, 222, 128, 0.55);
+      background: rgba(34, 197, 94, 0.16);
+    }
+    .emv-mark-done svg {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 15px;
+    }
     .defense-action {
       min-height: 40px;
       height: auto;
