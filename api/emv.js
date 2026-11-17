@@ -40,8 +40,8 @@ function isPlaceholderValue(value) {
 }
 
 function getEmvDatabaseId() {
-  // 正式变量名是 NOTION_EMV_ID；旧名 NOTION_EMV_DATABASE_ID 仍兼容
-  return readEnv("NOTION_EMV_ID") || readEnv("NOTION_EMV_DATABASE_ID");
+  // 优先使用统一的大写新变量名，同时兼容旧配置名。
+  return readEnv("NOTION_EMV_DATABASE_ID") || readEnv("NOTION_EMV_ID");
 }
 
 function isConfigured() {
@@ -331,7 +331,7 @@ module.exports = async function handler(req, res) {
   if (!isConfigured()) {
     sendJson(res, 503, {
       error: "EMV Notion is not configured",
-      detail: "Set NOTION_API_KEY and NOTION_EMV_ID in server environment variables.",
+      detail: "Set NOTION_API_KEY and NOTION_EMV_DATABASE_ID in server environment variables.",
     });
     return;
   }

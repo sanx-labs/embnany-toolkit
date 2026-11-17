@@ -41,8 +41,9 @@ function isPlaceholderValue(value) {
 }
 
 function getScheduleDatabaseId() {
-  // 正式变量名是 NOTION_Schedule_ID；大写 / 旧名仍兼容
+  // 优先使用统一的大写新变量名，同时兼容旧配置名。
   return (
+    readEnv("NOTION_SCHEDULE_DATABASE_ID") ||
     readEnv("NOTION_Schedule_ID") ||
     readEnv("NOTION_SCHEDULE_ID") ||
     readEnv("NOTION_DATABASE_ID")
@@ -467,7 +468,7 @@ module.exports = async function handler(req, res) {
   if (!isConfigured()) {
     sendJson(res, 503, {
       error: "Notion is not configured",
-      detail: "Set NOTION_API_KEY and NOTION_Schedule_ID in server environment variables.",
+      detail: "Set NOTION_API_KEY and NOTION_SCHEDULE_DATABASE_ID in server environment variables.",
     });
     return;
   }
