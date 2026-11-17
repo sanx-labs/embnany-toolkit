@@ -13,9 +13,10 @@
     retry: "Try again",
     empty: "No vote campaigns available.",
     hostedBy: "Hosted by {name}",
+    artistLabel: "Artist: {name}",
     frequencyLabel: "Frequency: {value}",
     voteNow: "Vote Now",
-    officialSource: "Official Source",
+    viewResults: "View Results",
     noPeriod: "Voting period not announced",
     daysLeft: "{count}d left",
     hoursLeft: "{count}h left",
@@ -38,9 +39,10 @@
       retry: "ลองอีกครั้ง",
       empty: "ไม่มีรายการโหวตในขณะนี้",
       hostedBy: "จัดโดย {name}",
+      artistLabel: "ศิลปิน: {name}",
       frequencyLabel: "ความถี่: {value}",
       voteNow: "โหวตเลย",
-      officialSource: "แหล่งข่าวทางการ",
+      viewResults: "ดูผลลัพธ์",
       noPeriod: "ยังไม่ประกาศช่วงเวลาโหวต",
       daysLeft: "เหลือ {count} วัน",
       hoursLeft: "เหลือ {count} ชั่วโมง",
@@ -62,9 +64,10 @@
       retry: "重试",
       empty: "暂无投票活动。",
       hostedBy: "主办方：{name}",
+      artistLabel: "艺人：{name}",
       frequencyLabel: "投票频率：{value}",
       voteNow: "立即投票",
-      officialSource: "官方来源",
+      viewResults: "查看结果",
       noPeriod: "投票时间暂未公布",
       daysLeft: "剩余 {count} 天",
       hoursLeft: "剩余 {count} 小时",
@@ -98,9 +101,10 @@
    * @property {{start: string, end: string}} period
    * @property {string} platform
    * @property {string} frequency
+   * @property {string} artist
    * @property {string} organizer
    * @property {string} voteUrl
-   * @property {string} sourceUrl
+   * @property {string} viewResultsUrl
    */
 
   function escapeHtml(value) {
@@ -231,14 +235,18 @@
     const statusLabel = text.status[status] || String(campaign.status || "").trim() || "—";
     const platform = formatPlatformName(campaign.platform);
     const frequency = String(campaign.frequency || "").trim();
+    const artist = String(campaign.artist || "").trim();
     const organizer = String(campaign.organizer || "").trim();
     const voteUrl = getSafeUrl(campaign.voteUrl);
-    const sourceUrl = getSafeUrl(campaign.sourceUrl);
+    const viewResultsUrl = getSafeUrl(campaign.viewResultsUrl);
     const end = String(campaign.period && campaign.period.end || "");
     const period = formatPeriod(campaign.period || {});
     const card = document.createElement("article");
     card.className = "vote-card";
     card.innerHTML = `
+      <h2 class="vote-card-title">${escapeHtml(campaign.title || "Untitled vote")}</h2>
+      ${organizer ? `<p class="vote-organizer">${escapeHtml(interpolate(text.hostedBy, { name: organizer }))}</p>` : ""}
+      ${artist ? `<p class="vote-artist">${escapeHtml(interpolate(text.artistLabel, { name: artist }))}</p>` : ""}
       <div class="vote-meta-group">
         <div class="vote-meta">
           <span class="vote-status" data-status="${escapeHtml(status)}">
@@ -247,7 +255,7 @@
           ${platform ? `<span class="vote-platform">${escapeHtml(platform)}</span>` : ""}
         </div>
         ${frequency ? `
-          <div class="vote-frequency-row">
+          <div class="vote-meta-secondary">
             <span class="vote-frequency" aria-label="${escapeHtml(interpolate(text.frequencyLabel, { value: frequency }))}">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M13.2 5.3A5.5 5.5 0 0 0 3.8 3.8L2.7 5M2.7 5V2.8M2.7 5h2.2M2.8 10.7a5.5 5.5 0 0 0 9.4 1.5l1.1-1.2m0 0v2.2m0-2.2h-2.2"/>
@@ -257,15 +265,13 @@
           </div>
         ` : ""}
       </div>
-      ${organizer ? `<p class="vote-organizer">${escapeHtml(interpolate(text.hostedBy, { name: organizer }))}</p>` : ""}
-      <h2 class="vote-card-title">${escapeHtml(campaign.title || "Untitled vote")}</h2>
       <div class="vote-timeline">
         <span class="vote-period">${escapeHtml(period)}</span>
         <span class="vote-countdown${status === "ended" ? " is-ended" : ""}" data-vote-end="${escapeHtml(end)}">${escapeHtml(countdownLabel(end))}</span>
       </div>
       <div class="vote-actions">
         ${voteUrl ? `<a class="vote-action vote-action-primary" href="${escapeHtml(voteUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(text.voteNow)} ↗</a>` : ""}
-        ${sourceUrl ? `<a class="vote-action vote-action-secondary" href="${escapeHtml(sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(text.officialSource)} ↗</a>` : ""}
+        ${viewResultsUrl ? `<a class="vote-action vote-action-secondary" href="${escapeHtml(viewResultsUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(text.viewResults)} ↗</a>` : ""}
       </div>
     `;
     return card;

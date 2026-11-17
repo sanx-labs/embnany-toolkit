@@ -42,9 +42,10 @@ function getPropertyNames() {
     period: readEnv("NOTION_VOTE_PROP_PERIOD") || "Voting Period",
     platform: readEnv("NOTION_VOTE_PROP_PLATFORM") || "Platform",
     frequency: readEnv("NOTION_VOTE_PROP_FREQUENCY") || "Frequency",
+    artist: readEnv("NOTION_VOTE_PROP_ARTIST") || "Artist",
     organizer: readEnv("NOTION_VOTE_PROP_ORGANIZER") || "Organizer",
     voteUrl: readEnv("NOTION_VOTE_PROP_VOTE_URL") || "Vote URL",
-    source: readEnv("NOTION_VOTE_PROP_SOURCE") || "Source",
+    viewResults: readEnv("NOTION_VOTE_PROP_VIEW_RESULTS") || "View Results",
   };
 }
 
@@ -93,8 +94,18 @@ function getDateRange(property) {
 }
 
 function getUrl(property) {
-  if (!property || property.type !== "url") return "";
-  const value = String(property.url || "").trim();
+  if (!property) return "";
+  let value = "";
+  if (property.type === "url") {
+    value = property.url;
+  } else if (property.type === "rich_text" || property.type === "title") {
+    const items = property[property.type] || [];
+    const linkedItem = items.find((item) => item && item.href);
+    value = linkedItem ? linkedItem.href : items.map((item) => item && item.plain_text || "").join("");
+  } else if (property.type === "formula" && property.formula) {
+    value = property.formula.type === "url" ? property.formula.url : property.formula.string;
+  }
+  value = String(value || "").trim();
   return /^https?:\/\//i.test(value) ? value : "";
 }
 
@@ -113,9 +124,10 @@ function mapPage(page) {
     period,
     platform: getOption(findProperty(properties, names.platform)),
     frequency: getOption(findProperty(properties, names.frequency)),
+    artist: getOption(findProperty(properties, names.artist)),
     organizer: getOption(findProperty(properties, names.organizer)),
     voteUrl: getUrl(findProperty(properties, names.voteUrl)),
-    sourceUrl: getUrl(findProperty(properties, names.source)),
+    viewResultsUrl: getUrl(findProperty(properties, names.viewResults)),
   };
 }
 
