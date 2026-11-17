@@ -53,7 +53,7 @@
           handle: "Handle",
           accountType: "Account Type",
           status: "Status",
-          postedTime: "Posted Time",
+          postedTime: "Posted Time (BKK)",
           guide: "How to do it",
           expandGuide: "Show interaction guide",
           collapseGuide: "Hide interaction guide",
@@ -65,6 +65,10 @@
           progress: "{done} / {total}",
           progressHint: "{pending} pending · {skipped} skipped",
           localNote: "Progress is saved in this browser only.",
+        },
+        accountTypes: {
+          official: "Official",
+          fan: "Fan",
         },
         sprint: {
           peak24h: "24h Peak Sprint",
@@ -136,7 +140,7 @@
           handle: "แฮนเดิล",
           accountType: "ประเภทบัญชี",
           status: "สถานะ",
-          postedTime: "เวลาโพสต์",
+          postedTime: "เวลาโพสต์ (BKK)",
           guide: "วิธีทำ",
           expandGuide: "แสดงคู่มือการมีส่วนร่วม",
           collapseGuide: "ซ่อนคู่มือการมีส่วนร่วม",
@@ -148,6 +152,10 @@
           progress: "{done} / {total}",
           progressHint: "รอดำเนินการ {pending} · ข้าม {skipped}",
           localNote: "ความคืบหน้าเก็บไว้ในเบราว์เซอร์นี้เท่านั้น",
+        },
+        accountTypes: {
+          official: "บัญชีทางการ",
+          fan: "บัญชีแฟนคลับ",
         },
         sprint: {
           peak24h: "ช่วงเร่งด่วน 24 ชม.",
@@ -215,7 +223,7 @@
           handle: "账号",
           accountType: "账号类型",
           status: "状态",
-          postedTime: "发布时间",
+          postedTime: "发布时间 (BKK)",
           guide: "怎么做",
           expandGuide: "展开互动指南",
           collapseGuide: "收起互动指南",
@@ -227,6 +235,10 @@
           progress: "{done} / {total}",
           progressHint: "待办 {pending} · 跳过 {skipped}",
           localNote: "进度只保存在本机浏览器，换设备不会同步",
+        },
+        accountTypes: {
+          official: "官方账号",
+          fan: "粉丝账号",
         },
         sprint: {
           peak24h: "24h 黄金冲刺",
@@ -394,6 +406,8 @@
   const btnTweet = $("btn-tweet");
   const iconRefresh = $("icon-refresh");
   const btnCopy = $("btn-copy");
+  const emvPromptCopy = $("emv-prompt-copy");
+  const emvPromptCard = $("emv-ai-prompt-card");
   const appNavbar = $("app-navbar");
   const eventPicker = $("event-picker");
   const eventTrigger = $("event-trigger");
@@ -1126,12 +1140,20 @@
     });
   }
 
+  function formatEmvAccountType(raw) {
+    const value = String(raw || "").trim();
+    const key = value.toLowerCase();
+    if (key === "official") return t("emv.accountTypes.official");
+    if (key === "fan") return t("emv.accountTypes.fan");
+    return value;
+  }
+
   function renderEmvCard(task) {
     const state = emvStateOf(task);
     const sprint = getEmvSprint(task);
     const eventName = String(task.event || "").trim() || String(task.artist || "").trim();
     const handle = String(task.handle || "").trim();
-    const accountType = String(task.accountType || "").trim();
+    const accountType = formatEmvAccountType(task.accountType);
     const statusLabel = formatEmvStatusLabel(task.status);
     const postedTime = formatEmvPostedTime(task.postedTime);
     const postLink = String(task.postLink || "").trim();
@@ -1686,6 +1708,22 @@
   btnTweet.addEventListener("click", postTweet);
   if (btnCopy) {
     btnCopy.addEventListener("click", () => copyText(preview.value || "", btnCopy));
+  }
+  if (emvPromptCopy && emvPromptCard) {
+    emvPromptCopy.addEventListener("click", () => {
+      const prompt = Array.from(emvPromptCard.children)
+        .map((element) => {
+          if (element.tagName === "OL") {
+            return Array.from(element.children)
+              .map((item, index) => `${index + 1}. ${item.innerText.trim()}`)
+              .join("\n");
+          }
+          return element.innerText.trim();
+        })
+        .filter(Boolean)
+        .join("\n\n");
+      copyText(prompt, emvPromptCopy);
+    });
   }
   preview.addEventListener("input", () => {
     previewIsGenerated = false;

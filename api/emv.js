@@ -1,9 +1,9 @@
 /**
  * EMV 待办专用 Vercel Serverless API。
  * 读取另一份 Notion 数据库：
- * Artist / Handle / Event / Account Type / View Post / Posted Time / Status。
+ * Artist / Handle / Event / Account Type / View Post / Posted Time (BKK) / Status。
  * Status 为 Active 的记录不进入待办清单。
- * Sprint Status / Sort Priority 仅作 Notion 侧自动化参考，前端会按 Posted Time 实时重算并置顶。
+ * Sprint Status / Sort Priority 仅作 Notion 侧自动化参考，前端会按 Posted Time (BKK) 实时重算并置顶。
  * 密钥只读 process.env，不会写进前端或响应体。
  */
 
@@ -70,7 +70,7 @@ function getPropertyNames() {
     event: readEnv("NOTION_EMV_PROP_EVENT") || "Event",
     accountType: readEnv("NOTION_EMV_PROP_ACCOUNT_TYPE") || "Account Type",
     viewPost: readEnv("NOTION_EMV_PROP_VIEW_POST") || "View Post",
-    postedTime: readEnv("NOTION_EMV_PROP_POSTED_TIME") || "Posted Time",
+    postedTime: readEnv("NOTION_EMV_PROP_POSTED_TIME") || "Posted Time (BKK)",
     status: readEnv("NOTION_EMV_PROP_STATUS") || "Status",
   };
 }

@@ -706,6 +706,53 @@
       text-decoration: underline;
       text-underline-offset: 2px;
     }
+    .emv-ai-prompt-heading {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 10px 0 8px;
+    }
+    .emv-ai-prompt-title {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .emv-prompt-copy-btn {
+      position: relative;
+      right: auto;
+      bottom: auto;
+      flex: 0 0 28px;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+    }
+    .emv-ai-prompt-card {
+      overflow: hidden;
+      border-radius: 14px;
+      padding: 14px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+    .emv-ai-prompt-card p {
+      margin: 0 0 10px;
+    }
+    .emv-ai-prompt-card p:last-child {
+      margin-bottom: 0;
+    }
+    .emv-ai-prompt-card ol {
+      display: grid;
+      gap: 8px;
+      margin: 6px 0 12px;
+      padding-left: 20px;
+    }
+    .emv-ai-prompt-card li {
+      padding-left: 2px;
+    }
+    .emv-ai-prompt-card strong {
+      color: var(--text-primary);
+    }
 
     .menu-item {
       height: 38px;
@@ -1320,10 +1367,36 @@
               <strong>Instagram：</strong>
               <a href="https://x.com/SundazeQG/status/2119864898205126853" target="_blank" rel="noopener noreferrer">https://x.com/SundazeQG/status/2119864898205126853</a>
             </p>
-            <p class="emv-guide-link-row">
-              <strong>YouTube：</strong>
-              <a href="https://x.com/EmiBonnieIndia/status/2119831423754641638" target="_blank" rel="noopener noreferrer">https://x.com/EmiBonnieIndia/status/2119831423754641638</a>
-            </p>
+            <div class="emv-ai-prompt-heading">
+              <h2 class="emv-ai-prompt-title">AI Prompt Template</h2>
+              <button
+                type="button"
+                id="emv-prompt-copy"
+                class="copy-btn emv-prompt-copy-btn"
+                aria-label="复制 Prompt"
+                title="复制 Prompt"
+                data-i18n-aria="copyAria"
+              >
+                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                  <rect x="9" y="9" width="11" height="11" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
+            </div>
+            <div id="emv-ai-prompt-card" class="emv-ai-prompt-card liquid-glass">
+              <p><strong>Role:</strong> You are an expert Instagram social media strategist specializing in maximizing Earned Media Value (EMV) and algorithm reach for luxury/fashion and entertainment posts.</p>
+              <p><strong>Task:</strong> Generate [Insert Number, e.g., 10] distinct, authentic, high-EMV Instagram comments for [Insert Name: EmiBonnie / Emi / Bonnie / Any] featuring/wearing [Insert Brand / Event / Magazine / Project Name].</p>
+              <p><strong>Post Context (Optional - briefly describe the outfit, vibe, or scene):</strong> [e.g., wearing a black tailored suit at the fashion show / warm sunset lighting / singing on stage]</p>
+              <p><strong>Strict Algorithm &amp; EMV Optimization Rules:</strong></p>
+              <ol>
+                <li><strong>Language &amp; Length:</strong> Write in [Insert Language: English / Thai / Chinese]. Each comment MUST be between 6 and 12 words (strictly exceeding the 4+ words algorithm threshold while remaining natural and readable).</li>
+                <li><strong>Specific Visual &amp; Brand Anchoring:</strong> Every comment must naturally weave together BOTH the artist&apos;s name/pronoun and the exact brand/project name, paired with a specific detail (e.g., styling, silhouette, aura, expression, lighting, or chemistry) so Instagram&apos;s semantic index accurately categorizes the post.</li>
+                <li><strong>Anti-Spam &amp; High Diversity:</strong> Vary sentence structures, openings, and vocabulary completely across all generated comments. Avoid repetitive fan-bot clichés (like &quot;OMG so pretty&quot;, &quot;Queen&quot;, or generic spam phrases) that trigger Instagram&apos;s Hidden Comments filter.</li>
+                <li><strong>&quot;Fandom Thread&quot; Hooks (Dwell Time Booster):</strong> Make at least 40% of the comments subtly conversational or detail-oriented so other fans are naturally inclined to like or reply, boosting comment dwell time.</li>
+                <li><strong>Emoji &amp; Tag Discipline:</strong> Use either ZERO emojis or at most 1–2 universally positive, context-fitting emojis (e.g., ✨, 🤍, 🖤, 🤎, 💫, 🥂) placed naturally at the end. Do NOT include any hashtags (#) or extra @mentions.</li>
+              </ol>
+              <p><strong>Output Format:</strong> Provide only the numbered list of ready-to-copy comments without extra explanations.</p>
+            </div>
           </div>
         </div>
         <div class="divider"></div>
