@@ -41,6 +41,7 @@ function getPropertyNames() {
     status: readEnv("NOTION_VOTE_PROP_STATUS") || "Status",
     period: readEnv("NOTION_VOTE_PROP_PERIOD") || "Voting Period",
     platform: readEnv("NOTION_VOTE_PROP_PLATFORM") || "Platform",
+    frequency: readEnv("NOTION_VOTE_PROP_FREQUENCY") || "Frequency",
     organizer: readEnv("NOTION_VOTE_PROP_ORGANIZER") || "Organizer",
     voteUrl: readEnv("NOTION_VOTE_PROP_VOTE_URL") || "Vote URL",
     source: readEnv("NOTION_VOTE_PROP_SOURCE") || "Source",
@@ -72,6 +73,12 @@ function getOption(property) {
   if (!property) return "";
   if (property.type === "status" && property.status) return String(property.status.name || "").trim();
   if (property.type === "select" && property.select) return String(property.select.name || "").trim();
+  if (property.type === "multi_select" && Array.isArray(property.multi_select)) {
+    return property.multi_select
+      .map((option) => String(option && option.name || "").trim())
+      .filter(Boolean)
+      .join(", ");
+  }
   return getText(property);
 }
 
@@ -105,7 +112,8 @@ function mapPage(page) {
     status: getOption(findProperty(properties, names.status)),
     period,
     platform: getOption(findProperty(properties, names.platform)),
-    organizer: getText(findProperty(properties, names.organizer)),
+    frequency: getOption(findProperty(properties, names.frequency)),
+    organizer: getOption(findProperty(properties, names.organizer)),
     voteUrl: getUrl(findProperty(properties, names.voteUrl)),
     sourceUrl: getUrl(findProperty(properties, names.source)),
   };

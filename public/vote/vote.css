@@ -30,13 +30,6 @@
   letter-spacing: 0.16em;
 }
 
-#module-vote .vote-header-mark {
-  color: rgba(250, 245, 255, 0.35);
-  font-size: 11px;
-  font-weight: 650;
-  letter-spacing: 0.14em;
-}
-
 #module-vote .vote-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -64,26 +57,33 @@
   background: rgba(255, 255, 255, 0.06);
 }
 
+#module-vote .vote-meta-group,
 #module-vote .vote-meta,
+#module-vote .vote-frequency-row,
 #module-vote .vote-platforms,
 #module-vote .vote-actions {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
   gap: 8px;
 }
 
-#module-vote .vote-meta {
-  justify-content: space-between;
+#module-vote .vote-meta-group {
+  flex-direction: column;
+  align-items: stretch;
   margin-bottom: 20px;
 }
 
-#module-vote .vote-platforms {
-  justify-content: flex-end;
+#module-vote .vote-meta {
+  width: 100%;
+  min-width: 0;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 6px;
 }
 
 #module-vote .vote-status,
-#module-vote .vote-platform {
+#module-vote .vote-platform,
+#module-vote .vote-frequency {
   display: inline-flex;
   align-items: center;
   gap: 7px;
@@ -94,6 +94,12 @@
   font-size: 11px;
   font-weight: 600;
   line-height: 1.2;
+}
+
+#module-vote .vote-status,
+#module-vote .vote-platform {
+  min-width: 0;
+  flex: 0 1 auto;
 }
 
 #module-vote .vote-status {
@@ -143,6 +149,34 @@
   color: rgba(250, 245, 255, 0.72);
   border-color: rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.045);
+}
+
+#module-vote .vote-frequency {
+  max-width: 100%;
+  color: rgba(220, 180, 255, 0.86);
+  border-color: rgba(191, 0, 255, 0.16);
+  background: rgba(139, 92, 246, 0.08);
+}
+
+#module-vote .vote-frequency-row {
+  justify-content: flex-end;
+  min-width: 0;
+  margin-top: 2px;
+}
+
+#module-vote .vote-frequency {
+  min-width: 0;
+}
+
+#module-vote .vote-frequency span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+#module-vote .vote-frequency svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
 }
 
 #module-vote .vote-organizer {
@@ -294,6 +328,19 @@
   #module-vote .vote-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 18px;
+  }
+}
+
+@media (max-width: 380px) {
+  #module-vote .vote-meta {
+    gap: 5px;
+  }
+
+  #module-vote .vote-status,
+  #module-vote .vote-platform {
+    gap: 5px;
+    padding-inline: 7px;
+    font-size: 10px;
   }
 }
 
