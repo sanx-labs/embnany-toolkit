@@ -518,7 +518,7 @@
       padding-bottom: max(24px, env(safe-area-inset-bottom, 0px));
     }
 
-    /* ── 站点级导航：吸顶，右侧为语言胶囊 ── */
+    /* ── 站点级导航：吸顶，语言选择收纳在右侧图标菜单 ── */
     .top-chrome {
       position: sticky;
       top: max(8px, env(safe-area-inset-top, 0px));
@@ -526,75 +526,118 @@
       width: 100%;
       margin: 0 0 12px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      flex-wrap: wrap;
       gap: 8px;
     }
     .app-navbar {
-      flex: 0 1 auto;
+      flex: 1 1 420px;
       min-width: 0;
-      width: 100%;
+      width: auto;
       height: 50px;
       margin: 0;
       border-radius: 16px;
       padding: 5px 6px;
       box-sizing: border-box;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 5px;
     }
     .app-navbar > * { position: relative; z-index: 1; }
     .app-navbar .menu-item {
-      font-size: 11px;
+      min-width: 0;
+      width: 100%;
+      font-size: clamp(9px, 2.8vw, 11px);
       font-weight: 600;
-      letter-spacing: 0.06em;
+      letter-spacing: clamp(0.01em, 0.15vw, 0.06em);
     }
 
     .lang-switcher {
       position: relative;
       flex-shrink: 0;
-      align-self: center;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 5px;
-      border-radius: 16px;
-      height: 50px;
-      min-height: 50px;
-      box-sizing: border-box;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(191, 0, 255, 0.2);
-      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+      align-self: auto;
     }
     .lang-option {
-      height: 34px;
-      min-width: 44px;
-      padding: 0 8px;
+      width: 100%;
+      min-height: 38px;
+      padding: 0 10px;
       border: none;
       border-radius: 10px;
       background: transparent;
-      color: var(--text-secondary);
+      color: rgba(250, 245, 255, 0.72);
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.08em;
       cursor: pointer;
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+    .lang-switcher-toggle {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
-      transition: background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 15px;
+      color: rgba(250, 245, 255, 0.82);
+      background: rgba(255, 255, 255, 0.055);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      backdrop-filter: blur(20px) saturate(150%);
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 5px 16px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
     }
-    .lang-option:hover:not(.active) {
-      color: var(--neon-orange-light);
-      background: rgba(255, 107, 0, 0.1);
+    .lang-switcher-toggle svg {
+      width: 20px;
+      height: 20px;
     }
-    .lang-option.active {
-      background: var(--gradient-neon);
+    .lang-switcher-toggle:hover,
+    .lang-switcher-toggle[aria-expanded="true"] {
       color: #ffffff;
-      box-shadow:
-        0 2px 12px rgba(255, 107, 0, 0.35),
-        0 0 20px rgba(191, 0, 255, 0.25),
-        0 1px 0 rgba(255, 255, 255, 0.3) inset;
+      border-color: rgba(191, 0, 255, 0.34);
+      background: rgba(191, 0, 255, 0.1);
+    }
+    .lang-switcher-toggle:active {
+      transform: scale(0.96);
+    }
+    .lang-switcher-toggle:focus-visible,
+    .lang-option:focus-visible {
+      outline: 2px solid rgba(215, 184, 255, 0.9);
+      outline-offset: 2px;
+    }
+    .lang-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      z-index: 60;
+      width: 144px;
+      padding: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 15px;
+      background: rgba(26, 19, 38, 0.92);
+      -webkit-backdrop-filter: blur(26px) saturate(160%);
+      backdrop-filter: blur(26px) saturate(160%);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.08) inset;
+    }
+    .lang-menu[hidden] {
+      display: none;
+    }
+    .lang-option:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .lang-option[aria-pressed="true"] {
+      color: #ffffff;
+      background: rgba(191, 0, 255, 0.16);
+    }
+    .lang-option[aria-pressed="true"]::after {
+      content: "✓";
+      color: #d7b8ff;
+      font-size: 12px;
+      letter-spacing: 0;
     }
 
     /* 站点 Tab：用 display 切换，DOM 不销毁，TREND 内部状态得以保留 */
@@ -1173,24 +1216,30 @@
     }
 
     @media (min-width: 768px) {
-      .top-chrome {
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-      }
       .app-navbar {
         flex: 0 1 420px;
         width: auto;
       }
-      .lang-switcher {
-        align-self: auto;
+      .top-chrome {
+        justify-content: space-between;
       }
       .defense-list {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 18px;
         max-height: none;
         overflow: visible;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .app-navbar {
+        gap: 2px;
+        padding-inline: 2px;
+      }
+      .app-navbar .menu-item {
+        padding-inline: 0;
+        font-size: 8px;
+        letter-spacing: 0;
       }
     }
 
@@ -1203,6 +1252,7 @@
   </style>
   <!-- SCHEDULE 专用样式，选择器全部限定在 #module-schedule -->
   <link rel="stylesheet" href="/public/schedule/schedule.css" />
+  <link rel="stylesheet" href="/public/vote/vote.css" />
 </head>
 <body class="min-h-screen font-sans">
 
@@ -1223,15 +1273,35 @@
         <button type="button" class="menu-item" role="tab" data-app-tab="emv" aria-controls="module-emv" aria-selected="false" data-i18n="navEmv">
           EMV
         </button>
+        <button type="button" class="menu-item" role="tab" data-app-tab="votes" aria-controls="module-vote" aria-selected="false" data-i18n="navVote">
+          VOTE
+        </button>
         <button type="button" class="menu-item" role="tab" data-app-tab="schedule" aria-controls="module-schedule" aria-selected="false" data-i18n="navSchedule">
           SCHEDULE
         </button>
       </nav>
 
-      <div class="lang-switcher" id="lang-switcher" role="group" aria-label="Language switcher" data-i18n-aria="langSwitcherAria">
-        <button type="button" class="lang-option active" role="switch" aria-checked="true" data-lang="en">EN</button>
-        <button type="button" class="lang-option" role="switch" aria-checked="false" data-lang="th">TH</button>
-        <button type="button" class="lang-option" role="switch" aria-checked="false" data-lang="zh">ZH</button>
+      <div class="lang-switcher" id="lang-switcher">
+        <button
+          type="button"
+          id="lang-switcher-toggle"
+          class="lang-switcher-toggle"
+          aria-label="Change language"
+          aria-expanded="false"
+          aria-controls="lang-menu"
+          aria-haspopup="true"
+          data-i18n-aria="langSwitcherAria"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path>
+          </svg>
+        </button>
+        <div class="lang-menu" id="lang-menu" role="group" aria-label="Language options" data-i18n-aria="langOptionsAria" hidden>
+          <button type="button" class="lang-option" lang="en" aria-pressed="false" data-lang="en">English</button>
+          <button type="button" class="lang-option" lang="th" aria-pressed="false" data-lang="th">ภาษาไทย</button>
+          <button type="button" class="lang-option" lang="zh-Hans" aria-pressed="false" data-lang="zh">简体中文</button>
+        </div>
       </div>
     </div>
 
@@ -1345,7 +1415,7 @@
     <section id="module-emv" class="app-module" data-app-tab="emv" role="tabpanel" hidden>
       <div class="app-shell liquid-glass defense-shell">
         <header class="defense-header emv-header mb-1">
-          <h1 class="brand-mark text-[22px] font-semibold tracking-tight brand-neon-yellow">BOOST GUIDE</h1>
+          <h1 class="brand-mark text-[22px] font-semibold tracking-tight brand-neon-yellow">Boost Guide</h1>
           <button
             type="button"
             id="emv-guide-toggle"
@@ -1483,6 +1553,40 @@
       </div>
     </section>
 
+    <!-- VOTE：Notion 投票活动追踪 -->
+    <section id="module-vote" class="app-module" data-app-tab="votes" role="tabpanel" aria-labelledby="vote-heading" hidden>
+      <div class="vote-shell">
+        <header class="vote-header">
+          <div>
+            <p class="vote-eyebrow">TRACKER</p>
+            <h1 id="vote-heading" class="brand-mark text-[22px] font-semibold tracking-tight brand-neon-yellow" data-i18n="vote.title">Vote Campaigns</h1>
+          </div>
+          <span class="vote-header-mark" aria-hidden="true">VOTE</span>
+        </header>
+        <div id="vote-list" class="vote-grid" aria-live="polite">
+          <article class="vote-card vote-skeleton" aria-hidden="true">
+            <div class="vote-skeleton-line short"></div>
+            <div class="vote-skeleton-line title"></div>
+            <div class="vote-skeleton-line"></div>
+            <div class="vote-skeleton-line action"></div>
+          </article>
+          <article class="vote-card vote-skeleton" aria-hidden="true">
+            <div class="vote-skeleton-line short"></div>
+            <div class="vote-skeleton-line title"></div>
+            <div class="vote-skeleton-line"></div>
+            <div class="vote-skeleton-line action"></div>
+          </article>
+          <article class="vote-card vote-skeleton" aria-hidden="true">
+            <div class="vote-skeleton-line short"></div>
+            <div class="vote-skeleton-line title"></div>
+            <div class="vote-skeleton-line"></div>
+            <div class="vote-skeleton-line action"></div>
+          </article>
+        </div>
+        <div id="vote-state" class="vote-state" role="status" hidden></div>
+      </div>
+    </section>
+
     <!-- SCHEDULE：迁自 embnany-schedule，不含门户返回/时区按钮 -->
     <section id="module-schedule" class="app-module" data-app-tab="schedule" role="tabpanel" hidden>
       <div class="sched-root">
@@ -1531,5 +1635,6 @@
 
   <script src="app.js?v=20261116.6"></script>
   <script src="schedule.js?v=20261115.7"></script>
+  <script src="vote.js?v=20261117.1"></script>
 </body>
 </html>

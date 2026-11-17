@@ -3,7 +3,9 @@
     "navAria": "Site modules",
     "navTrend": "TREND",
     "navEmv": "EMV",
+    "navVote": "VOTE",
     "langSwitcherAria": "Change language",
+    "langOptionsAria": "Language options",
     "previewLabel": "Edit Preview",
     "previewAria": "Copy editor",
     "charCount": "{n} chars",
@@ -75,6 +77,27 @@
       "closeCalendarAria": "Close calendar",
       "eventScheduleAria": "Event schedule"
     },
+    "vote": {
+      "title": "Vote Campaigns",
+      "loading": "Loading votes…",
+      "loadError": "Unable to load vote campaigns.",
+      "retry": "Try again",
+      "empty": "No vote campaigns available.",
+      "hostedBy": "Hosted by {name}",
+      "voteNow": "Vote Now",
+      "officialSource": "Official Source",
+      "noPeriod": "Voting period not announced",
+      "daysLeft": "{count}d left",
+      "hoursLeft": "{count}h left",
+      "minutesLeft": "{count}m left",
+      "daysHoursLeft": "{days}d {hours}h left",
+      "status": {
+        "ongoing": "Ongoing",
+        "upcoming": "Upcoming",
+        "announced": "Announced",
+        "ended": "Ended"
+      }
+    },
     "defense": {
       "tabs": {
         "uncompleted": "Pending",
@@ -106,7 +129,9 @@
     "navAria": "โมดูลเว็บไซต์",
     "navTrend": "TREND",
     "navEmv": "EMV",
+    "navVote": "VOTE",
     "langSwitcherAria": "เปลี่ยนภาษา",
+    "langOptionsAria": "ตัวเลือกภาษา",
     "previewLabel": "แก้ไขข้อความ",
     "previewAria": "แก้ไขข้อความ",
     "charCount": "{n} ตัวอักษร",
@@ -178,6 +203,27 @@
       "closeCalendarAria": "ปิดปฏิทิน",
       "eventScheduleAria": "ตารางกิจกรรม"
     },
+    "vote": {
+      "title": "กิจกรรมโหวต",
+      "loading": "กำลังโหลดรายการโหวต…",
+      "loadError": "ไม่สามารถโหลดรายการโหวตได้",
+      "retry": "ลองอีกครั้ง",
+      "empty": "ไม่มีรายการโหวตในขณะนี้",
+      "hostedBy": "จัดโดย {name}",
+      "voteNow": "โหวตเลย",
+      "officialSource": "แหล่งข่าวทางการ",
+      "noPeriod": "ยังไม่ประกาศช่วงเวลาโหวต",
+      "daysLeft": "เหลือ {count} วัน",
+      "hoursLeft": "เหลือ {count} ชั่วโมง",
+      "minutesLeft": "เหลือ {count} นาที",
+      "daysHoursLeft": "เหลือ {days} วัน {hours} ชั่วโมง",
+      "status": {
+        "ongoing": "กำลังดำเนินการ",
+        "upcoming": "เร็ว ๆ นี้",
+        "announced": "ประกาศผลแล้ว",
+        "ended": "สิ้นสุดแล้ว"
+      }
+    },
     "defense": {
       "tabs": {
         "uncompleted": "รอดำเนินการ",
@@ -209,7 +255,9 @@
     "navAria": "站点模块",
     "navTrend": "TREND",
     "navEmv": "EMV",
+    "navVote": "VOTE",
     "langSwitcherAria": "切换语言",
+    "langOptionsAria": "语言选项",
     "previewLabel": "文案预览",
     "previewAria": "文案编辑",
     "charCount": "{n} 字符",
@@ -280,6 +328,27 @@
       "nextYearAria": "下一年",
       "closeCalendarAria": "关闭日历",
       "eventScheduleAria": "活动日程"
+    },
+    "vote": {
+      "title": "投票活动",
+      "loading": "正在加载投票活动…",
+      "loadError": "投票活动加载失败。",
+      "retry": "重试",
+      "empty": "暂无投票活动。",
+      "hostedBy": "主办方：{name}",
+      "voteNow": "立即投票",
+      "officialSource": "官方来源",
+      "noPeriod": "投票时间暂未公布",
+      "daysLeft": "剩余 {count} 天",
+      "hoursLeft": "剩余 {count} 小时",
+      "minutesLeft": "剩余 {count} 分钟",
+      "daysHoursLeft": "剩余 {days} 天 {hours} 小时",
+      "status": {
+        "ongoing": "进行中",
+        "upcoming": "即将开始",
+        "announced": "已公布结果",
+        "ended": "已结束"
+      }
     },
     "defense": {
       "tabs": {

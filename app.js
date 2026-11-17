@@ -17,8 +17,10 @@
       navAria: "站点模块",
       navTrend: "TREND",
       navEmv: "EMV",
+      navVote: "VOTE",
       navSchedule: "SCHEDULE",
-      langSwitcherAria: "切换语言",
+      langSwitcherAria: "Change language",
+      langOptionsAria: "Language options",
       previewLabel: "文案预览",
       previewAria: "文案编辑",
       charCount: "{n} 字符",
@@ -89,6 +91,27 @@
         nextYearAria: "Next year",
         closeCalendarAria: "Close calendar",
         eventScheduleAria: "Event schedule",
+      },
+      vote: {
+        title: "Vote Campaigns",
+        loading: "Loading votes…",
+        loadError: "Unable to load vote campaigns.",
+        retry: "Try again",
+        empty: "No vote campaigns available.",
+        hostedBy: "Hosted by {name}",
+        voteNow: "Vote Now",
+        officialSource: "Official Source",
+        noPeriod: "Voting period not announced",
+        daysLeft: "{count}d left",
+        hoursLeft: "{count}h left",
+        minutesLeft: "{count}m left",
+        daysHoursLeft: "{days}d {hours}h left",
+        status: {
+          ongoing: "Ongoing",
+          upcoming: "Upcoming",
+          announced: "Announced",
+          ended: "Ended",
+        },
       },
       defense: {
         tabs: {
@@ -175,13 +198,35 @@
         closeCalendarAria: "ปิดปฏิทิน",
         eventScheduleAria: "ตารางกิจกรรม",
       },
+      vote: {
+        title: "กิจกรรมโหวต",
+        loading: "กำลังโหลดรายการโหวต…",
+        loadError: "ไม่สามารถโหลดรายการโหวตได้",
+        retry: "ลองอีกครั้ง",
+        empty: "ไม่มีรายการโหวตในขณะนี้",
+        hostedBy: "จัดโดย {name}",
+        voteNow: "โหวตเลย",
+        officialSource: "แหล่งข่าวทางการ",
+        noPeriod: "ยังไม่ประกาศช่วงเวลาโหวต",
+        daysLeft: "เหลือ {count} วัน",
+        hoursLeft: "เหลือ {count} ชั่วโมง",
+        minutesLeft: "เหลือ {count} นาที",
+        status: {
+          ongoing: "กำลังดำเนินการ",
+          upcoming: "เร็ว ๆ นี้",
+          announced: "ประกาศผลแล้ว",
+          ended: "สิ้นสุดแล้ว",
+        },
+      },
     },
     zh: {
       navAria: "站点模块",
       navTrend: "TREND",
       navEmv: "EMV",
+      navVote: "VOTE",
       navSchedule: "SCHEDULE",
       langSwitcherAria: "切换语言",
+      langOptionsAria: "语言选项",
       previewLabel: "文案预览",
       previewAria: "文案编辑",
       charCount: "{n} 字符",
@@ -252,6 +297,26 @@
         nextYearAria: "下一年",
         closeCalendarAria: "关闭日历",
         eventScheduleAria: "活动日程",
+      },
+      vote: {
+        title: "投票活动",
+        loading: "正在加载投票活动…",
+        loadError: "投票活动加载失败。",
+        retry: "重试",
+        empty: "暂无投票活动。",
+        hostedBy: "主办方：{name}",
+        voteNow: "立即投票",
+        officialSource: "官方来源",
+        noPeriod: "投票时间暂未公布",
+        daysLeft: "剩余 {count} 天",
+        hoursLeft: "剩余 {count} 小时",
+        minutesLeft: "剩余 {count} 分钟",
+        status: {
+          ongoing: "进行中",
+          upcoming: "即将开始",
+          announced: "已公布结果",
+          ended: "已结束",
+        },
       },
       defense: {
         tabs: {
@@ -347,7 +412,8 @@
   const promptCache = new Map();
   const CONFIG_POLL_MS = 2000;
   const APP_TAB_KEY = "embnany-app-tab";
-  const APP_TABS = ["trend", "emv", "streaming", "voting", "schedule"];
+  // 使用 votes 避免与旧 #vote → VOTING 路由别名冲突。
+  const APP_TABS = ["trend", "emv", "votes", "streaming", "voting", "schedule"];
   // 旧地址 #defense / #vote 落到 VOTING
   const APP_TAB_ALIASES = { defense: "voting", vote: "voting" };
   const CHECK_ICON_SVG =
@@ -393,6 +459,9 @@
   const emvPromptCopy = $("emv-prompt-copy");
   const emvPromptCard = $("emv-ai-prompt-card");
   const appNavbar = $("app-navbar");
+  const langSwitcher = $("lang-switcher");
+  const langSwitcherToggle = $("lang-switcher-toggle");
+  const langMenu = $("lang-menu");
   const eventPicker = $("event-picker");
   const eventTrigger = $("event-trigger");
   const eventMenu = $("event-menu");
@@ -546,9 +615,14 @@
     document.querySelectorAll("#lang-switcher [data-lang]").forEach((btn) => {
       const active = btn.dataset.lang === currentLang;
       btn.classList.toggle("active", active);
-      btn.setAttribute("aria-checked", active ? "true" : "false");
-      btn.setAttribute("aria-selected", active ? "true" : "false");
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
     });
+  }
+
+  function setLangMenuOpen(open) {
+    if (!langMenu || !langSwitcherToggle) return;
+    langMenu.hidden = !open;
+    langSwitcherToggle.setAttribute("aria-expanded", open ? "true" : "false");
   }
 
   function applyI18n() {
@@ -573,7 +647,7 @@
     // 列表文案由 JS 渲染，语言切换后需要重绘
     if ($("defense-list")) renderDefenseList();
     if ($("emv-list")) renderEmvList();
-    // 通知 SCHEDULE 模块同步语言（含当地时间后缀等动态文案）
+    // 通知 SCHEDULE / VOTE 模块同步动态文案。
     document.dispatchEvent(
       new CustomEvent("site-language-change", {
         detail: {
@@ -584,6 +658,26 @@
             noEvents: t("schedule.noEvents"),
             syncFailed: t("schedule.syncFailed"),
             timeZone: t("schedule.timeZone"),
+          },
+          voteText: {
+            loading: t("vote.loading"),
+            loadError: t("vote.loadError"),
+            retry: t("vote.retry"),
+            empty: t("vote.empty"),
+            hostedBy: t("vote.hostedBy"),
+            voteNow: t("vote.voteNow"),
+            officialSource: t("vote.officialSource"),
+            noPeriod: t("vote.noPeriod"),
+            daysLeft: t("vote.daysLeft"),
+            hoursLeft: t("vote.hoursLeft"),
+            minutesLeft: t("vote.minutesLeft"),
+            daysHoursLeft: t("vote.daysHoursLeft"),
+            status: {
+              ongoing: t("vote.status.ongoing"),
+              upcoming: t("vote.status.upcoming"),
+              announced: t("vote.status.announced"),
+              ended: t("vote.status.ended"),
+            },
           },
         },
       })
@@ -896,7 +990,7 @@
     return APP_TABS.includes(mapped) ? mapped : "";
   }
 
-  /** 解析地址栏 hash，合法值为 trend / emv / streaming / voting / schedule。 */
+  /** 解析地址栏 hash，合法值为 trend / emv / votes / streaming / voting / schedule。 */
   function resolveRoute() {
     const hash = location.hash.replace("#", "");
     const savedApp = localStorage.getItem(APP_TAB_KEY);
@@ -1688,8 +1782,23 @@
   }
 
   document.addEventListener("click", (event) => {
-    const button = event.target.closest("#lang-switcher [data-lang]");
-    if (button) switchLang(button.dataset.lang);
+    const target = event.target;
+    const option = target.closest("#lang-switcher [data-lang]");
+    if (option) {
+      switchLang(option.dataset.lang);
+      setLangMenuOpen(false);
+      langSwitcherToggle?.focus();
+      return;
+    }
+
+    if (target.closest("#lang-switcher-toggle")) {
+      setLangMenuOpen(langMenu.hidden);
+      return;
+    }
+
+    if (langSwitcher && !langSwitcher.contains(target)) {
+      setLangMenuOpen(false);
+    }
   });
 
   document.addEventListener("click", (e) => {
@@ -1701,6 +1810,10 @@
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       setEventMenuOpen(false);
+      if (langMenu && !langMenu.hidden) {
+        setLangMenuOpen(false);
+        langSwitcherToggle?.focus();
+      }
     }
   });
 
