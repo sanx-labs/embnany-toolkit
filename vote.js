@@ -103,6 +103,7 @@
    * @property {string} frequency
    * @property {string} artist
    * @property {string} organizer
+   * @property {string} organizerUrl
    * @property {string} voteUrl
    * @property {string} viewResultsUrl
    */
@@ -230,6 +231,17 @@
       .join(", ");
   }
 
+  function renderHostedBy(organizer, organizerUrl) {
+    const template = String(text.hostedBy || "");
+    const placeholderIndex = template.indexOf("{name}");
+    if (placeholderIndex === -1) return escapeHtml(template);
+
+    const name = organizerUrl
+      ? `<a class="vote-organizer-link" href="${escapeHtml(organizerUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(organizer)}</a>`
+      : escapeHtml(organizer);
+    return `${escapeHtml(template.slice(0, placeholderIndex))}${name}${escapeHtml(template.slice(placeholderIndex + 6))}`;
+  }
+
   function renderCampaign(campaign) {
     const status = normalizeStatus(campaign.status, campaign.period && campaign.period.end);
     const statusLabel = text.status[status] || String(campaign.status || "").trim() || "—";
@@ -237,6 +249,7 @@
     const frequency = String(campaign.frequency || "").trim();
     const artist = String(campaign.artist || "").trim();
     const organizer = String(campaign.organizer || "").trim();
+    const organizerUrl = getSafeUrl(campaign.organizerUrl);
     const voteUrl = getSafeUrl(campaign.voteUrl);
     const viewResultsUrl = getSafeUrl(campaign.viewResultsUrl);
     const end = String(campaign.period && campaign.period.end || "");
@@ -245,7 +258,7 @@
     card.className = "vote-card";
     card.innerHTML = `
       <h2 class="vote-card-title">${escapeHtml(campaign.title || "Untitled vote")}</h2>
-      ${organizer ? `<p class="vote-organizer">${escapeHtml(interpolate(text.hostedBy, { name: organizer }))}</p>` : ""}
+      ${organizer ? `<p class="vote-organizer">${renderHostedBy(organizer, organizerUrl)}</p>` : ""}
       ${artist ? `<p class="vote-artist">${escapeHtml(interpolate(text.artistLabel, { name: artist }))}</p>` : ""}
       <div class="vote-meta-group">
         <div class="vote-meta">

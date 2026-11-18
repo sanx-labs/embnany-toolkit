@@ -126,6 +126,7 @@ function mapPage(page) {
     frequency: getOption(findProperty(properties, names.frequency)),
     artist: getOption(findProperty(properties, names.artist)),
     organizer: getOption(findProperty(properties, names.organizer)),
+    organizerUrl: getUrl(findProperty(properties, names.organizer)),
     voteUrl: getUrl(findProperty(properties, names.voteUrl)),
     viewResultsUrl: getUrl(findProperty(properties, names.viewResults)),
   };

@@ -235,6 +235,24 @@
   line-height: 1.5;
 }
 
+#module-vote .vote-organizer-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+#module-vote .vote-organizer-link:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+#module-vote .vote-organizer-link:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid #c4b5fd;
+  outline-offset: 3px;
+}
+
 #module-vote .vote-card-title {
   margin: 0 0 8px;
   color: var(--text-primary);
