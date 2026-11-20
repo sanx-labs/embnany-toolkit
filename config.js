@@ -18,8 +18,8 @@ const EVENT_CONFIGS = {
   },
   Bonnie: {
     name: "Bonnie",
-    keywords: "BONNIE FIVE ME MORE",
-    hashtags: "#FIVEMExBonnie",
+    keywords: "BONNIE X NARCISO",
+    hashtags: "#heartofmusc\n#NarcisoRodriguezParfumsTH",
   },
   Any: {
     name: "Any",
