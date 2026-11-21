@@ -8,8 +8,8 @@ const DEFENSE_FALLBACK_URL = "/public/defense/clues.json";
 const EVENT_CONFIGS = {
   EmiBonnie: {
     name: "EmiBonnie",
-    keywords: "EMIBONNIE LIGHT UP KAOHSIUNG",
-    hashtags: "#BBFanFest2026inKaohsiung",
+    keywords: "EMIBONNIE ON CAT EXPOP STAGE",
+    hashtags: "#CATEXPOxEMIBONNIE",
   },
   Emi: {
     name: "Emi",
@@ -23,8 +23,8 @@ const EVENT_CONFIGS = {
   },
   Any: {
     name: "Any",
-    keywords: "ANY MAYBELLINE LIP",
-    hashtags: "#MaybellinexAny",
+    keywords: "ANY HAPPY IN HANYU",
+    hashtags: "#WorldCharacterSummitInHanyu2026\n#ANY",
   },
   EmiBonnieAny: {
     name: "EmiBonnieAny",
